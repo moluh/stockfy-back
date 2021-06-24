@@ -1,0 +1,28 @@
+{
+  "include": [
+    "src/**/*", "migration"
+  ],
+  "exclude": [
+    "dist",
+    "build",
+    "node_modules"
+  ],
+  "compilerOptions": {
+    "lib": ["es6"],
+    "types": ["node"],
+    "target": "es6",
+    "pretty": true,
+    "module": "commonjs",
+    "outDir": "./dist",
+    "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "sourceMap": true,
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "typeRoots": [
+      "node_modules/@types"
+    ],
+  },
+}
