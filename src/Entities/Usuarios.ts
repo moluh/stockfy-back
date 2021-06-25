@@ -15,22 +15,22 @@ export class Usuarios extends BaseEntity {
   @PrimaryGeneratedColumn("increment", { type: "integer" })
   id: number;
 
-  @Column({ type: "varchar", length: 45, nullable: false })
+  @Column({ type: "varchar", length: 150, nullable: false })
   username: string;
 
   @Column({ type: "varchar", nullable: false })
   password: string;
 
-  @Column({ type: "varchar", length: 40, nullable: true })
+  @Column({ type: "varchar", length: 150, nullable: true })
   nombre: string;
 
-  @Column({ type: "varchar", length: 80, nullable: true })
+  @Column({ type: "varchar", length: 150, nullable: true })
   apellido: string;
 
-  @Column({ type: "varchar", length: 80, nullable: true })
+  @Column({ type: "varchar", length: 150, nullable: true })
   provincia: string;
 
-  @Column({ type: "varchar", length: 80, nullable: true })
+  @Column({ type: "varchar", length: 150, nullable: true })
   localidad: string;
 
   @Column({ type: "varchar", nullable: true })
@@ -55,7 +55,7 @@ export class Usuarios extends BaseEntity {
   updated_at: Date;
 
   @Column({ type: "varchar", length: 20, nullable: false })
-  role: number;
+  role: string;
 
   @Column({ type: "boolean", default: true })
   activo: boolean;

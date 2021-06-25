@@ -20,10 +20,10 @@ export class MovimientosLineas extends BaseEntity {
     @Column({ type: 'varchar', nullable: true })
     img: string;
 
-    @Column({ type: 'varchar', length: 50, nullable: false })
+    @Column({ type: 'varchar', length: 255, nullable: false })
     nombre: string;
 
-    @Column({ type: 'varchar', length: 140, nullable: false })
+    @Column({ type: 'varchar', length: 255, nullable: false })
     descripcion: string;
 
     @Column({ type: 'real', nullable: false })
