@@ -105,7 +105,7 @@ export class Usuarios extends BaseEntity {
       .getRawOne();
 
     const data = await this.createQueryBuilder("usuario")
-      .orderBy("usuario.nombre")
+      .orderBy("usuario.id", "DESC")
       .skip(skipRecords)
       .take(pageSize)
       .getMany();
@@ -148,10 +148,7 @@ export class Usuarios extends BaseEntity {
           .andWhere(`LOWER(usuario.role) LIKE :role`, {
             role: "%" + role + "%",
           })
-          // .orWhere(`LOWER(usuario.nombre) LIKE LOWER(:text)`, { text: "%" + text + "%", })
-          // .orWhere(`LOWER(usuario.apellido) LIKE LOWER(:text)`, { text: "%" + text + "%", })
-          // .orWhere(`LOWER(usuario.username) LIKE LOWER(:text)`, { text: "%" + text + "%", })
-          .orderBy("usuario.nombre")
+          .orderBy("usuario.id", "DESC")
           .skip(skipRecords)
           .take(pageSize)
           .getMany();
@@ -170,7 +167,7 @@ export class Usuarios extends BaseEntity {
           .andWhere(`LOWER(usuario.role) LIKE :role`, {
             role: "%" + role + "%",
           })
-          .orderBy("usuario.nombre")
+          .orderBy("usuario.id", "DESC")
           .skip(skipRecords)
           .take(pageSize)
           .getMany();

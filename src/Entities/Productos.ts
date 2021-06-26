@@ -154,7 +154,7 @@ export class Productos extends BaseEntity {
 
   static getPaginatedByState(pageNro: number, pageSize: number, state: any) {
     const skipRecords = pageNro * pageSize;
-    const val: number = state === 'true' ? 1 : 0;    
+    const val: number = state === "true" ? 1 : 0;
     return this.createQueryBuilder("producto")
       .leftJoinAndSelect("producto.marca", "mar")
       .leftJoinAndSelect("producto.categoria_uno", "cat_uno")
@@ -175,14 +175,13 @@ export class Productos extends BaseEntity {
     attr: string,
     text: any
   ) {
-            
     try {
       await iqa.isQueryAllowed([attr]);
     } catch (error) {
       return error;
     }
     const skipRecords = pageNro * pageSize;
-    
+
     return this.createQueryBuilder("producto")
       .leftJoinAndSelect("producto.marca", "mar")
       .leftJoinAndSelect("producto.categoria_uno", "cat_uno")
@@ -205,16 +204,16 @@ export class Productos extends BaseEntity {
     attr: string,
     id: number
   ) {
-            
     try {
-      await iqa.isQueryAllowed([attr]);
+      // omitimos categoria por el guion bajo
+      // todo: agregar guion bajo a la regexp 
+      if (attr !== "categoria_uno") await iqa.isQueryAllowed([attr]);
     } catch (error) {
       return error;
     }
 
     const skipRecords = pageNro * pageSize;
     if (attr === "categoria_uno") {
-      console.log("Paginando por categoria");
       return this.createQueryBuilder("producto")
         .leftJoinAndSelect("producto.marca", "mar")
         .leftJoinAndSelect("producto.categoria_uno", "cat_uno")
@@ -231,7 +230,6 @@ export class Productos extends BaseEntity {
         .getMany();
     } else {
       // marca, proveedores.. falta talles
-      console.log("Paginando por id de una lista");
       return this.createQueryBuilder("producto")
         .leftJoinAndSelect("producto.marca", "mar")
         .leftJoinAndSelect("producto.categoria_uno", "cat_uno")

@@ -64,7 +64,7 @@ export class Clientes extends BaseEntity {
       .getRawOne();
 
     const data = await this.createQueryBuilder("cliente")
-      .orderBy("cliente.nombre")
+      .orderBy("cliente.id", "DESC")
       .skip(skipRecords)
       .take(pageSize)
       .getMany();
@@ -102,7 +102,7 @@ export class Clientes extends BaseEntity {
           .where(`LOWER(cliente.activo) LIKE :active`, {
             active: "%" + active + "%",
           })
-          .orderBy("cliente.nombre")
+          .orderBy("cliente.id", "DESC")
           .skip(skipRecords)
           .take(pageSize)
           .getMany();
@@ -118,7 +118,7 @@ export class Clientes extends BaseEntity {
           .where(`LOWER(cliente.${attribute}) LIKE LOWER(:text)`, {
             text: "%" + text + "%",
           })
-          .orderBy("cliente.nombre")
+          .orderBy("cliente.id", "DESC")
           .skip(skipRecords)
           .take(pageSize)
           .getMany();

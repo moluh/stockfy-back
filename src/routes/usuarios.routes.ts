@@ -6,10 +6,14 @@ export class UsuariosRouter {
   public controlador: UsuariosController = new UsuariosController();
 
   public routes(app): void {
+    /**
+     * TODO: Ver como se puede asegurar el create de usuario dejándolo
+     * público sin pasar por el middleware
+     */
     app
       .route("/api/v1/usuarios")
       .get(mw.jwtAdminMidleware, this.controlador.getAll)
-      .post(this.controlador.create);
+      .post(mw.jwtAdminMidleware, this.controlador.create);
 
     app
       .route("/api/v1/usuario/:id")
