@@ -20,7 +20,7 @@ export class Productos extends BaseEntity {
   @PrimaryGeneratedColumn("increment", { type: "integer" })
   id: number;
 
-  @Column({ type: "varchar", nullable: false })
+  @Column({ type: "varchar", length: 255, nullable: false })
   nombre: string;
 
   @Column({ type: "text", nullable: false })

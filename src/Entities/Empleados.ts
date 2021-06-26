@@ -11,16 +11,16 @@ export class Empleados extends BaseEntity {
   @PrimaryGeneratedColumn("increment", { type: "integer" })
   id: number;
 
-  @Column({ type: "varchar", length: 40, nullable: true })
+  @Column({ type: "varchar", length: 150, nullable: true })
   nombre: string;
 
-  @Column({ type: "varchar", length: 80, nullable: true })
+  @Column({ type: "varchar", length: 150, nullable: true })
   apellido: string;
 
-  @Column({ type: "varchar", length: 80, nullable: true })
+  @Column({ type: "varchar", length: 150, nullable: true })
   provincia: string;
 
-  @Column({ type: "varchar", length: 80, nullable: true })
+  @Column({ type: "varchar", length: 150, nullable: true })
   localidad: string;
 
   @Column({ type: "varchar", nullable: true })
@@ -29,7 +29,7 @@ export class Empleados extends BaseEntity {
   @Column({ type: "varchar", length: 30, nullable: true })
   telefono: string;
 
-  @Column({ type: "varchar", length: 40, nullable: true })
+  @Column({ type: "varchar", length: 150, nullable: true })
   domicilio: string;
 
   @Column({ type: "varchar", length: 70, nullable: true })
@@ -44,8 +44,8 @@ export class Empleados extends BaseEntity {
   @Column({ type: "timestamp", nullable: true })
   updated_at: Date;
 
-  @Column({ type: "int", nullable: false })
-  role: number;
+  @Column({ type: "varchar", nullable: false })
+  role: string;
 
   @Column({ type: "varchar", nullable: false })
   nro_legajo: string;

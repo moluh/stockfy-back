@@ -6,16 +6,16 @@ export class Clientes extends BaseEntity {
   @PrimaryGeneratedColumn("increment", { type: "integer" })
   id: number;
 
-  @Column({ type: "varchar", length: 40, nullable: true })
+  @Column({ type: "varchar", length: 150, nullable: true })
   nombre: string;
 
-  @Column({ type: "varchar", length: 80, nullable: true })
+  @Column({ type: "varchar", length: 150, nullable: true })
   apellido: string;
 
-  @Column({ type: "varchar", length: 80, nullable: true })
+  @Column({ type: "varchar", length: 150, nullable: true })
   provincia: string;
 
-  @Column({ type: "varchar", length: 80, nullable: true })
+  @Column({ type: "varchar", length: 150, nullable: true })
   localidad: string;
 
   @Column({ type: "varchar", nullable: true })
@@ -24,7 +24,7 @@ export class Clientes extends BaseEntity {
   @Column({ type: "varchar", length: 30, nullable: true })
   telefono: string;
 
-  @Column({ type: "varchar", length: 40, nullable: true })
+  @Column({ type: "varchar", length: 150, nullable: true })
   domicilio: string;
 
   @Column({ type: "varchar", length: 70, nullable: true })

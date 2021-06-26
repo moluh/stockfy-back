@@ -26,13 +26,13 @@ export class UsuariosController {
         let username = req.body.username;
         let telefono = req.body.telefono;
         let fc_alta = new Date();
-        usuario.role = req.body.role || 2
+
+        usuario.role = req.body.role || "ADMIN"
         usuario.email = email;
         usuario.telefono = telefono;
         usuario.username = username;
         usuario.created_at = fc_alta;
         usuario.updated_at = fc_alta;
-
         usuario.nombre = req.body.nombre;
         usuario.apellido = req.body.apellido;
         usuario.avatar = req.body.avatar

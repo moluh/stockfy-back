@@ -7,7 +7,7 @@ export class Proveedores extends BaseEntity {
     @PrimaryGeneratedColumn('increment', { type: 'integer' })
     id: number;
 
-    @Column({ type: 'varchar', length: 20, nullable: false })
+    @Column({ type: 'varchar', length: 150, nullable: false })
     proveedor: string;
 
     @Column({ type: 'boolean', default: true })

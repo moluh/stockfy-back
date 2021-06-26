@@ -29,7 +29,7 @@ export class EmpleadosController {
     let telefono = req.body.telefono;
     let fc_alta = new Date();
 
-    empleado.role = 3;
+    empleado.role = "EMPLEADO";
     empleado.email = email;
     empleado.telefono = telefono;
     empleado.created_at = fc_alta;
