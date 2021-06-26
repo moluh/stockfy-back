@@ -55,7 +55,7 @@ export class Usuarios extends BaseEntity {
   updated_at: Date;
 
   @Column({ type: "varchar", length: 20, nullable: false })
-  role: number;
+  role: string;
 
   @Column({ type: "boolean", default: true })
   activo: boolean;
