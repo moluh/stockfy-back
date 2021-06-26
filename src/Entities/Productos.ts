@@ -23,7 +23,7 @@ export class Productos extends BaseEntity {
   @Column({ type: "varchar", length: 255, nullable: false })
   nombre: string;
 
-  @Column({ type: "text", length: 255, nullable: false })
+  @Column({ type: "text", nullable: false })
   descripcion: string;
 
   @Column({ type: "int", nullable: false })
