@@ -5,6 +5,7 @@
     "username": "root",
     "password": "",
     "database": "controlstock",
+    "logging": true,
     "entities": [
         "dist/Entities/**/*{.ts,.js}"
     ],

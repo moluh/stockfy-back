@@ -15,7 +15,7 @@ export class EstadisticasRouter {
       .get(mw.jwtEmpleadoMidleware, this.controlador.dashboard)
       app
         .route("/api/v1/estadisticas/post")
-        .get(mw.jwtEmpleadoMidleware, this.controlador.post)
+        .get(this.controlador.post)
 
     app
       .route("/api/v1/estadisticas/paginado")

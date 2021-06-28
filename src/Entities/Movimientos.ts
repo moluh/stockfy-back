@@ -7,6 +7,8 @@ import {
   OneToMany,
   ManyToMany,
   JoinTable,
+  EntityManager,
+  getConnection,
 } from "typeorm";
 import { MovimientosLineas } from "./MovimientosLineas";
 import { Clientes } from "./Clientes";
@@ -24,12 +26,20 @@ export class Movimientos extends BaseEntity {
   @Column({ type: "varchar", length: 255, nullable: true })
   comentario: string;
 
+  /**
+  p = pendiente
+  c = completado
+  a = anulado     */
   @Column({ type: "char", length: 1, nullable: true })
   estado: string;
 
   @Column({ type: "double", nullable: false })
   total: number;
 
+  /**
+  efectivo
+  ctacte
+  tarjeta       */
   @Column({ type: "varchar", nullable: true })
   modo_pago: string;
 
@@ -69,6 +79,31 @@ export class Movimientos extends BaseEntity {
       .getMany();
 
     return { data, ...count };
+  }
+
+  static async getStats(from, to) {
+    console.log({ from, to });
+    // const query = `
+    //   SELECT * FROM
+    // `
+    // const result = await getConnection()
+    // .query("select id, email, name from users where id=?", [id])
+
+    const data = await this.createQueryBuilder("mov")
+      .innerJoinAndSelect("mov.cliente", "c")
+      .innerJoinAndSelect("mov.movimiento_lineas", "ml")
+      .where(`mov.fecha_hora BETWEEN :from AND :to`, { from, to })
+      .getRawMany();
+
+
+
+      // .innerJoinAndSelect("movimientos.pagos", "pagos")
+      // .select("COUNT(`mov_id`)", "count")
+      // .addSelect("id", "mov")
+      // .from("movimientos","movs")
+
+      
+    return { data };
   }
 
   static async getPaginatedAndFilter(
