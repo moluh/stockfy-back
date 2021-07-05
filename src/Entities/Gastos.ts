@@ -7,8 +7,11 @@ export class Gastos extends BaseEntity {
     @PrimaryGeneratedColumn('increment', { type: 'integer' })
     id: number;
 
-    @Column({ type: 'timestamp', nullable: false })
-    fecha_hora: Date;
+    @Column({ type: "date", nullable: false })
+    fecha: Date;
+    
+    @Column({ type: "time", nullable: true })
+    hora: Date;
 
     @Column({ type: 'varchar', length: 255, nullable: true })
     descripcion: string;

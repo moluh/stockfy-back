@@ -6,9 +6,7 @@ import {
   ManyToOne,
   OneToMany,
   ManyToMany,
-  JoinTable,
-  EntityManager,
-  getConnection,
+  JoinTable
 } from "typeorm";
 import { MovimientosLineas } from "./MovimientosLineas";
 import { Clientes } from "./Clientes";
@@ -20,8 +18,11 @@ export class Movimientos extends BaseEntity {
   @PrimaryGeneratedColumn("increment", { type: "integer" })
   id: number;
 
-  @Column({ type: "timestamp", nullable: false })
-  fecha_hora: Date;
+  @Column({ type: "date", nullable: false })
+  fecha: Date;
+  
+  @Column({ type: "time", nullable: true })
+  hora: Date;
 
   @Column({ type: "varchar", length: 255, nullable: true })
   comentario: string;
@@ -73,7 +74,7 @@ export class Movimientos extends BaseEntity {
       .innerJoinAndSelect("movimientos.movimiento_lineas", "pl")
       .innerJoinAndSelect("movimientos.cliente", "cliente")
       .leftJoinAndSelect("movimientos.pagos", "pagos")
-      .orderBy("movimientos.fecha_hora", "ASC")
+      .orderBy("movimientos.fecha", "ASC")
       .skip(skipRecords)
       .take(pageSize)
       .getMany();
@@ -92,7 +93,7 @@ export class Movimientos extends BaseEntity {
     const data = await this.createQueryBuilder("mov")
       .innerJoinAndSelect("mov.cliente", "c")
       .innerJoinAndSelect("mov.movimiento_lineas", "ml")
-      .where(`mov.fecha_hora BETWEEN :from AND :to`, { from, to })
+      .where(`mov.fecha BETWEEN :from AND :to`, { from, to })
       .getRawMany();
 
 
@@ -126,7 +127,7 @@ export class Movimientos extends BaseEntity {
       .where(`movimientos.estado = :est`, { est })
       .innerJoinAndSelect("movimientos.movimiento_lineas", "pl")
       .innerJoinAndSelect("movimientos.pagos", "pagos")
-      .orderBy("movimientos.fecha_hora", "ASC")
+      .orderBy("movimientos.fecha", "ASC")
       .skip(skipRecords)
       .take(pageSize)
       .getMany();
@@ -158,7 +159,7 @@ export class Movimientos extends BaseEntity {
       .innerJoinAndSelect("movimientos.pagos", "pagos")
       .where(`movimientos.estado = :est`, { est })
       .leftJoinAndSelect("movimientos.movimiento_lineas", "pl")
-      .orderBy("movimientos.fecha_hora", "ASC")
+      .orderBy("movimientos.fecha", "ASC")
       .skip(skipRecords)
       .take(pageSize)
       .getMany();
@@ -182,7 +183,7 @@ export class Movimientos extends BaseEntity {
       })
       .leftJoinAndSelect("movimientos.movimiento_lineas", "pl")
       .innerJoinAndSelect("movimientos.pagos", "pagos")
-      .orderBy("movimientos.fecha_hora", "ASC")
+      .orderBy("movimientos.fecha", "ASC")
       .skip(skipRecords)
       .take(pageSize)
       .getMany();

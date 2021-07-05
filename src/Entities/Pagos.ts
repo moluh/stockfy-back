@@ -11,8 +11,11 @@ export class Pagos extends BaseEntity {
     @Column({ type: 'double', nullable: false })
     monto: number;
 
-    @Column({ type: 'timestamp', nullable: false })
-    fecha_hora: Date;
+    @Column({ type: "date", nullable: false })
+    fecha: Date;
+    
+    @Column({ type: "time", nullable: true })
+    hora: Date;
 
     @Column({ type: 'double', nullable: false, default: 0 })
     ganancia: number;
@@ -32,7 +35,7 @@ export class Pagos extends BaseEntity {
     static getPaginated(pageNro: number, pageSize: number) {
         const skipRecords = pageNro * pageSize;
         return this.createQueryBuilder('pago')
-            .orderBy('pago.fecha_hora', 'ASC')
+            .orderBy('pago.fecha', 'ASC')
             .offset(skipRecords)
             .limit(pageSize)
             .getMany();

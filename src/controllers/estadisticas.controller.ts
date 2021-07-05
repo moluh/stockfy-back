@@ -30,7 +30,7 @@ export class EstadisticasController {
     try {
       for (let i = 0; i < 200; i++) {
         const json = {
-          fecha_hora: fc_month_ago,
+          fecha: fc_month_ago,
           estado: "c",
           modo_pago: "efectivo",
           // estado: "p",
