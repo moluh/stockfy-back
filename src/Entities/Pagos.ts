@@ -11,10 +11,10 @@ export class Pagos extends BaseEntity {
     @Column({ type: 'double', nullable: false })
     monto: number;
 
-    @Column({ type: "date", nullable: false })
+    @Column({ type: "date", nullable: true, default: '' })
     fecha: Date;
     
-    @Column({ type: "time", nullable: true })
+    @Column({ type: "time", nullable: true, default: '' })
     hora: Date;
 
     @Column({ type: 'double', nullable: false, default: 0 })

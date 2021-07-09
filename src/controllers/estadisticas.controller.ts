@@ -8,17 +8,21 @@ export class EstadisticasController {
   constructor() {}
 
   public getBetweenDates(req: Request, res: Response) {
-    // const actualDate = getDates.actualDate();
-    // const monthAgo = getDates.monthAgo();
-    const from = '2021-06-21';
-    const to = '2021-06-24';
-    // res.json({
-    //   actualDate: getDates.actualDate(),
-    //   currentTime: getDates.currentTime(),
-    //   monthAgo: getDates.monthAgo(),
-    //   yesterday: getDates.yesterday(),
-    // });
-    Movimientos.getStats(from, to)
+
+    const from = req.body.from;
+    const to = req.body.to;
+    
+    Movimientos.getBetweenDates(from, to)
+      .then((data) => res.json(data))
+      .catch((err) => console.log(err));
+  }
+  
+  public getBetweenDatesGraph(req: Request, res: Response) {
+
+    const from = req.body.from;
+    const to = req.body.to;
+    
+    Movimientos.getBetweenDatesGraph(from, to)
       .then((data) => res.json(data))
       .catch((err) => console.log(err));
   }

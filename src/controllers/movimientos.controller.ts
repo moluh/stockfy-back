@@ -104,24 +104,18 @@ export class MovimientosController {
       Movimientos.findOne({ id: movement_id }).then((mov) => {
         const movement = Movimientos.create({ ...mov } as Object);
 
-        console.log("movement --->> ", movement);
-        console.log("pago.monto --->> ", pago.monto);
-
         if (action === "create") {
-          console.log("create...");
           if (movement.saldo === null || movement.saldo === 0)
             movement.saldo = movement.total - pago.monto;
           else movement.saldo = movement.saldo - pago.monto;
+
         } else if (action === "delete") {
-          console.log("deletee...");
           movement.saldo = movement.saldo + pago.monto;
         }
 
         if (movement.saldo <= 0) movement.estado = "c";
         // c = completado
-        else movement.estado = "p"; // c = pendiente
-
-        console.log("movement", movement);
+        else movement.estado = "p"; // p = pendiente
 
         movement
           .save()
@@ -136,6 +130,7 @@ export class MovimientosController {
     Movimientos.findOne({ id })
       .then((movimiento) => {
         movimiento.fecha = req.body.fecha;
+        movimiento.hora = req.body.hora;
         movimiento.comentario = req.body.comentario;
         movimiento.estado = req.body.estado;
         movimiento.total = req.body.total;
