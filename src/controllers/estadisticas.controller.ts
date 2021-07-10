@@ -8,55 +8,61 @@ export class EstadisticasController {
   constructor() {}
 
   public getBetweenDates(req: Request, res: Response) {
-    res.json({
-      actualDate: getDates.actualDate(),
-      currentTime: getDates.currentTime(),
-      monthAgo: getDates.monthAgo(),
-      yesterday: getDates.yesterday(),
-    });
+
+    const from = req.body.from;
+    const to = req.body.to;
+    
+    Movimientos.getBetweenDates(from, to)
+      .then((data) => res.json(data))
+      .catch((err) => console.log(err));
+  }
+  
+  public getBetweenDatesGraphic(req: Request, res: Response) {
+
+    const from = req.body.from;
+    const to = req.body.to;
+    
+    Movimientos.getBetweenDatesGraphic(from, to)
+      .then((data) => res.json(data))
+      .catch((err) => console.log(err));
   }
 
   public dashboard(req: Request, res: Response) {}
 
   public async post(req: Request, res: Response) {
-    const json = {
-      estado: "p",
-      movimiento_lineas: [
-        {
-          id_producto: 287,
-          cantidad: 2,
-          unidad: 1,
-          img: "string",
-          nombre:
-            'Jean Hombre Celeste medio "LEONARDO" semi elastizado T38 a T48',
-          descripcion: "",
-          precio_venta: 5783,
-          precio_oferta: 0,
-          oferta: false,
-        },
-      ],
-      saldo: 64564,
-      pagos: [{ monto: 3442 }],
-      cliente: {
-        id: 11,
-        nombre: "Dario",
-        apellido: "Kess",
-        provincia: null,
-        localidad: null,
-        avatar: null,
-        telefono: null,
-        domicilio: null,
-        email: null,
-        created_at: null,
-        updated_at: null,
-        activo: true,
-      },
-      total: 45345,
-      comentario: "DASDASDA",
-      modo_pago: "ctacte",
-    };
+    const fc_month_ago = getDates.monthAgo();
     try {
-      for (let i = 0; i < 1000; i++) {
+      for (let i = 0; i < 200; i++) {
+        const json = {
+          fecha: fc_month_ago,
+          estado: "c",
+          modo_pago: "efectivo",
+          // estado: "p",
+          // modo_pago: "ctacte",
+          comentario: "Prueba de Estadisticas",
+          movimiento_lineas: [
+            {
+              id_producto: Math.floor(Math.random() * 250) + 1,
+              cantidad: Math.floor(Math.random() * 3) + 1,
+              unidad: 1,
+              img: "string",
+              nombre:
+                'Jean Hombre Celeste medio "LEONARDO" semi elastizado T38 a T48',
+              descripcion: "",
+              precio_venta: Math.floor(Math.random() * 20000) + 1,
+              precio_oferta: 0,
+              oferta: false,
+            },
+          ],
+          saldo: 0, // efectivo -> completado
+          pagos: [], // efectivo -> completado
+          // saldo: Math.floor(Math.random() * 20000) + 1, // ctacte = pendiente
+          // pagos: [{ monto: Math.floor(Math.random() * 20000) + 1 }], // ctacte = pendiente
+          cliente: {
+            id: Math.floor(Math.random() * 1000) + 1,
+          },
+          total: Math.floor(Math.random() * 20000) + 1,
+        };
         const movimiento = Movimientos.create({ ...json } as Object);
         await movimiento.save();
       }

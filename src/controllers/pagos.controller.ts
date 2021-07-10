@@ -10,7 +10,7 @@ export class PagosController {
 
   public getAll(req: Request, res: Response) {
     Pagos.find({
-      order: { fecha_hora: "ASC" },
+      order: { fecha: "ASC" },
       relations: ['movimiento']
     })
       .then(data => ApiResponse(res, STATUS_OK, data, []))
@@ -67,7 +67,7 @@ export class PagosController {
     Pagos.findOne({ id })
       .then((pago) => {
         pago.monto = req.body.monto
-        pago.fecha_hora = req.body.fecha_hora
+        pago.fecha = req.body.fecha
         pago.ganancia = req.body.ganancia
         pago.interes = req.body.interes
         pago.tasa_interes = req.body.tasa_interes

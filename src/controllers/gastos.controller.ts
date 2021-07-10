@@ -7,7 +7,7 @@ export class GastosController {
   constructor() { }
 
   public getAll(req: Request, res: Response) {
-    Gastos.find({ order: { fecha_hora: "ASC" } })
+    Gastos.find({ order: { fecha: "ASC" } })
       .then(data => ApiResponse(res, STATUS_OK, data, []))
       .catch(err => ApiResponse(res, STATUS_FAILED, [], err));
   }
@@ -41,7 +41,7 @@ export class GastosController {
     Gastos.findOne({ id })
       .then((gasto) => {
         gasto.descripcion = req.body.descripcion;
-        gasto.fecha_hora = req.body.fecha_hora;
+        gasto.fecha = req.body.fecha;
         gasto.monto = req.body.monto;
         gasto
           .save()

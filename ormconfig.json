@@ -3,8 +3,9 @@
     "host": "localhost",
     "port": 3306,
     "username": "root",
-    "password": "root",
+    "password": "",
     "database": "controlstock",
+    "logging": true,
     "entities": [
         "dist/Entities/**/*{.ts,.js}"
     ],
