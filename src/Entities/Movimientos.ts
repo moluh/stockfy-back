@@ -103,7 +103,7 @@ export class Movimientos extends BaseEntity {
     return [...data];
   }
 
-  static async getBetweenDatesGraph(from, to) {
+  static async getBetweenDatesGraphic(from, to) {
     console.log({ from, to });
     const query = `
       SELECT 

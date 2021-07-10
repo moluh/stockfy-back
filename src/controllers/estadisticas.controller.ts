@@ -17,12 +17,12 @@ export class EstadisticasController {
       .catch((err) => console.log(err));
   }
   
-  public getBetweenDatesGraph(req: Request, res: Response) {
+  public getBetweenDatesGraphic(req: Request, res: Response) {
 
     const from = req.body.from;
     const to = req.body.to;
     
-    Movimientos.getBetweenDatesGraph(from, to)
+    Movimientos.getBetweenDatesGraphic(from, to)
       .then((data) => res.json(data))
       .catch((err) => console.log(err));
   }

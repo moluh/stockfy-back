@@ -11,7 +11,7 @@ export class EstadisticasRouter {
       .post(mw.jwtAdminMidleware, this.controlador.getBetweenDates);
     app
       .route("/api/v1/estadisticas/grafico")
-      .post(mw.jwtAdminMidleware, this.controlador.getBetweenDatesGraph);
+      .post(mw.jwtAdminMidleware, this.controlador.getBetweenDatesGraphic);
 
     app
       .route("/api/v1/dashboard")
