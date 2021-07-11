@@ -176,7 +176,13 @@ export class Productos extends BaseEntity {
     text: any
   ) {
     try {
-      await iqa.isQueryAllowed([attr]);
+      if (
+        attr !== "precio_costo" &&
+        attr !== "precio_venta" &&
+        attr !== "stock_actual" &&
+        attr !== "codigo_fabricante" 
+      )
+        await iqa.isQueryAllowed([attr]);
     } catch (error) {
       return error;
     }
@@ -206,7 +212,7 @@ export class Productos extends BaseEntity {
   ) {
     try {
       // omitimos categoria por el guion bajo
-      // todo: agregar guion bajo a la regexp 
+      // todo: agregar guion bajo a la regexp
       if (attr !== "categoria_uno") await iqa.isQueryAllowed([attr]);
     } catch (error) {
       return error;

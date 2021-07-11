@@ -119,7 +119,7 @@ class App {
             next();
         });
 
-        this.app.listen(config.port(), () => console.log(`App escuchando en puerto: ${config.port()}`));
+        this.app.listen(config.port(), "192.168.100.9", () => console.log(`App escuchando en puerto: ${config.port()}`));
  
     }
 
