@@ -8,15 +8,13 @@ export class EstadisticasRouter {
   public routes(app): void {
     app
       .route("/api/v1/estadisticas")
-      .post(mw.jwtAdminMidleware, this.controlador.getBetweenDates);
+      .post(mw.jwtAdminMiddleware, this.controlador.getBetweenDates);
     app
       .route("/api/v1/estadisticas/grafico")
-      .post(mw.jwtAdminMidleware, this.controlador.getBetweenDatesGraphic);
+      .post(mw.jwtAdminMiddleware, this.controlador.getBetweenDatesGraphic);
 
     app
       .route("/api/v1/dashboard")
-      .get(mw.jwtEmpleadoMidleware, this.controlador.dashboard);
-
-    app.route("/api/v1/estadisticas/post").get(this.controlador.post);
+      .get(mw.jwtEmpleadoMiddleware, this.controlador.dashboard);
   }
 }

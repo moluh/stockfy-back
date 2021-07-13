@@ -8,37 +8,37 @@ export class ProductosRouter {
   public routes(app): void {
     app
       .route("/api/v1/productos")
-      .get(mw.jwtAdminMidleware, this.controlador.getAll)
-      .post(mw.jwtAdminMidleware, this.controlador.create);
+      .get(mw.jwtAdminMiddleware, this.controlador.getAll)
+      .post(mw.jwtAdminMiddleware, this.controlador.create);
 
     app
       .route("/api/v1/producto/:id")
-      .get(mw.jwtEmpleadoMidleware, this.controlador.get)
-      .put(mw.jwtAdminMidleware, this.controlador.update)
-      .delete(mw.jwtAdminMidleware, this.controlador.delete);
+      .get(mw.jwtEmpleadoMiddleware, this.controlador.get)
+      .put(mw.jwtAdminMiddleware, this.controlador.update)
+      .delete(mw.jwtAdminMiddleware, this.controlador.delete);
 
     app
       .route("/api/v1/producto/state/:id")
-      .post(mw.jwtAdminMidleware, this.controlador.changeState);
+      .post(mw.jwtAdminMiddleware, this.controlador.changeState);
 
     app
       .route("/api/v1/productos/paginado/state")
-      .get(mw.jwtEmpleadoMidleware, this.controlador.getPaginatedByState);
+      .get(mw.jwtEmpleadoMiddleware, this.controlador.getPaginatedByState);
 
     app
       .route("/api/v1/productos/paginado/list")
-      .get(mw.jwtEmpleadoMidleware, this.controlador.getPaginatedByIdOfAList);
+      .get(mw.jwtEmpleadoMiddleware, this.controlador.getPaginatedByIdOfAList);
 
     app
       .route("/api/v1/productos/paginado/filter")
-      .get(mw.jwtEmpleadoMidleware, this.controlador.getPaginatedAndFilter);
+      .get(mw.jwtEmpleadoMiddleware, this.controlador.getPaginatedAndFilter);
 
     app
       .route("/api/v1/productos/paginado")
-      .get(mw.jwtEmpleadoMidleware, this.controlador.getPaginated);
+      .get(mw.jwtEmpleadoMiddleware, this.controlador.getPaginated);
 
     app
       .route("/api/v1/producto/ean/:ean")
-      .get(mw.jwtEmpleadoMidleware, this.controlador.getByEanCode);
+      .get(mw.jwtEmpleadoMiddleware, this.controlador.getByEanCode);
   }
 }

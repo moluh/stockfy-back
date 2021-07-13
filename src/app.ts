@@ -119,6 +119,7 @@ class App {
             next();
         });
 
+        
         this.app.listen(config.port(), () => console.log(`App escuchando en puerto: ${config.port()}`));
  
     }

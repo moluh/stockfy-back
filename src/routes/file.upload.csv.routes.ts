@@ -27,7 +27,7 @@ export class FilesUploadCsvRouter {
     app
       .route("/api/v1/productos/csv/upload")
       .post(
-        mw.jwtAdminMidleware,
+        mw.jwtAdminMiddleware,
         upload.single("file"),
         this.ctlProductos.uploadCSV
       );

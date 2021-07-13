@@ -12,29 +12,29 @@ export class UsuariosRouter {
      */
     app
       .route("/api/v1/usuarios")
-      .get(mw.jwtAdminMidleware, this.controlador.getAll)
-      .post(mw.jwtAdminMidleware, this.controlador.create);
+      .get(mw.jwtAdminMiddleware, this.controlador.getAll)
+      .post(mw.jwtAdminMiddleware, this.controlador.create);
 
     app
       .route("/api/v1/usuario/:id")
-      .get(mw.jwtAdminMidleware, this.controlador.get)
-      .put(mw.jwtAdminMidleware, this.controlador.update)
-      .delete(mw.jwtAdminMidleware, this.controlador.delete);
+      .get(mw.jwtAdminMiddleware, this.controlador.get)
+      .put(mw.jwtAdminMiddleware, this.controlador.update)
+      .delete(mw.jwtAdminMiddleware, this.controlador.delete);
 
     app
       .route("/api/v1/usuarios/paginado")
-      .get(mw.jwtAdminMidleware, this.controlador.getPaginated);
+      .get(mw.jwtAdminMiddleware, this.controlador.getPaginated);
 
     app
       .route("/api/v1/usuarios/paginado/filter")
-      .get(mw.jwtAdminMidleware, this.controlador.getPaginatedAndFilter);
+      .get(mw.jwtAdminMiddleware, this.controlador.getPaginatedAndFilter);
 
     app
       .route("/api/v1/usuarios/recpass/:recpass")
-      .get(mw.jwtAdminMidleware, this.controlador.getByRecpass);
+      .get(mw.jwtAdminMiddleware, this.controlador.getByRecpass);
 
     app
       .route("/api/v1/usuario/updatepass/:id")
-      .put(mw.jwtAdminMidleware, this.controlador.updatePasswordUsuario);
+      .put(mw.jwtAdminMiddleware, this.controlador.updatePasswordUsuario);
   }
 }

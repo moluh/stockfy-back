@@ -10,13 +10,13 @@ export class MovimientosLineaRouter {
         app.route('/api/v1/movimientoslineas')
             .get((req: Request, res: Response, next: NextFunction) => {
                 next();
-            }, mw.jwtAdminMidleware, this.controlador.getAll)
+            }, mw.jwtAdminMiddleware, this.controlador.getAll)
             .post(this.controlador.create);
 
         app.route('/api/v1/movimientolinea/:id')
-            .get(mw.jwtAdminMidleware, this.controlador.get)
-            .put(mw.jwtAdminMidleware, this.controlador.update)
-            .delete(mw.jwtAdminMidleware, this.controlador.delete);
+            .get(mw.jwtAdminMiddleware, this.controlador.get)
+            .put(mw.jwtAdminMiddleware, this.controlador.update)
+            .delete(mw.jwtAdminMiddleware, this.controlador.delete);
 
     }
 

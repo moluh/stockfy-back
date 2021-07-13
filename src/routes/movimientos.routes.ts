@@ -8,32 +8,45 @@ export class MovimientosRouter {
   public routes(app): void {
     app
       .route("/api/v1/movimientos")
-      .get(mw.jwtAdminMidleware, this.controlador.getAll)
-      .post(mw.jwtEmpleadoMidleware, this.controlador.create);
+      .get(mw.jwtAdminMiddleware, this.controlador.getAll)
+      .post(mw.jwtEmpleadoMiddleware, this.controlador.create);
 
     app
       .route("/api/v1/movimiento/:id")
-      .get(mw.jwtEmpleadoMidleware, this.controlador.get)
-      .put(mw.jwtEmpleadoMidleware, this.controlador.update)
-      .delete(mw.jwtEmpleadoMidleware, this.controlador.delete);
+      .get(mw.jwtEmpleadoMiddleware, this.controlador.get)
+      .put(mw.jwtEmpleadoMiddleware, this.controlador.update)
+      .delete(mw.jwtEmpleadoMiddleware, this.controlador.delete);
 
     app
       .route("/api/v1/movimiento/:id/state/:state")
-      .post(mw.jwtEmpleadoMidleware, this.controlador.changeState);
+      .post(mw.jwtEmpleadoMiddleware, this.controlador.changeState);
+
+    // TODO
+    // app
+    //   .route("/api/v1/movimientos/paginado/cliente/:id/estado/:est")
+    //   .get(
+    //     mw.jwtEmpleadoMiddleware,
+    //     this.controlador.getPaginatedByEstadoAndClient
+    //   );
 
     app
-      .route("/api/v1/movimientos/paginado/cliente/:id/estado/:est")
-      .get(
-        mw.jwtEmpleadoMidleware,
-        this.controlador.getPaginatedByEstadoAndClient
-      );
+      .route("/api/v1/movimientos/paginado/filter")
+      .get(mw.jwtEmpleadoMiddleware, this.controlador.getPaginatedAndFilter);
 
     app
-      .route("/api/v1/movimientos/paginado/cliente/:id")
-      .get(mw.jwtEmpleadoMidleware, this.controlador.getPaginatedByClient);
+      .route("/api/v1/movimientos/paginado/clienteId/:clientId")
+      .get(mw.jwtEmpleadoMiddleware, this.controlador.getPaginatedByClientId);
 
     app
       .route("/api/v1/movimientos/paginado")
-      .get(mw.jwtEmpleadoMidleware, this.controlador.getPaginated);
+      .get(mw.jwtEmpleadoMiddleware, this.controlador.getPaginated);
+
+    app
+      .route("/api/v1/movimientos/paginado/desde/:from/hasta/:to")
+      .get(mw.jwtEmpleadoMiddleware, this.controlador.getPaginatedBetweenDates);
+
+    app
+      .route("/api/v1/movimientos/paginado/fecha/:date")
+      .get(mw.jwtEmpleadoMiddleware, this.controlador.getPaginatedByDate);
   }
 }

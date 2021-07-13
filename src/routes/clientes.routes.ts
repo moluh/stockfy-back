@@ -8,21 +8,21 @@ export class ClientesRouter {
   public routes(app): void {
     app
       .route("/api/v1/clientes")
-      .get(mw.jwtAdminMidleware, this.controlador.getAll)
-      .post(mw.jwtEmpleadoMidleware, this.controlador.create);
+      .get(mw.jwtAdminMiddleware, this.controlador.getAll)
+      .post(mw.jwtEmpleadoMiddleware, this.controlador.create);
 
     app
       .route("/api/v1/cliente/:id")
-      .get(mw.jwtEmpleadoMidleware, this.controlador.get)
-      .put(mw.jwtAdminMidleware, this.controlador.update)
-      .delete(mw.jwtAdminMidleware, this.controlador.delete);
+      .get(mw.jwtEmpleadoMiddleware, this.controlador.get)
+      .put(mw.jwtAdminMiddleware, this.controlador.update)
+      .delete(mw.jwtAdminMiddleware, this.controlador.delete);
 
     app
       .route("/api/v1/clientes/paginado")
-      .get(mw.jwtEmpleadoMidleware, this.controlador.getPaginated);
+      .get(mw.jwtEmpleadoMiddleware, this.controlador.getPaginated);
 
     app
       .route("/api/v1/clientes/paginado/filter")
-      .get(mw.jwtEmpleadoMidleware, this.controlador.getPaginatedAndFilter);
+      .get(mw.jwtEmpleadoMiddleware, this.controlador.getPaginatedAndFilter);
   }
 }
