@@ -10,21 +10,21 @@ export class PagosRouter {
       .route("/api/v1/pagos")
       .get(
         (req: Request, res: Response, next: NextFunction) => next(),
-        mw.jwtEmpleadoMidleware,
+        mw.jwtEmpleadoMiddleware,
         this.controlador.getAll
       )
-      .post(mw.jwtEmpleadoMidleware, this.controlador.create);
+      .post(mw.jwtEmpleadoMiddleware, this.controlador.create);
 
     app.route('/api/v1/pagos/paginado')
-      .get(mw.jwtEmpleadoMidleware, this.controlador.getPaginated)
+      .get(mw.jwtEmpleadoMiddleware, this.controlador.getPaginated)
 
     app.route("/api/v1/pago/:id/movimiento/:movimientoId")
-      .delete(mw.jwtEmpleadoMidleware, this.controlador.delete)
+      .delete(mw.jwtEmpleadoMiddleware, this.controlador.delete)
 
     app
       .route("/api/v1/pago/:id")
       .get(this.controlador.get)
-      .put(mw.jwtEmpleadoMidleware, this.controlador.update)
-      .delete(mw.jwtEmpleadoMidleware, this.controlador.delete);
+      .put(mw.jwtEmpleadoMiddleware, this.controlador.update)
+      .delete(mw.jwtEmpleadoMiddleware, this.controlador.delete);
   }
 }

@@ -83,8 +83,107 @@ export class Movimientos extends BaseEntity {
     return { data, ...count };
   }
 
-  static async getBetweenDates(from, to) {
-    console.log({ from, to });
+  static async getPaginatedByClientId(
+    pageNro: number,
+    pageSize: number,
+    clientId: string
+  ) {
+    const skipRecords = pageNro * pageSize;
+    const count = await this.createQueryBuilder("movimientos")
+      .select("COUNT(*)", "count")
+      .getRawOne();
+
+    const data = await this.createQueryBuilder("movimientos")
+      .leftJoinAndSelect("movimientos.cliente", "mc")
+      .leftJoinAndSelect("movimientos.movimiento_lineas", "pl")
+      .leftJoinAndSelect("movimientos.pagos", "pagos")
+      .where(`movimientos.clienteId = :clientId`, { clientId })
+      .orderBy("movimientos.fecha", "ASC")
+      .skip(skipRecords)
+      .take(pageSize)
+      .getMany();
+
+    return { data, ...count };
+  }
+
+  static async getPaginatedByDate(
+    pageNro: number,
+    pageSize: number,
+    date: string
+  ) {
+    const skipRecords = pageNro * pageSize;
+    const count = await this.createQueryBuilder("movimientos")
+      .select("COUNT(*)", "count")
+      .getRawOne();
+
+    const data = await this.createQueryBuilder("movimientos")
+      .leftJoinAndSelect("movimientos.cliente", "mc")
+      .leftJoinAndSelect("movimientos.movimiento_lineas", "pl")
+      .leftJoinAndSelect("movimientos.pagos", "pagos")
+      .where(`movimientos.fecha LIKE :date`, { date })
+      .orderBy("movimientos.fecha", "ASC")
+      .skip(skipRecords)
+      .take(pageSize)
+      .getMany();
+
+    return { data, ...count };
+  }
+
+  static async getPaginatedBetweenDates(
+    pageNro: number,
+    pageSize: number,
+    from: string,
+    to: string
+  ) {
+    const skipRecords = pageNro * pageSize;
+    const count = await this.createQueryBuilder("movimientos")
+      .select("COUNT(*)", "count")
+      .getRawOne();
+
+    const data = await this.createQueryBuilder("movimientos")
+      .leftJoinAndSelect("movimientos.cliente", "mc")
+      .leftJoinAndSelect("movimientos.movimiento_lineas", "pl")
+      .leftJoinAndSelect("movimientos.pagos", "pagos")
+      .where(`movimientos.fecha BETWEEN :from AND :to`, { from, to })
+      .orderBy("movimientos.fecha", "ASC")
+      .skip(skipRecords)
+      .take(pageSize)
+      .getMany();
+
+    return { data, ...count };
+  }
+
+  static async getPaginatedAndFilter(
+    pageNro: number,
+    pageSize: number,
+    attr: string,
+    txt: string
+  ) {
+    try {
+      if (attr !== "modo_pago") await iqa.isQueryAllowed([attr, txt]);
+    } catch (error) {
+      return error;
+    }
+
+    const skipRecords = pageNro * pageSize;
+    const count = await this.createQueryBuilder("movimientos")
+      .select("COUNT(*)", "count")
+      .getRawOne();
+
+    const data = await this.createQueryBuilder("movimientos")
+      .leftJoinAndSelect("movimientos.cliente", "mc")
+      .leftJoinAndSelect("movimientos.movimiento_lineas", "pl")
+      .leftJoinAndSelect("movimientos.pagos", "pagos")
+      .where(`LOWER(movimientos.${attr}) LIKE LOWER(:val)`, { val: `%${txt}%` })
+      .orderBy("movimientos.fecha", "ASC")
+      .skip(skipRecords)
+      .take(pageSize)
+      .getMany();
+
+    return { data, ...count };
+  }
+
+  static async getStatisticsBetweenDates(from, to) {
     const query = `
       SELECT 
       SUM(mov.total) as "TotalVendido",
@@ -103,8 +202,7 @@ export class Movimientos extends BaseEntity {
     return [...data];
   }
 
-  static async getBetweenDatesGraphic(from, to) {
-    console.log({ from, to });
+  static async getStatisticsBetweenDatesGraphic(from, to) {
     const query = `
       SELECT 
       mov.fecha as "Fecha",
@@ -125,87 +223,4 @@ export class Movimientos extends BaseEntity {
     return [...data];
   }
 
-  static async getPaginatedAndFilter(
-    pageNro: number,
-    pageSize: number,
-    est: string
-  ) {
-    try {
-      await iqa.isQueryAllowed([est]);
-    } catch (error) {
-      return error;
-    }
-
-    const skipRecords = pageNro * pageSize;
-    const count = await this.createQueryBuilder("movimientos")
-      .select("COUNT(*)", "count")
-      .getRawOne();
-
-    const data = await this.createQueryBuilder("movimientos")
-      .where(`movimientos.estado = :est`, { est })
-      .innerJoinAndSelect("movimientos.movimiento_lineas", "pl")
-      .innerJoinAndSelect("movimientos.pagos", "pagos")
-      .orderBy("movimientos.fecha", "ASC")
-      .skip(skipRecords)
-      .take(pageSize)
-      .getMany();
-
-    return { data, ...count };
-  }
-
-  static async getPaginatedByEstadoAndUser(
-    pageNro: number,
-    pageSize: number,
-    est: string,
-    clienteId: string
-  ) {
-    try {
-      await iqa.isQueryAllowed([est]);
-    } catch (error) {
-      return error;
-    }
-
-    const skipRecords = pageNro * pageSize;
-    const count = await this.createQueryBuilder("movimientos")
-      .select("COUNT(*)", "count")
-      .getRawOne();
-
-    const data = await this.createQueryBuilder("movimientos")
-      .innerJoinAndSelect("movimientos.cliente", "mc", `mc.id = :clienteId`, {
-        clienteId,
-      })
-      .innerJoinAndSelect("movimientos.pagos", "pagos")
-      .where(`movimientos.estado = :est`, { est })
-      .leftJoinAndSelect("movimientos.movimiento_lineas", "pl")
-      .orderBy("movimientos.fecha", "ASC")
-      .skip(skipRecords)
-      .take(pageSize)
-      .getMany();
-
-    return { data, ...count };
-  }
-
-  static async getPaginatedByUser(
-    pageNro: number,
-    pageSize: number,
-    clienteId: string
-  ) {
-    const skipRecords = pageNro * pageSize;
-    const count = await this.createQueryBuilder("movimientos")
-      .select("COUNT(*)", "count")
-      .getRawOne();
-
-    const data = await this.createQueryBuilder("movimientos")
-      .innerJoinAndSelect("movimientos.clienteId", "pu", `pu.id = :clienteId`, {
-        clienteId,
-      })
-      .leftJoinAndSelect("movimientos.movimiento_lineas", "pl")
-      .innerJoinAndSelect("movimientos.pagos", "pagos")
-      .orderBy("movimientos.fecha", "ASC")
-      .skip(skipRecords)
-      .take(pageSize)
-      .getMany();
-
-    return { data, ...count };
-  }
 }

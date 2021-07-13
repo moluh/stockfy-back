@@ -27,7 +27,7 @@ export class FilesUploadProductosRouter {
     app
       .route("/api/v1/files")
       .post(
-        mw.jwtAdminMidleware,
+        mw.jwtAdminMiddleware,
         upload.single("file"),
         this.ctlProductos.createImgAndAssignToArt
       );

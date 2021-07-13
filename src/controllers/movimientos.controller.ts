@@ -38,33 +38,40 @@ export class MovimientosController {
   public getPaginatedAndFilter(req: Request, res: Response) {
     let pageNro: any = req.query.pageNro || 0;
     let pageSize: any = req.query.pageSize;
-    let estado: any = req.query.estado;
-    let attribute: any = req.query.attribute;
-    let cliente: any = req.query.cliente;
-    Movimientos.getPaginatedAndFilter(pageNro, pageSize, estado)
+    let attr: any = req.query.attr;
+    let txt: any = req.query.txt;
+    Movimientos.getPaginatedAndFilter(pageNro, pageSize, attr, txt)
       .then(({ data, count }) => ApiResponse(res, STATUS_OK, data, [], count))
       .catch((err) => ApiResponse(res, STATUS_FAILED, [], err));
   }
 
-  public getPaginatedByEstadoAndClient(req: Request, res: Response) {
+  getPaginatedByClientId(req: Request, res: Response) {
     let pageNro: any = req.query.pageNro || 0;
     let pageSize: any = req.query.pageSize;
-    let idUsuario: any = req.params.id;
-    let est: any = req.params.est;
-
-    Movimientos.getPaginatedByEstadoAndUser(pageNro, pageSize, est, idUsuario)
+    let clientId: any = req.params.clientId;
+    Movimientos.getPaginatedByClientId(pageNro, pageSize, clientId)
       .then(({ data, count }) => ApiResponse(res, STATUS_OK, data, [], count))
       .catch((err) => ApiResponse(res, STATUS_FAILED, [], err));
-  }
+  } 
 
-  public getPaginatedByClient(req: Request, res: Response) {
+  getPaginatedByDate(req: Request, res: Response) {
     let pageNro: any = req.query.pageNro || 0;
     let pageSize: any = req.query.pageSize;
-    let idUsuario: any = req.params.id;
-    Movimientos.getPaginatedByUser(pageNro, pageSize, idUsuario)
+    let date: any = req.params.date;
+    Movimientos.getPaginatedByDate(pageNro, pageSize, date)
       .then(({ data, count }) => ApiResponse(res, STATUS_OK, data, [], count))
       .catch((err) => ApiResponse(res, STATUS_FAILED, [], err));
-  }
+  } 
+
+  getPaginatedBetweenDates(req: Request, res: Response) {
+    let pageNro: any = req.query.pageNro || 0;
+    let pageSize: any = req.query.pageSize;
+    let from: any = req.params.from;
+    let to: any = req.params.to;
+    Movimientos.getPaginatedBetweenDates(pageNro, pageSize, from, to)
+      .then(({ data, count }) => ApiResponse(res, STATUS_OK, data, [], count))
+      .catch((err) => ApiResponse(res, STATUS_FAILED, [], err));
+  } 
 
   public async create(req: Request, res: Response) {
     let prodCtrl = new ProductosController();

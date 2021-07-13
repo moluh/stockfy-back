@@ -24,27 +24,27 @@ export class CategoriasRouter {
   public routes(app): void {
     app
       .route("/api/v1/categorias")
-      .get(mw.jwtAdminMidleware, this.controlador.getAll)
-      .post(mw.jwtAdminMidleware, this.controlador.create);
+      .get(mw.jwtAdminMiddleware, this.controlador.getAll)
+      .post(mw.jwtAdminMiddleware, this.controlador.create);
 
     app
       .route("/api/v1/categorias/activas")
-      .get(mw.jwtAdminMidleware, this.controlador.getActives);
+      .get(mw.jwtAdminMiddleware, this.controlador.getActives);
 
     app
       .route("/api/v1/categorias/paginado")
-      .get(mw.jwtAdminMidleware, this.controlador.getPaginated);
+      .get(mw.jwtAdminMiddleware, this.controlador.getPaginated);
 
     app
       .route("/api/v1/categoria/:id")
-      .get(mw.jwtAdminMidleware, this.controlador.get)
-      .put(mw.jwtAdminMidleware, this.controlador.update)
-      .delete(mw.jwtAdminMidleware, this.controlador.delete);
+      .get(mw.jwtAdminMiddleware, this.controlador.get)
+      .put(mw.jwtAdminMiddleware, this.controlador.update)
+      .delete(mw.jwtAdminMiddleware, this.controlador.delete);
 
     app
       .route("/api/v1/files/categoria")
       .post(
-        mw.jwtAdminMidleware,
+        mw.jwtAdminMiddleware,
         upload.single("file"),
         this.controlador.create
       );

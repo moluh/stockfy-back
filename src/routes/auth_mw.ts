@@ -1,15 +1,15 @@
 import { Request, Response } from "express";
 import * as jwt from "jsonwebtoken";
 
-export function jwtAdminMidleware(req: Request, res: Response, next) {
+export function jwtAdminMiddleware(req: Request, res: Response, next) {
   next();
 }
 
-export function jwtEmpleadoMidleware(req: Request, res: Response, next) {
+export function jwtEmpleadoMiddleware(req: Request, res: Response, next) {
   next();
 }
 
-export function QUITAR_ESTO_jwtAdminMidleware(
+export function QUITAR_ESTO_jwtAdminMiddleware(
   req: Request,
   res: Response,
   next
@@ -36,7 +36,7 @@ export function QUITAR_ESTO_jwtAdminMidleware(
   }
 }
 
-export function QUITAR_ESTO_jwtEmpleadoMidleware(
+export function QUITAR_ESTO_jwtEmpleadoMiddleware(
   req: Request,
   res: Response,
   next

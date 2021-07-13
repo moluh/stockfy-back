@@ -8,13 +8,13 @@ export class ImagenesRouter {
   public routes(app): void {
     app
       .route("/api/v1/imagenes")
-      .get(mw.jwtAdminMidleware, this.controlador.getAll)
-      .post(mw.jwtAdminMidleware, this.controlador.create);
+      .get(mw.jwtAdminMiddleware, this.controlador.getAll)
+      .post(mw.jwtAdminMiddleware, this.controlador.create);
 
     app
       .route("/api/v1/imagen/:id")
-      .get(mw.jwtAdminMidleware, this.controlador.get)
-      .put(mw.jwtAdminMidleware, this.controlador.update)
-      .delete(mw.jwtAdminMidleware, this.controlador.delete);
+      .get(mw.jwtAdminMiddleware, this.controlador.get)
+      .put(mw.jwtAdminMiddleware, this.controlador.update)
+      .delete(mw.jwtAdminMiddleware, this.controlador.delete);
   }
 }
