@@ -49,6 +49,11 @@ PKEY=PRIVATE-KEY
 PORT=8080
 NODE_ENV=PROD
 TOKEN_EXPIRATION=9h
+
+SQL_USER=lucas
+SQL_PASSWORD=pass
+SQL_DB_NAME=controlstock
+BACKUPS_DIR=/home/backups
 ```
 
 ###  Arrancar Proyecto
