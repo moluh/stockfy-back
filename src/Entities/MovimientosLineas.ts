@@ -1,5 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, BaseEntity, ManyToOne, OneToMany, ManyToMany } from 'typeorm';
-import { Usuarios } from "./Usuarios";
+import { Entity, PrimaryGeneratedColumn, Column, BaseEntity, ManyToMany } from 'typeorm';
 import { Movimientos } from "./Movimientos";
 
 @Entity('movimientoslineas')

@@ -2,11 +2,7 @@ import {
   Entity,
   PrimaryGeneratedColumn,
   Column,
-  BaseEntity,
-  ManyToOne,
-  OneToMany,
-  ManyToMany,
-  JoinTable,
+  BaseEntity
 } from "typeorm";
 import * as iqa from "./../helpers/isQueryAllowed";
 
