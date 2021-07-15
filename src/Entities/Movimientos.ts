@@ -19,10 +19,10 @@ export class Movimientos extends BaseEntity {
   @PrimaryGeneratedColumn("increment", { type: "integer" })
   id: number;
 
-  @Column({ type: "date", nullable: true, default: "" })
+  @Column({ type: "date", nullable: true })
   fecha: Date;
 
-  @Column({ type: "time", nullable: true, default: "" })
+  @Column({ type: "time", nullable: true })
   hora: Date;
 
   @Column({ type: "varchar", length: 255, nullable: true })

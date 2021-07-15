@@ -32,7 +32,7 @@ import { MovimientosRouter } from './routes/movimientos.routes';
 import { FilesUploadProductosRouter } from './routes/file.upload.images.routes';
 import { FilesUploadCsvRouter } from './routes/file.upload.csv.routes';
 import { MailTransactionRoute } from './routes/transactional.mail.routes';
-
+import './crons/backupDB'
 
 
 class App {

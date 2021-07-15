@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, BaseEntity, ManyToOne, OneToMany, ManyToMany, JoinTable } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, BaseEntity, ManyToOne } from "typeorm";
 import { Movimientos } from "./Movimientos";
 
 
@@ -11,10 +11,10 @@ export class Pagos extends BaseEntity {
     @Column({ type: 'double', nullable: false })
     monto: number;
 
-    @Column({ type: "date", nullable: true, default: '' })
+    @Column({ type: "date", nullable: true })
     fecha: Date;
     
-    @Column({ type: "time", nullable: true, default: '' })
+    @Column({ type: "time", nullable: true })
     hora: Date;
 
     @Column({ type: 'double', nullable: false, default: 0 })
