@@ -1,18 +1,12 @@
-import * as dotenv from 'dotenv';
 import { Config } from './config/config'
 const config: Config = new Config();
-// DotEnv: carga variables de entorno de un archivo .env en process.env.
-const result = dotenv.config();
-console.log('DotEnv:', result);
-if (result.error) { throw result.error; }
 
-import { createConnection, Connection } from 'typeorm';
+// import { createConnection, Connection } from 'typeorm';
 import compression from 'compression';
 import helmet from 'helmet';
 import express from 'express';
 import cors from 'cors';
 import * as bodyParser from 'body-parser';
-import * as path from 'path';
 import * as http from 'http';
 
 // Routes
@@ -37,9 +31,8 @@ import './crons/backupDB'
 
 class App {
 
-    private logger = require('morgan');     // Registro de cada petición
+    private logger = require('morgan');
     public app: express.Application;
-    public conection: Connection;
     public server: http.Server;
 
     public routeUsuarios: UsuariosRouter = new UsuariosRouter();
@@ -59,21 +52,16 @@ class App {
     public routeFUProductos: FilesUploadProductosRouter = new FilesUploadProductosRouter();
     public routeFUCsv: FilesUploadCsvRouter = new FilesUploadCsvRouter();
 
-
     constructor() {
-        console.log('Iniciando Servidor');
+        this.init()
+    }
+
+    async init() {
+        console.log('---------\nLoading Server...');
+        await config.connectDatabases();        
         this.app = express();
+        this.configApp();
 
-        createConnection()
-            .then(async connection => {
-                this.conection = connection;
-                console.log('Base de datos CONTROLSTOCK:', connection.isConnected);
-            })
-            .catch(error => console.log(error));
-
-        this.config();
-
-        //Definimos todas las rutas
         this.routeUsuarios.routes(this.app);
         this.routeLogin.routes(this.app);
         this.routeMarcas.routes(this.app);
@@ -90,26 +78,15 @@ class App {
         this.routeFUCsv.routes(this.app);
         this.routeFUProductos.routes(this.app);
         this.routeMailTransaction.routes(this.app);
-
     }
 
-    private config(): void {
+    private configApp(): void {
         this.app.use(this.logger('dev'));
-
-        // bodyParser: Analiza los cuerpos de solicitud entrantes en un middleware antes de sus 
-        // manejadores, disponibles bajo la propiedad req.body.
         this.app.use(bodyParser.json({ type: 'application/json' }));
         this.app.use(bodyParser.urlencoded({ 'extended': false }));
-
-        // Habilitar cors:
         this.app.use(cors());
-
-        // Habilitar carpeta public:
         this.app.use('/static', express.static(__dirname + '/public'));
-
-        // Este middleware intentará comprimir los cuerpos de respuesta para todas las solicitudes que lo atraviesen:
         this.app.use(compression());
-        // ayuda a proteger aplicaciones Express configurando varios encabezados HTTP:
         this.app.use(helmet());
 
         this.app.use(function (req, res, next) {
@@ -119,9 +96,9 @@ class App {
             next();
         });
 
-        
-        this.app.listen(config.port(), () => console.log(`App escuchando en puerto: ${config.port()}`));
- 
+        this.app.listen(config.port, () =>
+            console.log(`---------\nApp listening on port: ${config.port}`));
+
     }
 
 }

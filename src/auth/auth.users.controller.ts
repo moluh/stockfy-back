@@ -1,12 +1,13 @@
 import { Usuarios } from "../Entities/Usuarios";
 import { Request, Response } from "express";
-import { Config } from "./../config/config";
+import { Config } from "../config/config";
 const config: Config = new Config();
 import * as bcrypt from "bcrypt";
 import * as jwt from "jsonwebtoken";
 
 export class UsuariosAuthController {
-  constructor() {}
+
+  constructor() { }
 
   public async loginUsuario(req: Request, res: Response) {
     let email = req.body.email;
@@ -26,7 +27,7 @@ export class UsuariosAuthController {
         error: "Datos incorrectos.",
       });
 
-    let validatePassword = await bcrypt.compareSync(password, usuario.password);
+    let validatePassword = bcrypt.compareSync(password, usuario.password);
 
     if (!validatePassword) {
       // return res.status(401).send({ Error: "La contraseña no coincide."});
@@ -40,14 +41,14 @@ export class UsuariosAuthController {
     const useWithOutPass = { ...usuario };
     delete useWithOutPass.password;
 
-    let token = jwt.sign(useWithOutPass, process.env.PKEY, {
-      expiresIn: config.expirationToken(),
+    let token = jwt.sign(useWithOutPass, config.pkey, {
+      expiresIn: config.jwtExp,
     });
 
     res.status(200).send({
       isLogged: true,
       token,
-      expiresIn: config.expirationToken(),
+      expiresIn: config.jwtExp,
       role: useWithOutPass.role,
       activo: useWithOutPass.activo,
       // user: useWithOutPass

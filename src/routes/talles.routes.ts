@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { TallesController } from "../controllers/talles.controller";
-import * as mw from "./auth_mw";
+import * as mw from "../auth/auth.middleware";
 
 export class TallesRouter {
   public controlador: TallesController = new TallesController();

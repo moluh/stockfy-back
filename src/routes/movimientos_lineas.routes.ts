@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { MovimientosLineasController } from "../controllers/movimientos_lineas.controller";
-import * as mw from './auth_mw';
+import * as mw from '../auth/auth.middleware';
 
 export class MovimientosLineaRouter {
 

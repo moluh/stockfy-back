@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { MarcasController } from "../controllers/marcas.controller";
-import * as mw from "./auth_mw";
+import * as mw from "../auth/auth.middleware";
 
 export class MarcasRouter {
   public controlador: MarcasController = new MarcasController();

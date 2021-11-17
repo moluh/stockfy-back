@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { ProductosController } from "../controllers/productos.controller";
-import * as mw from "./auth_mw";
+import * as mw from "../auth/auth.middleware";
 
 export class ProductosRouter {
   public controlador: ProductosController = new ProductosController();

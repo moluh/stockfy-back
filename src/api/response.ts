@@ -3,8 +3,9 @@ import { Config } from "../config/config";
 
 export const STATUS_OK = "ok";
 export const STATUS_FAILED = "failed";
+
 const conf: Config = new Config();
-const isDevEnv: boolean = conf.getEnv() === "DEV" ? true : false;
+const isDevEnv: boolean = conf.nodeEnv === "DEV" ? true : false;
 
 export function ApiResponse(
   res: Response,

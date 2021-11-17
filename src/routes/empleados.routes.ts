@@ -1,5 +1,5 @@
 import { EmpleadosController } from "../controllers/empleados.controller";
-import * as mw from "./auth_mw";
+import * as mw from "../auth/auth.middleware";
 
 export class EmpleadosRouter {
   public controlador: EmpleadosController = new EmpleadosController();

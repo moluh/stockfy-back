@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { ImagenesController } from "../controllers/imagenes.controller";
-import * as mw from "./auth_mw";
+import * as mw from "../auth/auth.middleware";
 
 export class ImagenesRouter {
   public controlador: ImagenesController = new ImagenesController();

@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { MovimientosController } from "../controllers/movimientos.controller";
-import * as mw from "./auth_mw";
+import * as mw from "../auth/auth.middleware";
 
 export class MovimientosRouter {
   public controlador: MovimientosController = new MovimientosController();

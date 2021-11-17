@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { GastosController } from "../controllers/gastos.controller";
-import * as mw from "./auth_mw";
+import * as mw from "../auth/auth.middleware";
 
 export class GastosRouter {
   public controlador: GastosController = new GastosController();

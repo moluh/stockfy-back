@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { PagosController } from "../controllers/pagos.controller";
-import * as mw from "./auth_mw";
+import * as mw from "../auth/auth.middleware";
 
 export class PagosRouter {
   public controlador: PagosController = new PagosController();

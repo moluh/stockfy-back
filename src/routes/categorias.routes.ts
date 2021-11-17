@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { CategoriasController } from "../controllers/categorias.controller";
-import * as mw from "./auth_mw";
+import * as mw from "../auth/auth.middleware";
 import multer from "multer";
 
 interface MulterRequest extends Request {
