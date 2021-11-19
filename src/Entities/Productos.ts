@@ -68,7 +68,7 @@ export class Productos extends BaseEntity {
   stock_actual: number;
 
   @Column({ type: "varchar", length: 150, nullable: true })
-  codigo_fabricante: string;  
+  codigo_fabricante: string;
 
   @CreateDateColumn({ type: "timestamp", nullable: true })
   created_at: Date;
@@ -146,8 +146,7 @@ export class Productos extends BaseEntity {
     const skipRecords = pageNro * pageSize;
     return this.createQueryBuilder("producto")
       .leftJoinAndSelect("producto.marca", "mar")
-      .leftJoinAndSelect("producto.categoria_uno", "cat_uno")
-      .leftJoinAndSelect("producto.categoria_dos", "cat_dos")
+      .leftJoinAndSelect("producto.categorias", "cat_uno")
       .leftJoinAndSelect("producto.proveedor", "proveedor")
       .leftJoinAndSelect("producto.imagenes", "img")
       .leftJoinAndSelect("producto.talles", "talle")
@@ -163,8 +162,7 @@ export class Productos extends BaseEntity {
     const val: number = state === "true" ? 1 : 0;
     return this.createQueryBuilder("producto")
       .leftJoinAndSelect("producto.marca", "mar")
-      .leftJoinAndSelect("producto.categoria_uno", "cat_uno")
-      .leftJoinAndSelect("producto.categoria_dos", "cat_dos")
+      .leftJoinAndSelect("producto.categorias", "categorias")
       .leftJoinAndSelect("producto.proveedor", "proveedor")
       .leftJoinAndSelect("producto.imagenes", "img")
       .leftJoinAndSelect("producto.talles", "talle")
@@ -186,7 +184,7 @@ export class Productos extends BaseEntity {
         attr !== "precio_costo" &&
         attr !== "precio_venta" &&
         attr !== "stock_actual" &&
-        attr !== "codigo_fabricante" 
+        attr !== "codigo_fabricante"
       )
         await iqa.isQueryAllowed([attr]);
     } catch (error) {
@@ -196,8 +194,7 @@ export class Productos extends BaseEntity {
 
     return this.createQueryBuilder("producto")
       .leftJoinAndSelect("producto.marca", "mar")
-      .leftJoinAndSelect("producto.categoria_uno", "cat_uno")
-      .leftJoinAndSelect("producto.categoria_dos", "cat_dos")
+      .leftJoinAndSelect("producto.categorias", "categorias")
       .leftJoinAndSelect("producto.proveedor", "proveedor")
       .leftJoinAndSelect("producto.talles", "talle")
       .leftJoinAndSelect("producto.imagenes", "img")
@@ -216,36 +213,34 @@ export class Productos extends BaseEntity {
     attr: string,
     id: number
   ) {
-    try {
-      // omitimos categoria por el guion bajo
-      // todo: agregar guion bajo a la regexp
-      if (attr !== "categoria_uno") await iqa.isQueryAllowed([attr]);
-    } catch (error) {
-      return error;
-    }
+    // try {
+    //   // omitimos categoria por el guion bajo
+    //   // todo: agregar guion bajo a la regexp
+    //   if (attr !== "categorias") await iqa.isQueryAllowed([attr]);
+    // } catch (error) {
+    //   return error;
+    // }
 
     const skipRecords = pageNro * pageSize;
-    if (attr === "categoria_uno") {
+    if (attr === "categorias") {
       return this.createQueryBuilder("producto")
         .leftJoinAndSelect("producto.marca", "mar")
-        .leftJoinAndSelect("producto.categoria_uno", "cat_uno")
-        .leftJoinAndSelect("producto.categoria_dos", "cat_dos")
+        .leftJoinAndSelect("producto.categorias", "categorias")
         .leftJoinAndSelect("producto.talles", "talle")
         .leftJoinAndSelect("producto.proveedor", "proveedor")
         .leftJoinAndSelect("producto.imagenes", "img")
-        .where(`producto.categoria_uno = :id`, { id })
-        .orWhere(`producto.categoria_dos = :id`, { id })
+        .where(`categorias = :id`, { id })
         .andWhere("producto.archivado = 0")
         .orderBy("producto.id", "DESC")
         .skip(skipRecords)
         .take(pageSize)
         .getMany();
+
     } else {
       // marca, proveedores.. falta talles
       return this.createQueryBuilder("producto")
         .leftJoinAndSelect("producto.marca", "mar")
-        .leftJoinAndSelect("producto.categoria_uno", "cat_uno")
-        .leftJoinAndSelect("producto.categoria_dos", "cat_dos")
+        .leftJoinAndSelect("producto.categorias", "categorias")
         .leftJoinAndSelect("producto.talles", "talle")
         .leftJoinAndSelect("producto.proveedor", "proveedor")
         .leftJoinAndSelect("producto.imagenes", "img")
