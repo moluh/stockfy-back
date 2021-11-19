@@ -20,6 +20,7 @@ import { CategoriasRouter } from './routes/categorias.routes';
 import { ImagenesRouter } from './routes/imagenes.routes';
 import { ProveedoresRouter } from './routes/proveedores.routes';
 import { TallesRouter } from './routes/talles.routes';
+import { RolesRouter } from './routes/roles.routes';
 import { EstadisticasRouter } from './routes/estadisticas.routes';
 import { MovimientosRouter } from './routes/movimientos.routes';
 import { FilesUploadProductosRouter } from './routes/file.upload.images.routes';
@@ -39,6 +40,7 @@ class App {
     public routeMarcas: MarcasRouter = new MarcasRouter();
     public routeGastos: GastosRouter = new GastosRouter();
     public routePagos: PagosRouter = new PagosRouter();
+    public routeRoles: RolesRouter = new RolesRouter();
     public routeTalles: TallesRouter = new TallesRouter();
     public routeArticulos: ProductosRouter = new ProductosRouter();
     public routeCategorias: CategoriasRouter = new CategoriasRouter();
@@ -65,6 +67,7 @@ class App {
         this.routeMarcas.routes(this.app);
         this.routeGastos.routes(this.app);
         this.routePagos.routes(this.app);
+        this.routeRoles.routes(this.app);
         this.routeTalles.routes(this.app);
         this.routeArticulos.routes(this.app);
         this.routeCategorias.routes(this.app);

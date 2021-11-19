@@ -18,9 +18,6 @@ export class RolesController {
             .then(data => ApiResponse(res, STATUS_OK, data, []))
             .catch(err => ApiResponse(res, STATUS_FAILED, [], err));
     }
-    // app
-    //   .route("/api/v1/roles/paginado")
-    //   .get(mw.jwtAdminMiddleware, this.controlador.getPaginated);
 
     public create(req: Request, res: Response) {
         const roles = Roles.create({ ...req.body } as Object);

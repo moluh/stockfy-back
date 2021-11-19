@@ -10,7 +10,8 @@ export class UsuariosController {
 
     public getAll(req: Request, res: Response) {
         Usuarios.find({
-            order: { nombre: "ASC" }
+            order: { nombre: "ASC" },
+            relations: ["roles"]
         })
             .then((usuarios: Usuarios[]) => {
                 usuarios.forEach(u => delete u.password);
@@ -21,7 +22,7 @@ export class UsuariosController {
     }
 
     public async create(req: Request, res: Response) {
-        try {
+
         let usuario: Usuarios = new Usuarios();
         let email = req.body.email;
         let username = req.body.username;
@@ -92,11 +93,7 @@ export class UsuariosController {
             }).catch(err => {
                 res.json(err);
             });
-            
-        } catch (error) {
-            res.json(error);
-            
-        }
+
     };
 
     public async update(req: Request, res: Response) {
@@ -110,6 +107,7 @@ export class UsuariosController {
         usuario.nombre = req.body.nombre;
         usuario.apellido = req.body.apellido;
         usuario.domicilio = req.body.domicilio;
+        usuario.roles = req.body.roles;
         usuario.recpass = null;
         usuario.avatar = req.body.avatar;
         usuario.activo = req.body.activo;
@@ -201,7 +199,7 @@ export class UsuariosController {
         let pageSize: any = req.query.pageSize;
 
         Usuarios.getPaginated(pageNro, pageSize)
-            .then(({data, count}) => {
+            .then(({ data, count }) => {
                 data.forEach(u => delete u.password);
                 return { data, ...count };
             })
@@ -219,7 +217,7 @@ export class UsuariosController {
         const isActive: any = req.query.isActive;
 
         Usuarios.getPaginatedAndFilter(pageNro, pageSize, attribute, text, isActive, role)
-            .then(({data, count}) => {
+            .then(({ data, count }) => {
                 data.forEach(u => delete u.password);
                 return { data, ...count };
             })
@@ -245,7 +243,7 @@ export class UsuariosController {
     public get(req: Request, res: Response, idUser?: number) {
         const id: number = parseInt(req.params.id);
 
-        Usuarios.findOne({ id })
+        Usuarios.findOne({ id }, { relations: ["roles"] })
             .then((usuario: Usuarios) => {
                 delete usuario.password;
                 return usuario;

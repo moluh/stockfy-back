@@ -71,30 +71,35 @@ export class Usuarios extends BaseEntity {
 
   static findByEmail(email: string) {
     return this.createQueryBuilder("usuario")
+      .leftJoinAndSelect("usuario.roles", "roles")
       .where("usuario.email = :email", { email })
       .getOne();
   }
 
   static findByTelefono(telefono: string) {
     return this.createQueryBuilder("usuario")
+      .leftJoinAndSelect("usuario.roles", "roles")
       .where("usuario.telefono = :telefono", { telefono })
       .getOne();
   }
 
   static findByUsername(username: string) {
     return this.createQueryBuilder("usuario")
+      .leftJoinAndSelect("usuario.roles", "roles")
       .where("usuario.username = :username", { username })
       .getOne();
   }
 
   static findByRecpass(recpass: string) {
     return this.createQueryBuilder("usuario")
+      .leftJoinAndSelect("usuario.roles", "roles")
       .where("usuario.recpass = :recpass", { recpass })
       .getOne();
   }
 
   static saveCodeRecPass(usuario: Usuarios) {
     return this.createQueryBuilder("usuario")
+      .leftJoinAndSelect("usuario.roles", "roles")
       .update(usuario)
       .set({ recpass: usuario.recpass })
       .where("id = :id", { id: usuario.id })
@@ -108,6 +113,7 @@ export class Usuarios extends BaseEntity {
       .getRawOne();
 
     const data = await this.createQueryBuilder("usuario")
+      .leftJoinAndSelect("usuario.roles", "roles")
       .orderBy("usuario.id", "DESC")
       .skip(skipRecords)
       .take(pageSize)
@@ -145,6 +151,7 @@ export class Usuarios extends BaseEntity {
           .getRawOne();
 
         const data = await this.createQueryBuilder("usuario")
+          .leftJoinAndSelect("usuario.roles", "roles")
           .where(`LOWER(usuario.activo) LIKE :active`, {
             active: "%" + active + "%",
           })
@@ -164,6 +171,7 @@ export class Usuarios extends BaseEntity {
           .getRawOne();
 
         const data = await this.createQueryBuilder("usuario")
+          .leftJoinAndSelect("usuario.roles", "roles")
           .where(`LOWER(usuario.${attribute}) LIKE LOWER(:text)`, {
             text: "%" + text + "%",
           })
