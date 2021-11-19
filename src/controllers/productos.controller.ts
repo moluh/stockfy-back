@@ -81,8 +81,7 @@ export class ProductosController {
                 nombre: csvData[i][header.nombre],
                 stock_actual: csvData[i][header.stock_actual],
                 marca: csvData[i][header.marca],
-                categoria_uno: csvData[i][header.categoria_uno],
-                categoria_dos: csvData[i][header.categoria_dos],
+                categorias: csvData[i][header.categorias],
                 proveedor: csvData[i][header.proveedor],
                 descripcion: csvData[i][header.descripcion],
                 disponible: csvData[i][header.disponible],
@@ -335,8 +334,7 @@ export class ProductosController {
       .then((producto) => {
         producto.nombre = req.body.nombre;
         producto.descripcion = req.body.descripcion;
-        producto.categoria_uno = req.body.categoria_uno;
-        producto.categoria_dos = req.body.categoria_dos;
+        producto.categorias = req.body.categorias;
         producto.talles = req.body.talles;
         producto.proveedor = req.body.proveedor;
         producto.codigo_fabricante = req.body.codigo_fabricante;

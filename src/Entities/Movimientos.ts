@@ -10,9 +10,9 @@ import {
   getConnection,
 } from "typeorm";
 import { MovimientosLineas } from "./MovimientosLineas";
-import { Clientes } from "./Clientes";
 import { Pagos } from "./Pagos";
 import * as iqa from "./../helpers/isQueryAllowed";
+import { Usuarios } from "./Usuarios";
 
 @Entity("movimientos")
 export class Movimientos extends BaseEntity {
@@ -28,28 +28,22 @@ export class Movimientos extends BaseEntity {
   @Column({ type: "varchar", length: 255, nullable: true })
   comentario: string;
 
-  /**
-  p = pendiente
-  c = completado
-  a = anulado     */
+  /** PENDIENTE COMPLETADO ANULADO */
   @Column({ type: "char", length: 1, nullable: true })
   estado: string;
 
   @Column({ type: "double", nullable: false })
   total: number;
 
-  /**
-  efectivo
-  ctacte
-  tarjeta       */
+  /** EFECTIVO CTACTE TARJETA */
   @Column({ type: "varchar", nullable: true })
   modo_pago: string;
 
   @Column({ type: "double", nullable: true })
   saldo: number;
 
-  @ManyToOne((type) => Clientes, (usuario) => usuario.id)
-  cliente: Clientes;
+  @ManyToOne((type) => Usuarios, (usuario) => usuario.id)
+  usuario: Usuarios;
 
   @OneToMany((type) => Pagos, (pago) => pago.movimiento, {
     onDelete: "CASCADE",

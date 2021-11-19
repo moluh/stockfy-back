@@ -2,9 +2,10 @@ PKEY="PRIVATE-KEY"
 PORT=3000
 NODE_ENV="PROD"
 BACKUPS_DIR="/home/backups"
+CONNECT_NO_SQL=false
 
 JWT_SECRET="secret"
-JWT_EXP=9
+JWT_EXP=3600
 JWT_INNACTIVITY_EXP=30
 
 SQL_TYPE="mysql"
@@ -16,10 +17,11 @@ SQL_DATABASE="controlstock"
 SQL_LOGGING=true
 SQL_ENTITIES="dist/Entities/**/*{.ts,.js}"
 SQL_MIGRATIONS="dist/database/migrations/**{.ts,.js}"
-SQL_MIGRATIONS_CLI="src/database/migrations"
+SQL_MIGRATIONS_CLI="dist/database/migrations"
 
 RUNNING_SQL_ENTITIES="src/Entities/**/*{.ts,.js}"
 RUNNING_SQL_MIGRATIONS="src/database/migrations/**{.ts,.js}"
+RUNNING_SQL_MIGRATIONS_CLI="src/database/migrations"
 
 NO_SQL_TYPE="mongodb"
 NO_SQL_HOST="localhost"

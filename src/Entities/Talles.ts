@@ -1,7 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, BaseEntity, ManyToMany } from 'typeorm';
 import { Productos } from './Productos';
 
-
 @Entity('talles')
 export class Talles extends BaseEntity {
 

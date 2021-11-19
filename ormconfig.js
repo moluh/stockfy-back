@@ -10,7 +10,7 @@ const {
   SQL_DATABASE,
   RUNNING_SQL_ENTITIES,
   RUNNING_SQL_MIGRATIONS,
-  SQL_MIGRATIONS_CLI
+  RUNNING_SQL_MIGRATIONS_CLI
 } = process.env;
 
 module.exports = {
@@ -23,6 +23,6 @@ module.exports = {
   entities: [RUNNING_SQL_ENTITIES],
   migrations: [RUNNING_SQL_MIGRATIONS],
   cli: {
-    migrationsDir: SQL_MIGRATIONS_CLI
+    migrationsDir: RUNNING_SQL_MIGRATIONS_CLI
   },
 };

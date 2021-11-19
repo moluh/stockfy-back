@@ -52,6 +52,10 @@ export class Config {
     return parseInt(this.env.JWT_INNACTIVITY_EXP, 0);
   }
 
+  get connectNoSql(): boolean {
+    return this.env.CONNECT_NO_SQL === "true" ? true : false
+  }
+
   get sqlDatabase() {
     return <MysqlConnectionOptions>{
       type: this.env.SQL_TYPE,
@@ -85,15 +89,18 @@ export class Config {
     console.log(`${this.separator}Connecting Databases...`);
 
     try {
-      const connection = await createConnections(
-        [this.sqlDatabase, this.noSqlDatabase]
-      );
+      const dbs: any[] = this.connectNoSql
+        ? [this.sqlDatabase, this.noSqlDatabase]
+        : [this.sqlDatabase];
+
+      const connection = await createConnections(dbs);
 
       if (connection[0].isConnected)
         console.log(`${this.separator}| (${connection[0].options.type}) SQL connected -> ${connection[0].options.database}`);
 
-      if (connection[1].isConnected)
-        console.log(`${this.separator}| (${connection[1].options.type}) NO SQL connected -> ${connection[1].options.database}`);
+      if (this.connectNoSql)
+        if (connection[1].isConnected)
+          console.log(`${this.separator}| (${connection[1].options.type}) NO SQL connected -> ${connection[1].options.database}`);
 
       return connection;
 
@@ -122,6 +129,7 @@ new Config().ensureValues([
   'PORT',
   'NODE_ENV',
   'BACKUPS_DIR',
+  'CONNECT_NO_SQL',
 
   'JWT_SECRET',
   'JWT_EXP',

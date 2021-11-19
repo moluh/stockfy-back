@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, BaseEntity, OneToMany } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, BaseEntity, OneToMany, ManyToMany } from 'typeorm';
 import { Productos } from './Productos';
 
 
@@ -14,11 +14,8 @@ export class Categorias extends BaseEntity {
     @Column({ type: 'boolean', default: true })
     activo: boolean;
 
-    @OneToMany(type => Productos, producto => producto.categoria_uno)
-    prod_cat_uno: Productos[];
-
-    @OneToMany(type => Productos, producto => producto.categoria_dos)
-    prod_cat_dos: Productos[];
+    @ManyToMany(type => Productos, producto => producto.talles)
+    producto: Productos[];
 
     static getPaginated(pageNro: number, pageSize: number) {
         const skipRecords = pageNro * pageSize;

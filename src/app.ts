@@ -19,7 +19,6 @@ import { ProductosRouter } from './routes/productos.routes';
 import { CategoriasRouter } from './routes/categorias.routes';
 import { ImagenesRouter } from './routes/imagenes.routes';
 import { ProveedoresRouter } from './routes/proveedores.routes';
-import { ClientesRouter } from './routes/clientes.routes';
 import { TallesRouter } from './routes/talles.routes';
 import { EstadisticasRouter } from './routes/estadisticas.routes';
 import { MovimientosRouter } from './routes/movimientos.routes';
@@ -45,7 +44,6 @@ class App {
     public routeCategorias: CategoriasRouter = new CategoriasRouter();
     public routeImagenes: ImagenesRouter = new ImagenesRouter();
     public routeProveedores: ProveedoresRouter = new ProveedoresRouter();
-    public routeClientes: ClientesRouter = new ClientesRouter();
     public routeEstadisticas: EstadisticasRouter = new EstadisticasRouter();
     public routeMovimientos: MovimientosRouter = new MovimientosRouter();
     public routeMailTransaction: MailTransactionRoute = new MailTransactionRoute();
@@ -72,7 +70,6 @@ class App {
         this.routeCategorias.routes(this.app);
         this.routeImagenes.routes(this.app);
         this.routeProveedores.routes(this.app);
-        this.routeClientes.routes(this.app);
         this.routeEstadisticas.routes(this.app);
         this.routeMovimientos.routes(this.app);
         this.routeFUCsv.routes(this.app);

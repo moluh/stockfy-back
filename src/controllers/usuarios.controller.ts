@@ -21,13 +21,14 @@ export class UsuariosController {
     }
 
     public async create(req: Request, res: Response) {
+        try {
         let usuario: Usuarios = new Usuarios();
         let email = req.body.email;
         let username = req.body.username;
         let telefono = req.body.telefono;
         let fc_alta = new Date();
 
-        usuario.role = req.body.role || "ADMIN"
+        usuario.roles = req.body.roles || ["USUARIO"]
         usuario.email = email;
         usuario.telefono = telefono;
         usuario.username = username;
@@ -91,6 +92,11 @@ export class UsuariosController {
             }).catch(err => {
                 res.json(err);
             });
+            
+        } catch (error) {
+            res.json(error);
+            
+        }
     };
 
     public async update(req: Request, res: Response) {

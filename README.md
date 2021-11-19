@@ -46,7 +46,7 @@ Desde Postman: `/api/v1/usuarios` crear el primer usuario de prueba con rol "ADM
     "username": "test",
     "email": "test@test.com",
     "password": "test01",
-    "role": "ADMIN"
+    "roles": ["ADMIN"]
 }
 ```
 

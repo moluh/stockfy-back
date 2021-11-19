@@ -7,6 +7,8 @@ import {
   OneToMany,
   ManyToMany,
   JoinTable,
+  UpdateDateColumn,
+  CreateDateColumn,
 } from "typeorm";
 import { Marcas } from "./Marcas";
 import { Categorias } from "./Categorias";
@@ -66,7 +68,13 @@ export class Productos extends BaseEntity {
   stock_actual: number;
 
   @Column({ type: "varchar", length: 150, nullable: true })
-  codigo_fabricante: string;
+  codigo_fabricante: string;  
+
+  @CreateDateColumn({ type: "timestamp", nullable: true })
+  created_at: Date;
+
+  @UpdateDateColumn({ type: "timestamp", nullable: true })
+  updated_at: Date;
 
   @ManyToOne((type) => Proveedores, (prov) => prov.id)
   proveedor: Proveedores;
@@ -74,18 +82,16 @@ export class Productos extends BaseEntity {
   @ManyToOne((type) => Marcas, (marca) => marca.id)
   marca: Marcas;
 
-  @ManyToOne((type) => Categorias, (cat) => cat.id)
-  categoria_uno: Categorias;
-
-  @ManyToOne((type) => Categorias, (cat) => cat.id)
-  categoria_dos: Categorias;
-
   @OneToMany((type) => Imagenes, (img) => img.producto)
   imagenes: Imagenes[];
 
   @ManyToMany((type) => Talles, (talle) => talle.producto, { cascade: true })
   @JoinTable()
   talles: Talles[];
+
+  @ManyToMany((type) => Talles, (talle) => talle.producto, { cascade: true })
+  @JoinTable()
+  categorias: Talles[];
 
   /**
    * 

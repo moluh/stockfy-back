@@ -120,9 +120,8 @@ export class MovimientosController {
           movement.saldo = movement.saldo + pago.monto;
         }
 
-        if (movement.saldo <= 0) movement.estado = "c";
-        // c = completado
-        else movement.estado = "p"; // p = pendiente
+        if (movement.saldo <= 0) movement.estado = "COMPLETADO";
+        else movement.estado = "PENDIENTE";
 
         movement
           .save()
@@ -143,7 +142,7 @@ export class MovimientosController {
         movimiento.total = req.body.total;
         movimiento.modo_pago = req.body.modo_pago;
         movimiento.saldo = req.body.saldo;
-        movimiento.cliente = req.body.cliente;
+        movimiento.usuario = req.body.usuario;
         movimiento.pagos = req.body.pagos;
         movimiento.movimiento_lineas = req.body.movimiento_lineas;
         movimiento

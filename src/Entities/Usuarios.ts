@@ -2,9 +2,14 @@ import {
   Entity,
   PrimaryGeneratedColumn,
   Column,
-  BaseEntity
+  BaseEntity,
+  CreateDateColumn,
+  UpdateDateColumn,
+  JoinTable,
+  ManyToMany
 } from "typeorm";
 import * as iqa from "./../helpers/isQueryAllowed";
+import { Roles } from "./Roles";
 
 @Entity("usuarios")
 export class Usuarios extends BaseEntity {
@@ -13,6 +18,9 @@ export class Usuarios extends BaseEntity {
 
   @Column({ type: "varchar", length: 150, nullable: false })
   username: string;
+
+  @Column({ type: "varchar", length: 100, nullable: false })
+  email: string;
 
   @Column({ type: "varchar", nullable: false })
   password: string;
@@ -38,23 +46,22 @@ export class Usuarios extends BaseEntity {
   @Column({ type: "varchar", length: 40, nullable: true })
   domicilio: string;
 
-  @Column({ type: "varchar", length: 70, nullable: true })
-  email: string;
-
   @Column({ type: "varchar", length: 6, nullable: true })
   recpass: string;
 
-  @Column({ type: "timestamp", nullable: true })
+  @CreateDateColumn({ type: "timestamp", nullable: true })
   created_at: Date;
 
-  @Column({ type: "timestamp", nullable: true })
+  @UpdateDateColumn({ type: "timestamp", nullable: true })
   updated_at: Date;
-
-  @Column({ type: "varchar", length: 20, nullable: false })
-  role: string;
 
   @Column({ type: "boolean", default: true })
   activo: boolean;
+
+  @ManyToMany((type) => Roles, (role) => role.usuario,
+    { cascade: true })
+  @JoinTable()
+  roles: Roles[];
 
   static findById(id: number) {
     return this.createQueryBuilder("usuario")
@@ -117,7 +124,7 @@ export class Usuarios extends BaseEntity {
     isActive: string,
     role: string
   ) {
-    
+
     try {
       await iqa.isQueryAllowed([attribute]);
     } catch (error) {

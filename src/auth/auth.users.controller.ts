@@ -49,7 +49,7 @@ export class UsuariosAuthController {
       isLogged: true,
       token,
       expiresIn: config.jwtExp,
-      role: useWithOutPass.role,
+      roles: useWithOutPass.roles,
       activo: useWithOutPass.activo,
       // user: useWithOutPass
     });
