@@ -27,6 +27,8 @@ import { FilesUploadProductosRouter } from './routes/file.upload.images.routes';
 import { FilesUploadCsvRouter } from './routes/file.upload.csv.routes';
 import { MailTransactionRoute } from './routes/transactional.mail.routes';
 import './crons/backupDB'
+import { ModulosRouter } from './routes/modulos.routes';
+import { PermisosRouter } from './routes/permisos.routes';
 
 
 class App {
@@ -41,6 +43,8 @@ class App {
     public routeGastos: GastosRouter = new GastosRouter();
     public routePagos: PagosRouter = new PagosRouter();
     public routeRoles: RolesRouter = new RolesRouter();
+    public routeModulos: ModulosRouter = new ModulosRouter();
+    public routePermisos: PermisosRouter = new PermisosRouter();
     public routeTalles: TallesRouter = new TallesRouter();
     public routeArticulos: ProductosRouter = new ProductosRouter();
     public routeCategorias: CategoriasRouter = new CategoriasRouter();
@@ -68,6 +72,8 @@ class App {
         this.routeGastos.routes(this.app);
         this.routePagos.routes(this.app);
         this.routeRoles.routes(this.app);
+        this.routeModulos.routes(this.app);
+        this.routePermisos.routes(this.app);
         this.routeTalles.routes(this.app);
         this.routeArticulos.routes(this.app);
         this.routeCategorias.routes(this.app);
