@@ -7,7 +7,7 @@ export class ModulosController {
   constructor() { }
 
   public getAll(req: Request, res: Response) {
-    Modulos.find({ order: { modulo: "ASC" } })
+    Modulos.find({ order: { modulo: "ASC" }, relations: ["permiso"] })
       .then(data => ApiResponse(res, STATUS_OK, data, []))
       .catch(err => ApiResponse(res, STATUS_FAILED, [], err));
   }
@@ -42,6 +42,9 @@ export class ModulosController {
     Modulos.findOne({ id })
       .then((modulo) => {
         modulo.modulo = req.body.modulo;
+        modulo.activo = req.body.activo;
+        modulo.role = req.body.role;
+        modulo.permiso = req.body.permiso;
         modulo
           .save()
           .then(data => ApiResponse(res, STATUS_OK, data, []))

@@ -7,7 +7,7 @@ export class PermisosController {
   constructor() { }
 
   public getAll(req: Request, res: Response) {
-    Permisos.find({ order: { permiso: "ASC" } })
+    Permisos.find({ order: { permiso: "ASC" }, relations: ["modulo"] })
       .then(data => ApiResponse(res, STATUS_OK, data, []))
       .catch(err => ApiResponse(res, STATUS_FAILED, [], err));
   }
@@ -42,6 +42,8 @@ export class PermisosController {
     Permisos.findOne({ id })
       .then((permiso) => {
         permiso.permiso = req.body.permiso;
+        permiso.activo = req.body.activo;
+        permiso.modulo = req.body.modulo;
         permiso
           .save()
           .then(data => ApiResponse(res, STATUS_OK, data, []))

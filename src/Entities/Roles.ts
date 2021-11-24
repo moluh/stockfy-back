@@ -1,4 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column, BaseEntity, ManyToMany } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, BaseEntity, ManyToMany, OneToMany } from 'typeorm';
+import { Modulos } from './Modulos';
 import { Productos } from './Productos';
 import { Usuarios } from './Usuarios';
 
@@ -20,5 +21,8 @@ export class Roles extends BaseEntity {
 
     @ManyToMany(type => Usuarios, usuario => usuario.roles)
     usuario: Usuarios[];
+
+    @OneToMany(type => Modulos, modulo => modulo.role)
+    modulo: Modulos[];
 
 }

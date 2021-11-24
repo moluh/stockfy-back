@@ -1,4 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column, BaseEntity, OneToMany } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, BaseEntity, OneToMany, ManyToOne } from "typeorm";
+import { Modulos } from "./Modulos";
 
 @Entity('permisos')
 export class Permisos extends BaseEntity {
@@ -11,6 +12,9 @@ export class Permisos extends BaseEntity {
 
     @Column({ type: 'boolean', default: true })
     activo: boolean;
+
+    @ManyToOne(type => Modulos, modulo => modulo.permiso)
+    modulo: Modulos;
 
     static getPermisosPaginated(pageNro: number, pageSize: number) {
         const skipRecords = pageNro * pageSize;
