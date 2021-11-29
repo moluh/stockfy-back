@@ -4,7 +4,7 @@ import { ImagenesController } from "./imagenes.controller";
 import { Imagenes } from "../Entities/Imagenes";
 import * as fs from "fs";
 import * as fastcsv from "fast-csv";
-import { ApiResponse, STATUS_FAILED, STATUS_OK } from "../api/response";
+import { ApiResponse } from "../api/response";
 import { getConnection } from "typeorm";
 
 interface MulterRequest extends Request {
@@ -143,8 +143,8 @@ export class ProductosController {
       { ean }
       //  { relations: ["marcaId", "categoriaUnoId", "categoriaDosId", "proveedorId"]     }
     )
-      .then((data) => ApiResponse(res, STATUS_OK, data, []))
-      .catch((err) => ApiResponse(res, STATUS_FAILED, [], err));
+      .then((data) => ApiResponse(res, true, 200, data, []))
+      .catch((err) => ApiResponse(res, false, 400, [], err));
   }
 
   getPaginatedByState(req: Request, res: Response) {
@@ -153,8 +153,8 @@ export class ProductosController {
     let state: any = req.query.state;
 
     Productos.getPaginatedByState(pageNro, pageSize, state)
-      .then((data) => ApiResponse(res, STATUS_OK, data, []))
-      .catch((err) => ApiResponse(res, STATUS_FAILED, [], err));
+      .then((data) => ApiResponse(res, true, 200, data, []))
+      .catch((err) => ApiResponse(res, false, 400, [], err));
   }
 
   /**
@@ -179,8 +179,8 @@ export class ProductosController {
       maxPrice,
       talle
     )
-      .then((data) => ApiResponse(res, STATUS_OK, data, []))
-      .catch((err) => ApiResponse(res, STATUS_FAILED, [], err));
+      .then((data) => ApiResponse(res, true, 200, data, []))
+      .catch((err) => ApiResponse(res, false, 400, [], err));
   }
   */
 
@@ -191,8 +191,8 @@ export class ProductosController {
     let id: any = req.query.id;
 
     Productos.getPaginatedByIdOfAList(pageNro, pageSize, attr, parseInt(id))
-      .then((data) => ApiResponse(res, STATUS_OK, data, []))
-      .catch((err) => ApiResponse(res, STATUS_FAILED, [], err));
+      .then((data) => ApiResponse(res, true, 200, data, []))
+      .catch((err) => ApiResponse(res, false, 400, [], err));
   }
 
   getPaginatedAndFilter(req: Request, res: Response) {
@@ -202,8 +202,8 @@ export class ProductosController {
     let text: any = req.query.text;
 
     Productos.getPaginatedAndFilter(pageNro, pageSize, attr, text)
-      .then((data) => ApiResponse(res, STATUS_OK, data, []))
-      .catch((err) => ApiResponse(res, STATUS_FAILED, [], err));
+      .then((data) => ApiResponse(res, true, 200, data, []))
+      .catch((err) => ApiResponse(res, false, 400, [], err));
   }
 
   public getPaginated(req: Request, res: Response) {
@@ -211,8 +211,8 @@ export class ProductosController {
     let pageSize: any = req.query.pageSize;
 
     Productos.getPaginated(pageNro, pageSize)
-      .then((data) => ApiResponse(res, STATUS_OK, data, []))
-      .catch((err) => ApiResponse(res, STATUS_FAILED, [], err));
+      .then((data) => ApiResponse(res, true, 200, data, []))
+      .catch((err) => ApiResponse(res, false, 400, [], err));
   }
 
   public getAll(_req: Request, res: Response) {
@@ -220,8 +220,8 @@ export class ProductosController {
       order: { nombre: "ASC" },
       //relations: ["marcaId", "categoriaUnoId", "categoriaDosId", "proveedorId", "imagenes"],
     })
-      .then((data) => ApiResponse(res, STATUS_OK, data, []))
-      .catch((err) => ApiResponse(res, STATUS_FAILED, [], err));
+      .then((data) => ApiResponse(res, true, 200, data, []))
+      .catch((err) => ApiResponse(res, false, 400, [], err));
   }
 
   public get(req: Request, res: Response) {
@@ -230,8 +230,8 @@ export class ProductosController {
       { id }
       //{ relations: ["marcaId", "categoriaUnoId", "categoriaDosId", "proveedorId", "imagenes"] }
     )
-      .then((data) => ApiResponse(res, STATUS_OK, data, []))
-      .catch((err) => ApiResponse(res, STATUS_FAILED, [], err));
+      .then((data) => ApiResponse(res, true, 200, data, []))
+      .catch((err) => ApiResponse(res, false, 400, [], err));
   }
 
   public changeState(req: Request, res: Response) {
@@ -241,10 +241,10 @@ export class ProductosController {
         prod.archivado = !prod.archivado;
         prod
           .save()
-          .then((data) => ApiResponse(res, STATUS_OK, data, []))
-          .catch((err) => ApiResponse(res, STATUS_FAILED, [], err));
+          .then((data) => ApiResponse(res, true, 200, data, []))
+          .catch((err) => ApiResponse(res, false, 400, [], err));
       })
-      .catch((err) => ApiResponse(res, STATUS_FAILED, [], err));
+      .catch((err) => ApiResponse(res, false, 400, [], err));
   }
 
   // ==============================================================
@@ -252,8 +252,8 @@ export class ProductosController {
     const producto = Productos.create({ ...req.body } as Object);
     producto
       .save()
-      .then((data) => ApiResponse(res, STATUS_OK, data, []))
-      .catch((err) => ApiResponse(res, STATUS_FAILED, [], err));
+      .then((data) => ApiResponse(res, true, 200, data, []))
+      .catch((err) => ApiResponse(res, false, 400, [], err));
   }
 
   public async createImgAndAssignToArt(req: MulterRequest, res: Response) {
@@ -354,10 +354,10 @@ export class ProductosController {
         producto.ancho = req.body.ancho;
         producto
           .save()
-          .then((data) => ApiResponse(res, STATUS_OK, data, []))
-          .catch((err) => ApiResponse(res, STATUS_FAILED, [], err));
+          .then((data) => ApiResponse(res, true, 200, data, []))
+          .catch((err) => ApiResponse(res, false, 400, [], err));
       })
-      .catch((err) => ApiResponse(res, STATUS_FAILED, [], err));
+      .catch((err) => ApiResponse(res, false, 400, [], err));
   }
 
   public updateStockProducto(prod) {
@@ -385,9 +385,9 @@ export class ProductosController {
       .then((producto) => {
         producto
           .remove()
-          .then((data) => ApiResponse(res, STATUS_OK, data, []))
-          .catch((err) => ApiResponse(res, STATUS_FAILED, [], err));
+          .then((data) => ApiResponse(res, true, 200, data, []))
+          .catch((err) => ApiResponse(res, false, 400, [], err));
       })
-      .catch((err) => ApiResponse(res, STATUS_FAILED, [], err));
+      .catch((err) => ApiResponse(res, false, 400, [], err));
   }
 }

@@ -1,6 +1,6 @@
 import { MovimientosLineas } from '../Entities/MovimientosLineas';
 import { Request, Response } from 'express';
-import { ApiResponse, STATUS_OK, STATUS_FAILED } from '../api/response';
+import { ApiResponse } from '../api/response';
 
 export class MovimientosLineasController {
 
@@ -13,8 +13,8 @@ export class MovimientosLineasController {
                 order: { nombre: "ASC" },
                 // relations: ['pedido']
             })
-            .then(data => ApiResponse(res, STATUS_OK, data, []))
-            .catch(err => ApiResponse(res, STATUS_FAILED, [], err));
+            .then(data => ApiResponse(res, true, 200, data, []))
+            .catch(err => ApiResponse(res, false, 400, [], err));
 
     }
 
@@ -23,16 +23,16 @@ export class MovimientosLineasController {
         await MovimientosLineas.findOne(
             { id }
         )
-            .then(data => ApiResponse(res, STATUS_OK, data, []))
-            .catch(err => ApiResponse(res, STATUS_FAILED, [], err));
+            .then(data => ApiResponse(res, true, 200, data, []))
+            .catch(err => ApiResponse(res, false, 400, [], err));
 
     }
 
     public create(req: Request, res: Response) {
         let pedido = MovimientosLineas.create({ ...req.body } as Object);
         pedido.save()
-            .then(data => ApiResponse(res, STATUS_OK, data, []))
-            .catch(err => ApiResponse(res, STATUS_FAILED, [], err));
+            .then(data => ApiResponse(res, true, 200, data, []))
+            .catch(err => ApiResponse(res, false, 400, [], err));
     };
 
     public update(req: Request, res: Response) {
@@ -47,10 +47,10 @@ export class MovimientosLineasController {
                 pedido.precio_oferta = req.body.precio_oferta;
                 pedido.oferta = req.body.oferta;
                 pedido.save()
-                    .then(data => ApiResponse(res, STATUS_OK, data, []))
-                    .catch(err => ApiResponse(res, STATUS_FAILED, [], err));
+                    .then(data => ApiResponse(res, true, 200, data, []))
+                    .catch(err => ApiResponse(res, false, 400, [], err));
             })
-            .catch(err => ApiResponse(res, STATUS_FAILED, [], err));
+            .catch(err => ApiResponse(res, false, 400, [], err));
     }
 
     public delete(req: Request, res: Response) {
@@ -58,10 +58,10 @@ export class MovimientosLineasController {
         MovimientosLineas.findOne({ id })
             .then(pedido => {
                 pedido.remove()
-                    .then(data => ApiResponse(res, STATUS_OK, data, []))
-                    .catch(err => ApiResponse(res, STATUS_FAILED, [], err));
+                    .then(data => ApiResponse(res, true, 200, data, []))
+                    .catch(err => ApiResponse(res, false, 400, [], err));
             })
-            .catch(err => ApiResponse(res, STATUS_FAILED, [], err));
+            .catch(err => ApiResponse(res, false, 400, [], err));
     };
 
 

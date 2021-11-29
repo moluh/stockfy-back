@@ -1,21 +1,21 @@
 import { Proveedores } from "../Entities/Proveedores";
 import { Request, Response } from "express";
-import { ApiResponse, STATUS_FAILED, STATUS_OK } from "../api/response";
+import { ApiResponse } from "../api/response";
 
 export class ProveedoresController {
   constructor() { }
 
   public getAll(req: Request, res: Response) {
     Proveedores.find({ order: { proveedor: "ASC" } })
-      .then(data => ApiResponse(res, STATUS_OK, data, []))
-      .catch(err => ApiResponse(res, STATUS_FAILED, [], err));
+      .then(data => ApiResponse(res, true, 200, data, []))
+      .catch(err => ApiResponse(res, false, 400, [], err));
   }
 
   public get(req: Request, res: Response) {
     let id = parseInt(req.params.id);
     Proveedores.findOne({ id })
-      .then(data => ApiResponse(res, STATUS_OK, data, []))
-      .catch(err => ApiResponse(res, STATUS_FAILED, [], err));
+      .then(data => ApiResponse(res, true, 200, data, []))
+      .catch(err => ApiResponse(res, false, 400, [], err));
   }
 
   public getPaginated(req: Request, res: Response) {
@@ -23,8 +23,8 @@ export class ProveedoresController {
     const pageSize: any = req.query.pageSize || 10;
 
     Proveedores.getProveedoresPaginated(pageNro, pageSize)
-      .then(data => ApiResponse(res, STATUS_OK, data, []))
-      .catch(err => ApiResponse(res, STATUS_FAILED, [], err));
+      .then(data => ApiResponse(res, true, 200, data, []))
+      .catch(err => ApiResponse(res, false, 400, [], err));
   }
 
   public create(req: Request, res: Response) {
@@ -32,8 +32,8 @@ export class ProveedoresController {
     proveedor.proveedor = req.body.proveedor;
     proveedor
       .save()
-      .then(data => ApiResponse(res, STATUS_OK, data, []))
-      .catch(err => ApiResponse(res, STATUS_FAILED, [], err));
+      .then(data => ApiResponse(res, true, 200, data, []))
+      .catch(err => ApiResponse(res, false, 400, [], err));
   }
 
   public update(req: Request, res: Response) {
@@ -43,10 +43,10 @@ export class ProveedoresController {
         proveedor.proveedor = req.body.proveedor;
         proveedor
           .save()
-          .then(data => ApiResponse(res, STATUS_OK, data, []))
-          .catch(err => ApiResponse(res, STATUS_FAILED, [], err));
+          .then(data => ApiResponse(res, true, 200, data, []))
+          .catch(err => ApiResponse(res, false, 400, [], err));
       })
-      .catch(err => ApiResponse(res, STATUS_FAILED, [], err));
+      .catch(err => ApiResponse(res, false, 400, [], err));
   }
 
   public delete(req: Request, res: Response) {
@@ -55,9 +55,9 @@ export class ProveedoresController {
       .then((proveedor) => {
         proveedor
           .remove()
-          .then(data => ApiResponse(res, STATUS_OK, data, []))
-          .catch(err => ApiResponse(res, STATUS_FAILED, [], err));
+          .then(data => ApiResponse(res, true, 200, data, []))
+          .catch(err => ApiResponse(res, false, 400, [], err));
       })
-      .catch(err => ApiResponse(res, STATUS_FAILED, [], err));
+      .catch(err => ApiResponse(res, false, 400, [], err));
   }
 }

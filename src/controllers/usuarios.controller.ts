@@ -1,7 +1,7 @@
 import { Usuarios } from '../Entities/Usuarios';
 import { Request, Response, NextFunction } from 'express';
 import * as bcrypt from 'bcrypt';
-import { ApiResponse, STATUS_FAILED, STATUS_OK } from '../api/response';
+import { ApiResponse } from '../api/response';
 
 export class UsuariosController {
 
@@ -17,8 +17,8 @@ export class UsuariosController {
                 usuarios.forEach(u => delete u.password);
                 return usuarios
             })
-            .then(data => ApiResponse(res, STATUS_OK, data, []))
-            .catch(err => ApiResponse(res, STATUS_FAILED, [], err));
+            .then(data => ApiResponse(res, true, 200, data, []))
+            .catch(err => ApiResponse(res, false, 400, [], err));
     }
 
     public async create(req: Request, res: Response) {
@@ -98,10 +98,12 @@ export class UsuariosController {
 
     public async update(req: Request, res: Response) {
         let id = parseInt(req.params.id);
-        let email = req.body.email;
-        let username = req.body.username;
-        let telefono = req.body.telefono;
-        let fecha = new Date();
+        const newUser: Usuarios = <Usuarios>{ ...req.body }
+
+        // email: req.body.email,
+        // username: req.body.username,
+        // telefono: req.body.telefono
+
 
         let usuario = await Usuarios.findOne({ id });
         usuario.nombre = req.body.nombre;
@@ -111,72 +113,48 @@ export class UsuariosController {
         usuario.recpass = null;
         usuario.avatar = req.body.avatar;
         usuario.activo = req.body.activo;
-        usuario.updated_at = fecha;
+        // usuario.updated_at = fecha;
 
-        if (usuario.email !== email) {
-            await new Promise<void>((resolve, reject) => {
-                Usuarios.findOne({ email })
-                    .then(u => {
-                        if (u) {
-                            res.json('El email ya se encuentra registrado.');
-                        } else {
-                            usuario.email = email;
-                            resolve();
-                        }
-                    })
-                    .catch(err => {
-                        res.json(err.message);
-                        reject();
-                    });
-            });
+
+        console.log('usuario', usuario);
+        try {
+
+            console.log('newUser', newUser);
+
+            if (usuario.email !== newUser.email)
+                if (await Usuarios.findByEmail(newUser.email))
+                    return ApiResponse(res, false, 400, [], `El email ya se encuentra registrado.`);
+                else
+                    usuario.email = newUser.email;
+
+            if (usuario.username !== newUser.username)
+                if (await Usuarios.findByUsername(newUser.username))
+                    return ApiResponse(res, false, 400, [], `El username ya se encuentra registrado.`);
+                else
+                    usuario.username = newUser.username;
+
+            if (usuario.telefono !== newUser.telefono)
+                if (await Usuarios.findByTelefono(newUser.telefono))
+                    return ApiResponse(res, false, 400, [], `El telefono ya se encuentra registrado.`);
+                else
+                    usuario.telefono = newUser.telefono;
+
+
+
+            usuario.save()
+                .then((usuario: Usuarios) => {
+                    delete usuario.password;
+                    res.json(usuario);
+                })
+                .catch(err => {
+                    res.json(err)
+                })
+        } catch (error) {
+            console.log('Error', error);
         }
-
-        if (usuario.username !== username) {
-            await new Promise<void>((resolve, reject) => {
-                Usuarios.findOne({ username })
-                    .then(u => {
-                        if (u) {
-                            res.json('El nombre de usuario ya se encuentra registrado.');
-                        } else {
-                            usuario.username = username;
-                            resolve();
-                        }
-                    })
-                    .catch(err => {
-                        res.json(err.message);
-                        reject();
-                    });
-            });
-        }
-
-        if (usuario.telefono !== telefono) {
-            await new Promise<void>((resolve, reject) => {
-                Usuarios.findOne({ telefono })
-                    .then(u => {
-                        if (u) {
-                            res.json('El número de teléfono ya se encuentra registrado.');
-                        } else {
-                            usuario.telefono = telefono;
-                            resolve();
-                        }
-                    })
-                    .catch(err => {
-                        res.json(err.message);
-                        reject();
-                    });
-            });
-        }
-
-        usuario.save()
-            .then((usuario: Usuarios) => {
-                delete usuario.password;
-                res.json(usuario);
-            })
-            .catch(err => {
-                res.json(err)
-            })
 
     }
+
 
     public async updatePasswordUsuario(req: Request, res: Response) {
         const id: number = parseInt(req.params.id);
@@ -188,8 +166,8 @@ export class UsuariosController {
                 delete usuario.password;
                 return usuario;
             })
-            .then(data => ApiResponse(res, STATUS_OK, data, []))
-            .catch(err => ApiResponse(res, STATUS_FAILED, [], err));
+            .then(data => ApiResponse(res, true, 200, data, []))
+            .catch(err => ApiResponse(res, false, 400, [], err));
 
     }
 
@@ -203,8 +181,8 @@ export class UsuariosController {
                 data.forEach(u => delete u.password);
                 return { data, ...count };
             })
-            .then(({ data, count }) => ApiResponse(res, STATUS_OK, data, [], count))
-            .catch((err) => ApiResponse(res, STATUS_FAILED, [], err));
+            .then(({ data, count }) => ApiResponse(res, true, 200, data, [], count))
+            .catch((err) => ApiResponse(res, false, 400, [], err));
     }
 
     public async getPaginatedAndFilter(req: Request, res: Response) {
@@ -221,8 +199,8 @@ export class UsuariosController {
                 data.forEach(u => delete u.password);
                 return { data, ...count };
             })
-            .then(({ data, count }) => ApiResponse(res, STATUS_OK, data, [], count))
-            .catch((err) => ApiResponse(res, STATUS_FAILED, [], err));
+            .then(({ data, count }) => ApiResponse(res, true, 200, data, [], count))
+            .catch((err) => ApiResponse(res, false, 400, [], err));
     }
 
     public delete(req: Request, res: Response) {
@@ -234,10 +212,10 @@ export class UsuariosController {
                         delete usuario.password;
                         return usuario;
                     })
-                    .then(data => ApiResponse(res, STATUS_OK, data, []))
-                    .catch(err => ApiResponse(res, STATUS_FAILED, [], err));
+                    .then(data => ApiResponse(res, true, 200, data, []))
+                    .catch(err => ApiResponse(res, false, 400, [], err));
             })
-            .catch(err => ApiResponse(res, STATUS_FAILED, [], err));
+            .catch(err => ApiResponse(res, false, 400, [], err));
     };
 
     public get(req: Request, res: Response, idUser?: number) {
@@ -248,8 +226,8 @@ export class UsuariosController {
                 delete usuario.password;
                 return usuario;
             })
-            .then(data => ApiResponse(res, STATUS_OK, data, []))
-            .catch(err => ApiResponse(res, STATUS_FAILED, [], err));
+            .then(data => ApiResponse(res, true, 200, data, []))
+            .catch(err => ApiResponse(res, false, 400, [], err));
     }
 
     public async getByRecpass(req: Request, res: Response) {
@@ -259,8 +237,8 @@ export class UsuariosController {
                 delete usuario.password;
                 return usuario;
             })
-            .then(data => ApiResponse(res, STATUS_OK, data, []))
-            .catch(err => ApiResponse(res, STATUS_FAILED, [], err));
+            .then(data => ApiResponse(res, true, 200, data, []))
+            .catch(err => ApiResponse(res, false, 400, [], err));
     }
 
 }

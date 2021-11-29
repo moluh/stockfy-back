@@ -1,6 +1,6 @@
 import { Permisos } from "../Entities/Permisos";
 import { Request, Response } from "express";
-import { ApiResponse, STATUS_OK, STATUS_FAILED } from "../api/response";
+import { ApiResponse } from "../api/response";
 
 export class PermisosController {
 
@@ -8,15 +8,15 @@ export class PermisosController {
 
   public getAll(req: Request, res: Response) {
     Permisos.find({ order: { permiso: "ASC" }, relations: ["modulo"] })
-      .then(data => ApiResponse(res, STATUS_OK, data, []))
-      .catch(err => ApiResponse(res, STATUS_FAILED, [], err));
+      .then(data => ApiResponse(res, true, 200, data, []))
+      .catch(err => ApiResponse(res, false, 400, [], err));
   }
 
   public get(req: Request, res: Response) {
     let id = parseInt(req.params.id);
     Permisos.findOne({ id })
-      .then(data => ApiResponse(res, STATUS_OK, data, []))
-      .catch(err => ApiResponse(res, STATUS_FAILED, [], err));
+      .then(data => ApiResponse(res, true, 200, data, []))
+      .catch(err => ApiResponse(res, false, 400, [], err));
   }
 
   public getPaginated(req: Request, res: Response) {
@@ -24,8 +24,8 @@ export class PermisosController {
     const pageSize: any = req.query.pageSize || 10;
 
     Permisos.getPermisosPaginated(pageNro, pageSize)
-      .then(data => ApiResponse(res, STATUS_OK, data, []))
-      .catch(err => ApiResponse(res, STATUS_FAILED, [], err));
+      .then(data => ApiResponse(res, true, 200, data, []))
+      .catch(err => ApiResponse(res, false, 400, [], err));
   }
 
   public create(req: Request, res: Response) {
@@ -33,8 +33,8 @@ export class PermisosController {
     permiso.permiso = req.body.permiso;
     permiso
       .save()
-      .then(data => ApiResponse(res, STATUS_OK, data, []))
-      .catch(err => ApiResponse(res, STATUS_FAILED, [], err));
+      .then(data => ApiResponse(res, true, 200, data, []))
+      .catch(err => ApiResponse(res, false, 400, [], err));
   }
 
   public update(req: Request, res: Response) {
@@ -46,10 +46,10 @@ export class PermisosController {
         permiso.modulo = req.body.modulo;
         permiso
           .save()
-          .then(data => ApiResponse(res, STATUS_OK, data, []))
-          .catch(err => ApiResponse(res, STATUS_FAILED, [], err));
+          .then(data => ApiResponse(res, true, 200, data, []))
+          .catch(err => ApiResponse(res, false, 400, [], err));
       })
-      .catch(err => ApiResponse(res, STATUS_FAILED, [], err));
+      .catch(err => ApiResponse(res, false, 400, [], err));
   }
 
   public delete(req: Request, res: Response) {
@@ -58,10 +58,10 @@ export class PermisosController {
       .then((permiso) => {
         permiso
           .remove()
-          .then(data => ApiResponse(res, STATUS_OK, data, []))
-          .catch(err => ApiResponse(res, STATUS_FAILED, [], err));
+          .then(data => ApiResponse(res, true, 200, data, []))
+          .catch(err => ApiResponse(res, false, 400, [], err));
       })
-      .catch(err => ApiResponse(res, STATUS_FAILED, [], err));
+      .catch(err => ApiResponse(res, false, 400, [], err));
   }
 
 }

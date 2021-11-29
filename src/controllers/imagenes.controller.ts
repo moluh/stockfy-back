@@ -1,6 +1,6 @@
 import { Imagenes } from '../Entities/Imagenes';
 import { Request, Response, NextFunction } from 'express';
-import { ApiResponse, STATUS_FAILED, STATUS_OK } from '../api/response';
+import { ApiResponse } from '../api/response';
 
 
 export class ImagenesController {
@@ -12,15 +12,15 @@ export class ImagenesController {
         Imagenes.find({
             order: { id: "ASC" }
         })
-            .then(data => ApiResponse(res, STATUS_OK, data, []))
-            .catch(err => ApiResponse(res, STATUS_FAILED, [], err));
+            .then(data => ApiResponse(res, true, 200, data, []))
+            .catch(err => ApiResponse(res, false, 400, [], err));
     }
 
     public get(req: Request, res: Response) {
         const id: number = parseInt(req.params.id)
         Imagenes.findOne({ id })
-            .then(data => ApiResponse(res, STATUS_OK, data, []))
-            .catch(err => ApiResponse(res, STATUS_FAILED, [], err));
+            .then(data => ApiResponse(res, true, 200, data, []))
+            .catch(err => ApiResponse(res, false, 400, [], err));
     }
 
     public createImgFromArt(req: Request, res: Response, imagen) {
@@ -42,8 +42,8 @@ export class ImagenesController {
         let img = Imagenes.create();
         img = req.body;
         img.save()
-            .then(data => ApiResponse(res, STATUS_OK, data, []))
-            .catch(err => ApiResponse(res, STATUS_FAILED, [], err));
+            .then(data => ApiResponse(res, true, 200, data, []))
+            .catch(err => ApiResponse(res, false, 400, [], err));
     };
 
     public update(req: Request, res: Response) {
@@ -55,10 +55,10 @@ export class ImagenesController {
                 img.url = req.body.url;
                 img.producto = req.body.producto;
                 img.save()
-                    .then(data => ApiResponse(res, STATUS_OK, data, []))
-                    .catch(err => ApiResponse(res, STATUS_FAILED, [], err));
+                    .then(data => ApiResponse(res, true, 200, data, []))
+                    .catch(err => ApiResponse(res, false, 400, [], err));
             })
-            .catch(err => ApiResponse(res, STATUS_FAILED, [], err));
+            .catch(err => ApiResponse(res, false, 400, [], err));
     }
 
     public delete(req: Request, res: Response) {
@@ -67,10 +67,10 @@ export class ImagenesController {
         Imagenes.findOne({ id })
             .then(img => {
                 img.remove()
-                    .then(data => ApiResponse(res, STATUS_OK, data, []))
-                    .catch(err => ApiResponse(res, STATUS_FAILED, [], err));
+                    .then(data => ApiResponse(res, true, 200, data, []))
+                    .catch(err => ApiResponse(res, false, 400, [], err));
             })
-            .catch(err => ApiResponse(res, STATUS_FAILED, [], err));
+            .catch(err => ApiResponse(res, false, 400, [], err));
     };
 
 

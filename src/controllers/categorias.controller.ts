@@ -1,6 +1,6 @@
 import { Categorias } from '../Entities/Categorias';
 import { Request, Response } from 'express';
-import { ApiResponse, STATUS_FAILED, STATUS_OK } from '../api/response';
+import { ApiResponse } from '../api/response';
 
 interface MulterRequest extends Request {
     file: any;
@@ -12,8 +12,8 @@ export class CategoriasController {
 
     public getAll(req: Request, res: Response) {
         Categorias.find({ order: { categoria: "ASC" } })
-            .then(data => ApiResponse(res, STATUS_OK, data, []))
-            .catch(err => ApiResponse(res, STATUS_FAILED, [], err));
+            .then(data => ApiResponse(res, true, 200, data, []))
+            .catch(err => ApiResponse(res, false, 400, [], err));
     }
 
     public getPaginated(req: Request, res: Response) {
@@ -21,8 +21,8 @@ export class CategoriasController {
         const pageSize: any = req.query.pageSize || 10;
 
         Categorias.getPaginated(pageNro, pageSize)
-            .then(data => ApiResponse(res, STATUS_OK, data, []))
-            .catch(err => ApiResponse(res, STATUS_FAILED, [], err));
+            .then(data => ApiResponse(res, true, 200, data, []))
+            .catch(err => ApiResponse(res, false, 400, [], err));
     }
 
     public getActives(req: Request, res: Response) {
@@ -30,23 +30,23 @@ export class CategoriasController {
             where: { activo: true },
             order: { categoria: "ASC" }
         })
-            .then(data => ApiResponse(res, STATUS_OK, data, []))
-            .catch(err => ApiResponse(res, STATUS_FAILED, [], err));
+            .then(data => ApiResponse(res, true, 200, data, []))
+            .catch(err => ApiResponse(res, false, 400, [], err));
     }
 
     public get(req: Request, res: Response) {
         let id = parseInt(req.params.id)
         Categorias.findOne({ id })
-            .then(data => ApiResponse(res, STATUS_OK, data, []))
-            .catch(err => ApiResponse(res, STATUS_FAILED, [], err));
+            .then(data => ApiResponse(res, true, 200, data, []))
+            .catch(err => ApiResponse(res, false, 400, [], err));
     }
 
     public create(req: MulterRequest, res: Response) {
         const categorias = Categorias.create({ ...req.body } as Object);
         delete categorias.id;
         categorias.save()
-            .then(data => ApiResponse(res, STATUS_OK, data, []))
-            .catch(err => ApiResponse(res, STATUS_FAILED, [], err));
+            .then(data => ApiResponse(res, true, 200, data, []))
+            .catch(err => ApiResponse(res, false, 400, [], err));
     };
 
     public update(req: Request, res: Response) {
@@ -56,8 +56,8 @@ export class CategoriasController {
                 data.categoria = req.body.categoria;
                 data.activo = req.body.activo;
                 data.save()
-                    .then(data => ApiResponse(res, STATUS_OK, data, []))
-                    .catch(err => ApiResponse(res, STATUS_FAILED, [], err));
+                    .then(data => ApiResponse(res, true, 200, data, []))
+                    .catch(err => ApiResponse(res, false, 400, [], err));
             })
             .catch(err => { res.send(err) });
     }
@@ -67,8 +67,8 @@ export class CategoriasController {
         Categorias.findOne({ id })
             .then(data => {
                 data.remove()
-                    .then(data => ApiResponse(res, STATUS_OK, data, []))
-                    .catch(err => ApiResponse(res, STATUS_FAILED, [], err));
+                    .then(data => ApiResponse(res, true, 200, data, []))
+                    .catch(err => ApiResponse(res, false, 400, [], err));
             })
             .catch(err => { res.send(err) });
     };

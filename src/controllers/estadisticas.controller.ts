@@ -1,7 +1,7 @@
 import { Movimientos } from "../Entities/Movimientos";
 import { getDiffDates } from "../helpers/getDiffDates";
 import { Request, Response } from "express";
-import { ApiResponse, STATUS_OK, STATUS_FAILED } from "../api/response";
+import { ApiResponse } from "../api/response";
 const getDates: getDiffDates = new getDiffDates();
 
 export class EstadisticasController {
@@ -12,8 +12,8 @@ export class EstadisticasController {
     const to = req.body.to;
 
     Movimientos.getStatisticsBetweenDates(from, to)
-      .then((data) => ApiResponse(res, STATUS_OK, data, []))
-      .catch((err) => ApiResponse(res, STATUS_FAILED, [], err));
+      .then((data) => ApiResponse(res, true, 200, data, []))
+      .catch((err) => ApiResponse(res, false, 400, [], err));
   }
 
   public getBetweenDatesGraphic(req: Request, res: Response) {
@@ -21,8 +21,8 @@ export class EstadisticasController {
     const to = req.body.to;
 
     Movimientos.getStatisticsBetweenDatesGraphic(from, to)
-      .then((data) => ApiResponse(res, STATUS_OK, data, []))
-      .catch((err) => ApiResponse(res, STATUS_FAILED, [], err));
+      .then((data) => ApiResponse(res, true, 200, data, []))
+      .catch((err) => ApiResponse(res, false, 400, [], err));
   }
 
   public dashboard(req: Request, res: Response) {}

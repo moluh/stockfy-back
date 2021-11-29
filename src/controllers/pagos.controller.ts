@@ -1,6 +1,6 @@
 import { Pagos } from "../Entities/Pagos";
 import e, { Request, Response } from "express";
-import { ApiResponse, STATUS_OK, STATUS_FAILED } from "../api/response";
+import { ApiResponse } from "../api/response";
 import { Movimientos } from "../Entities/Movimientos";
 import { MovimientosController } from "./movimientos.controller";
 
@@ -13,15 +13,15 @@ export class PagosController {
       order: { fecha: "ASC" },
       relations: ['movimiento']
     })
-      .then(data => ApiResponse(res, STATUS_OK, data, []))
-      .catch(err => ApiResponse(res, STATUS_FAILED, [], err));
+      .then(data => ApiResponse(res, true, 200, data, []))
+      .catch(err => ApiResponse(res, false, 400, [], err));
   }
 
   public get(req: Request, res: Response) {
     let id = parseInt(req.params.id);
     Pagos.findOne({ id })
-      .then(data => ApiResponse(res, STATUS_OK, data, []))
-      .catch(err => ApiResponse(res, STATUS_FAILED, [], err));
+      .then(data => ApiResponse(res, true, 200, data, []))
+      .catch(err => ApiResponse(res, false, 400, [], err));
   }
 
   public getPaginated(req: Request, res: Response) {
@@ -29,8 +29,8 @@ export class PagosController {
     const pageSize: any = req.query.pageSize || 10;
 
     Pagos.getPaginated(pageNro, pageSize)
-      .then(data => ApiResponse(res, STATUS_OK, data, []))
-      .catch(err => ApiResponse(res, STATUS_FAILED, [], err));
+      .then(data => ApiResponse(res, true, 200, data, []))
+      .catch(err => ApiResponse(res, false, 400, [], err));
   }
 
   public create(req: Request, res: Response) {
@@ -42,11 +42,11 @@ export class PagosController {
       .then(async data => {
         const response = await movCtrl.updateBalance(data, "create")
         if (response.ok)
-          ApiResponse(res, STATUS_OK, data, [])
+          ApiResponse(res, true, 200, data, [])
         else
-          ApiResponse(res, STATUS_FAILED, [], "Error al actualizar el saldo.")
+          ApiResponse(res, false, 400, [], "Error al actualizar el saldo.")
       })
-      .catch(err => ApiResponse(res, STATUS_FAILED, [], err));
+      .catch(err => ApiResponse(res, false, 400, [], err));
   }
 
 
@@ -75,10 +75,10 @@ export class PagosController {
         pago.movimiento = req.body.movimientoId
         pago
           .save()
-          .then(data => ApiResponse(res, STATUS_OK, data, []))
-          .catch(err => ApiResponse(res, STATUS_FAILED, [], err));
+          .then(data => ApiResponse(res, true, 200, data, []))
+          .catch(err => ApiResponse(res, false, 400, [], err));
       })
-      .catch(err => ApiResponse(res, STATUS_FAILED, [], err));
+      .catch(err => ApiResponse(res, false, 400, [], err));
   }
 
   public delete(req: Request, res: Response) {
@@ -95,10 +95,10 @@ export class PagosController {
 
         pago
           .remove()
-          .then(data => ApiResponse(res, STATUS_OK, data, []))
-          .catch(err => ApiResponse(res, STATUS_FAILED, [], err));
+          .then(data => ApiResponse(res, true, 200, data, []))
+          .catch(err => ApiResponse(res, false, 400, [], err));
       })
-      .catch(err => ApiResponse(res, STATUS_FAILED, [], err));
+      .catch(err => ApiResponse(res, false, 400, [], err));
   }
 
 }

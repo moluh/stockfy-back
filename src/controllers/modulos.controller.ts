@@ -1,6 +1,6 @@
 import { Modulos } from "../Entities/Modulos";
 import { Request, Response } from "express";
-import { ApiResponse, STATUS_OK, STATUS_FAILED } from "../api/response";
+import { ApiResponse } from "../api/response";
 
 export class ModulosController {
 
@@ -8,15 +8,15 @@ export class ModulosController {
 
   public getAll(req: Request, res: Response) {
     Modulos.find({ order: { modulo: "ASC" }, relations: ["permiso"] })
-      .then(data => ApiResponse(res, STATUS_OK, data, []))
-      .catch(err => ApiResponse(res, STATUS_FAILED, [], err));
+      .then(data => ApiResponse(res, true, 200, data, []))
+      .catch(err => ApiResponse(res, false, 400, [], err));
   }
 
   public get(req: Request, res: Response) {
     let id = parseInt(req.params.id);
     Modulos.findOne({ id })
-      .then(data => ApiResponse(res, STATUS_OK, data, []))
-      .catch(err => ApiResponse(res, STATUS_FAILED, [], err));
+      .then(data => ApiResponse(res, true, 200, data, []))
+      .catch(err => ApiResponse(res, false, 400, [], err));
   }
 
   public getPaginated(req: Request, res: Response) {
@@ -24,8 +24,8 @@ export class ModulosController {
     const pageSize: any = req.query.pageSize || 10;
 
     Modulos.getModulosPaginated(pageNro, pageSize)
-      .then(data => ApiResponse(res, STATUS_OK, data, []))
-      .catch(err => ApiResponse(res, STATUS_FAILED, [], err));
+      .then(data => ApiResponse(res, true, 200, data, []))
+      .catch(err => ApiResponse(res, false, 400, [], err));
   }
 
   public create(req: Request, res: Response) {
@@ -33,8 +33,8 @@ export class ModulosController {
     modulo.modulo = req.body.modulo;
     modulo
       .save()
-      .then(data => ApiResponse(res, STATUS_OK, data, []))
-      .catch(err => ApiResponse(res, STATUS_FAILED, [], err));
+      .then(data => ApiResponse(res, true, 200, data, []))
+      .catch(err => ApiResponse(res, false, 400, [], err));
   }
 
   public update(req: Request, res: Response) {
@@ -47,10 +47,10 @@ export class ModulosController {
         modulo.permiso = req.body.permiso;
         modulo
           .save()
-          .then(data => ApiResponse(res, STATUS_OK, data, []))
-          .catch(err => ApiResponse(res, STATUS_FAILED, [], err));
+          .then(data => ApiResponse(res, true, 200, data, []))
+          .catch(err => ApiResponse(res, false, 400, [], err));
       })
-      .catch(err => ApiResponse(res, STATUS_FAILED, [], err));
+      .catch(err => ApiResponse(res, false, 400, [], err));
   }
 
   public delete(req: Request, res: Response) {
@@ -59,10 +59,10 @@ export class ModulosController {
       .then((modulo) => {
         modulo
           .remove()
-          .then(data => ApiResponse(res, STATUS_OK, data, []))
-          .catch(err => ApiResponse(res, STATUS_FAILED, [], err));
+          .then(data => ApiResponse(res, true, 200, data, []))
+          .catch(err => ApiResponse(res, false, 400, [], err));
       })
-      .catch(err => ApiResponse(res, STATUS_FAILED, [], err));
+      .catch(err => ApiResponse(res, false, 400, [], err));
   }
 
 }

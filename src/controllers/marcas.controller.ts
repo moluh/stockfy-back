@@ -1,6 +1,6 @@
 import { Marcas } from "../Entities/Marcas";
 import { Request, Response } from "express";
-import { ApiResponse, STATUS_OK, STATUS_FAILED } from "../api/response";
+import { ApiResponse } from "../api/response";
 
 export class MarcasController {
 
@@ -8,15 +8,15 @@ export class MarcasController {
 
   public getAll(req: Request, res: Response) {
     Marcas.find({ order: { marca: "ASC" } })
-      .then(data => ApiResponse(res, STATUS_OK, data, []))
-      .catch(err => ApiResponse(res, STATUS_FAILED, [], err));
+      .then(data => ApiResponse(res, true, 200, data, []))
+      .catch(err => ApiResponse(res, false, 400, [], err));
   }
 
   public get(req: Request, res: Response) {
     let id = parseInt(req.params.id);
     Marcas.findOne({ id })
-      .then(data => ApiResponse(res, STATUS_OK, data, []))
-      .catch(err => ApiResponse(res, STATUS_FAILED, [], err));
+      .then(data => ApiResponse(res, true, 200, data, []))
+      .catch(err => ApiResponse(res, false, 400, [], err));
   }
 
   public getPaginated(req: Request, res: Response) {
@@ -24,8 +24,8 @@ export class MarcasController {
     const pageSize: any = req.query.pageSize || 10;
 
     Marcas.getMarcasPaginated(pageNro, pageSize)
-      .then(data => ApiResponse(res, STATUS_OK, data, []))
-      .catch(err => ApiResponse(res, STATUS_FAILED, [], err));
+      .then(data => ApiResponse(res, true, 200, data, []))
+      .catch(err => ApiResponse(res, false, 400, [], err));
   }
 
   public create(req: Request, res: Response) {
@@ -33,8 +33,8 @@ export class MarcasController {
     marca.marca = req.body.marca;
     marca
       .save()
-      .then(data => ApiResponse(res, STATUS_OK, data, []))
-      .catch(err => ApiResponse(res, STATUS_FAILED, [], err));
+      .then(data => ApiResponse(res, true, 200, data, []))
+      .catch(err => ApiResponse(res, false, 400, [], err));
   }
 
   public update(req: Request, res: Response) {
@@ -44,10 +44,10 @@ export class MarcasController {
         marca.marca = req.body.marca;
         marca
           .save()
-          .then(data => ApiResponse(res, STATUS_OK, data, []))
-          .catch(err => ApiResponse(res, STATUS_FAILED, [], err));
+          .then(data => ApiResponse(res, true, 200, data, []))
+          .catch(err => ApiResponse(res, false, 400, [], err));
       })
-      .catch(err => ApiResponse(res, STATUS_FAILED, [], err));
+      .catch(err => ApiResponse(res, false, 400, [], err));
   }
 
   public delete(req: Request, res: Response) {
@@ -56,10 +56,10 @@ export class MarcasController {
       .then((marca) => {
         marca
           .remove()
-          .then(data => ApiResponse(res, STATUS_OK, data, []))
-          .catch(err => ApiResponse(res, STATUS_FAILED, [], err));
+          .then(data => ApiResponse(res, true, 200, data, []))
+          .catch(err => ApiResponse(res, false, 400, [], err));
       })
-      .catch(err => ApiResponse(res, STATUS_FAILED, [], err));
+      .catch(err => ApiResponse(res, false, 400, [], err));
   }
 
 }

@@ -1,20 +1,20 @@
 import { Movimientos } from "../Entities/Movimientos";
 import { Request, Response } from "express";
 import { ProductosController } from "./productos.controller";
-import { ApiResponse, STATUS_FAILED, STATUS_OK } from "../api/response";
+import { ApiResponse } from "../api/response";
 import { PagosController } from "./pagos.controller";
 import { Pagos } from "../Entities/Pagos";
 
 export class MovimientosController {
-  constructor() {}
+  constructor() { }
 
   public getAll(req: Request, res: Response) {
     Movimientos.find({
       order: { fecha: "ASC" },
       relations: ["cliente", "movimiento_lineas", "pagos"],
     })
-      .then((data) => ApiResponse(res, STATUS_OK, data, []))
-      .catch((err) => ApiResponse(res, STATUS_FAILED, [], err));
+      .then((data) => ApiResponse(res, true, 200, data, []))
+      .catch((err) => ApiResponse(res, false, 400, [], err));
   }
 
   public get(req: Request, res: Response) {
@@ -23,16 +23,16 @@ export class MovimientosController {
       { id },
       { relations: ["cliente", "movimiento_lineas", "pagos"] }
     )
-      .then((data) => ApiResponse(res, STATUS_OK, data, []))
-      .catch((err) => ApiResponse(res, STATUS_FAILED, [], err));
+      .then((data) => ApiResponse(res, true, 200, data, []))
+      .catch((err) => ApiResponse(res, false, 400, [], err));
   }
 
   public getPaginated(req: Request, res: Response) {
     let pageNro: any = req.query.pageNro || 0;
     let pageSize: any = req.query.pageSize;
     Movimientos.getPaginated(pageNro, pageSize)
-      .then(({ data, count }) => ApiResponse(res, STATUS_OK, data, [], count))
-      .catch((err) => ApiResponse(res, STATUS_FAILED, [], err));
+      .then(({ data, count }) => ApiResponse(res, true, 200, data, [], count))
+      .catch((err) => ApiResponse(res, false, 400, [], err));
   }
 
   public getPaginatedAndFilter(req: Request, res: Response) {
@@ -41,8 +41,8 @@ export class MovimientosController {
     let attr: any = req.query.attr;
     let txt: any = req.query.txt;
     Movimientos.getPaginatedAndFilter(pageNro, pageSize, attr, txt)
-      .then(({ data, count }) => ApiResponse(res, STATUS_OK, data, [], count))
-      .catch((err) => ApiResponse(res, STATUS_FAILED, [], err));
+      .then(({ data, count }) => ApiResponse(res, true, 200, data, [], count))
+      .catch((err) => ApiResponse(res, false, 400, [], err));
   }
 
   getPaginatedByClientId(req: Request, res: Response) {
@@ -50,18 +50,18 @@ export class MovimientosController {
     let pageSize: any = req.query.pageSize;
     let clientId: any = req.params.clientId;
     Movimientos.getPaginatedByClientId(pageNro, pageSize, clientId)
-      .then(({ data, count }) => ApiResponse(res, STATUS_OK, data, [], count))
-      .catch((err) => ApiResponse(res, STATUS_FAILED, [], err));
-  } 
+      .then(({ data, count }) => ApiResponse(res, true, 200, data, [], count))
+      .catch((err) => ApiResponse(res, false, 400, [], err));
+  }
 
   getPaginatedByDate(req: Request, res: Response) {
     let pageNro: any = req.query.pageNro || 0;
     let pageSize: any = req.query.pageSize;
     let date: any = req.params.date;
     Movimientos.getPaginatedByDate(pageNro, pageSize, date)
-      .then(({ data, count }) => ApiResponse(res, STATUS_OK, data, [], count))
-      .catch((err) => ApiResponse(res, STATUS_FAILED, [], err));
-  } 
+      .then(({ data, count }) => ApiResponse(res, true, 200, data, [], count))
+      .catch((err) => ApiResponse(res, false, 400, [], err));
+  }
 
   getPaginatedBetweenDates(req: Request, res: Response) {
     let pageNro: any = req.query.pageNro || 0;
@@ -69,9 +69,9 @@ export class MovimientosController {
     let from: any = req.params.from;
     let to: any = req.params.to;
     Movimientos.getPaginatedBetweenDates(pageNro, pageSize, from, to)
-      .then(({ data, count }) => ApiResponse(res, STATUS_OK, data, [], count))
-      .catch((err) => ApiResponse(res, STATUS_FAILED, [], err));
-  } 
+      .then(({ data, count }) => ApiResponse(res, true, 200, data, [], count))
+      .catch((err) => ApiResponse(res, false, 400, [], err));
+  }
 
   public async create(req: Request, res: Response) {
     let prodCtrl = new ProductosController();
@@ -92,17 +92,13 @@ export class MovimientosController {
         // crear el pago relacionado al nuevo movimiento
         if (movimiento.pagos.length > 0) {
           const resp = await pagosCtrl.createAfterMovement(movement);
-          if (resp) ApiResponse(res, STATUS_OK, resp, []);
+          if (resp)
+            ApiResponse(res, true, 200, resp, []);
           else
-            ApiResponse(
-              res,
-              STATUS_FAILED,
-              [],
-              "Ocurrió un error al cargar el pago al movimiento."
-            );
-        } else ApiResponse(res, STATUS_OK, movement, []);
+            ApiResponse(res, false, 400, [], "Ocurrió un error al cargar el pago al movimiento.");
+        } else ApiResponse(res, true, 200, movement, []);
       })
-      .catch((err) => ApiResponse(res, STATUS_FAILED, [], err));
+      .catch((err) => ApiResponse(res, false, 400, [], err));
   }
 
   public async updateBalance(pago: Pagos, action: string): Promise<any> {
@@ -147,10 +143,10 @@ export class MovimientosController {
         movimiento.movimiento_lineas = req.body.movimiento_lineas;
         movimiento
           .save()
-          .then((data) => ApiResponse(res, STATUS_OK, data, []))
-          .catch((err) => ApiResponse(res, STATUS_FAILED, [], err));
+          .then((data) => ApiResponse(res, true, 200, data, []))
+          .catch((err) => ApiResponse(res, false, 400, [], err));
       })
-      .catch((err) => ApiResponse(res, STATUS_FAILED, [], err));
+      .catch((err) => ApiResponse(res, false, 400, [], err));
   }
 
   public delete(req: Request, res: Response) {
@@ -159,10 +155,10 @@ export class MovimientosController {
       .then((movimiento) => {
         movimiento
           .remove()
-          .then((data) => ApiResponse(res, STATUS_OK, data, []))
-          .catch((err) => ApiResponse(res, STATUS_FAILED, [], err));
+          .then((data) => ApiResponse(res, true, 200, data, []))
+          .catch((err) => ApiResponse(res, false, 400, [], err));
       })
-      .catch((err) => ApiResponse(res, STATUS_FAILED, [], err));
+      .catch((err) => ApiResponse(res, false, 400, [], err));
   }
 
   public changeState(req: Request, res: Response) {
@@ -174,9 +170,9 @@ export class MovimientosController {
         movimiento.estado = state;
         movimiento
           .save()
-          .then((data) => ApiResponse(res, STATUS_OK, data, []))
-          .catch((err) => ApiResponse(res, STATUS_FAILED, [], err));
+          .then((data) => ApiResponse(res, true, 200, data, []))
+          .catch((err) => ApiResponse(res, false, 400, [], err));
       })
-      .catch((err) => ApiResponse(res, STATUS_FAILED, [], err));
+      .catch((err) => ApiResponse(res, false, 400, [], err));
   }
 }
