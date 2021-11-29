@@ -23,103 +23,39 @@ export class UsuariosController {
 
     public async create(req: Request, res: Response) {
 
-        let usuario: Usuarios = new Usuarios();
-        let email = req.body.email;
-        let username = req.body.username;
-        let telefono = req.body.telefono;
-        let fc_alta = new Date();
-
-        usuario.roles = req.body.roles || ["USUARIO"]
-        usuario.email = email;
-        usuario.telefono = telefono;
-        usuario.username = username;
-        usuario.created_at = fc_alta;
-        usuario.updated_at = fc_alta;
-        usuario.nombre = req.body.nombre;
-        usuario.apellido = req.body.apellido;
-        usuario.avatar = req.body.avatar
-        usuario.domicilio = req.body.domicilio;
+        const usuario: Usuarios = Usuarios.create({ ...req.body } as Object);
+        // todo: find rol "USUARIO" by id and set it automatically
+        usuario.roles = req.body.roles || [{ id: 2, role: "USUARIO" }]
         usuario.password = bcrypt.hashSync(req.body.password, 10);
 
-        await new Promise<void>((resolve, reject) => {
-            Usuarios.findOne({ email })
-                .then(u => {
-                    if (u) {
-                        res.json('El email ya se encuentra registrado.');
-                    } else {
-                        resolve();
-                    }
-                })
-                .catch(err => {
-                    res.json(err.message);
-                    reject()
-                });
-        });
+        try {
 
-        await new Promise<void>((resolve, reject) => {
-            Usuarios.findOne({ username })
-                .then(u => {
-                    if (u) {
-                        res.json('El nombre de usuario ya se encuentra registrado.');
-                    } else {
-                        resolve();
-                    }
-                })
-                .catch(err => {
-                    res.json(err.message);
-                    reject();
-                });
-        });
+            if (await Usuarios.findByEmail(usuario.email))
+                return ApiResponse(res, false, 400, [], `El email ya se encuentra registrado.`);
 
-        await new Promise<void>((resolve, reject) => {
-            Usuarios.findOne({ telefono })
-                .then(u => {
-                    if (u) {
-                        res.json('El número de teléfono ya se encuentra registrado.');
-                    } else {
-                        resolve();
-                    }
-                })
-                .catch(err => {
-                    res.json(err.message);
-                    reject()
-                });
-        });
+            if (await Usuarios.findByUsername(usuario.username))
+                return ApiResponse(res, false, 400, [], `El username ya se encuentra registrado.`);
 
-        usuario.save()
-            .then((usuario: Usuarios) => {
-                delete usuario.password;
-                res.json(usuario);
-            }).catch(err => {
-                res.json(err);
-            });
+            if (await Usuarios.findByTelefono(usuario.telefono))
+                return ApiResponse(res, false, 400, [], `El telefono ya se encuentra registrado.`);
+
+            await usuario.save();
+            delete usuario.password;
+            ApiResponse(res, true, 200, usuario, null);
+
+        } catch (error) {
+            ApiResponse(res, false, 400, [], error);
+        }
+
 
     };
 
     public async update(req: Request, res: Response) {
         let id = parseInt(req.params.id);
         const newUser: Usuarios = <Usuarios>{ ...req.body }
-
-        // email: req.body.email,
-        // username: req.body.username,
-        // telefono: req.body.telefono
-
-
         let usuario = await Usuarios.findOne({ id });
-        usuario.nombre = req.body.nombre;
-        usuario.apellido = req.body.apellido;
-        usuario.domicilio = req.body.domicilio;
-        usuario.roles = req.body.roles;
-        usuario.recpass = null;
-        usuario.avatar = req.body.avatar;
-        usuario.activo = req.body.activo;
-        // usuario.updated_at = fecha;
 
-
-        console.log('usuario', usuario);
         try {
-
-            console.log('newUser', newUser);
 
             if (usuario.email !== newUser.email)
                 if (await Usuarios.findByEmail(newUser.email))
@@ -140,17 +76,14 @@ export class UsuariosController {
                     usuario.telefono = newUser.telefono;
 
 
+            usuario = Usuarios.create({ ...req.body } as Object);
+            delete usuario.password;
 
-            usuario.save()
-                .then((usuario: Usuarios) => {
-                    delete usuario.password;
-                    res.json(usuario);
-                })
-                .catch(err => {
-                    res.json(err)
-                })
+            await usuario.save();
+            ApiResponse(res, true, 200, usuario, null);
+
         } catch (error) {
-            console.log('Error', error);
+            ApiResponse(res, false, 400, [], error);
         }
 
     }
@@ -232,7 +165,7 @@ export class UsuariosController {
 
     public async getByRecpass(req: Request, res: Response) {
         let recpass = req.params.recpass;
-        let usuario = await Usuarios.findByRecpass(recpass)
+        Usuarios.findByRecpass(recpass)
             .then((usuario: Usuarios) => {
                 delete usuario.password;
                 return usuario;

@@ -11,7 +11,6 @@ import {
   CreateDateColumn,
 } from "typeorm";
 import { Marcas } from "./Marcas";
-import { Categorias } from "./Categorias";
 import { Imagenes } from "./Imagenes";
 import { Proveedores } from "./Proveedores";
 import { Talles } from "./Talles";
