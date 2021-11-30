@@ -8,19 +8,19 @@ const conf: Config = new Config();
 const isDevEnv: boolean = conf.nodeEnv === "DEV" ? true : false;
 
 interface CustomResponse {
-  ok: boolean,
-  data: any[],
-  status: number,
-  count?: number,
-  error?: any,
-  code?: string,
-  userMessage?: string,
-  internalMessage?: string
+  ok: boolean;
+  data: any[];
+  status: number;
+  count?: number;
+  error?: any;
+  code?: string;
+  userMessage?: string;
+  internalMessage?: string;
 }
 
 /**
  * Custom response to normalize all Responses.
- * 
+ *
  * @param res  Response object.
  * @param ok Boolean arg.
  * @param status Code of the status response.
@@ -37,22 +37,28 @@ export function ApiResponse(
   error?: any,
   count?: string
 ): Response<CustomResponse> {
-  
-  return status < 400
+  // chequeamos que sea un array, sino, lo convertimos en uno
+  if (!Array.isArray(data)) data = [data];
+
+  return ok
     ? res.status(status).json({
-      ok,
-      data,
-      status,
-      count: parseInt(count) || 0
-    })
+        ok,
+        data,
+        status,
+        count: parseInt(count) || 0,
+      })
     : res.status(status).json({
-      ok: false,
-      error: error ? (isDevEnv ? error : "Error inesperado, intente nuevamente.") : "",
-      status,
-      code: parseInt(error?.code),
-      userMessage: error?.message,
-      internalMessage: error?.sqlMessage
-    });
+        ok: false,
+        error: error
+          ? isDevEnv
+            ? error
+            : "Error inesperado, intente nuevamente."
+          : "",
+        status,
+        code: parseInt(error?.code),
+        userMessage: error?.sqlMessage,
+        internalMessage: error?.message,
+      });
 }
 
 /**

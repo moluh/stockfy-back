@@ -67,7 +67,7 @@ export class Movimientos extends BaseEntity {
 
     const data = await this.createQueryBuilder("movimientos")
       .innerJoinAndSelect("movimientos.movimiento_lineas", "pl")
-      .innerJoinAndSelect("movimientos.cliente", "cliente")
+      .innerJoinAndSelect("movimientos.usuario", "usuario")
       .leftJoinAndSelect("movimientos.pagos", "pagos")
       .orderBy("movimientos.fecha", "ASC")
       .skip(skipRecords)
@@ -80,7 +80,7 @@ export class Movimientos extends BaseEntity {
   static async getPaginatedByClientId(
     pageNro: number,
     pageSize: number,
-    clientId: string
+    usuarioId: string
   ) {
     const skipRecords = pageNro * pageSize;
     const count = await this.createQueryBuilder("movimientos")
@@ -88,10 +88,10 @@ export class Movimientos extends BaseEntity {
       .getRawOne();
 
     const data = await this.createQueryBuilder("movimientos")
-      .leftJoinAndSelect("movimientos.cliente", "mc")
+      .leftJoinAndSelect("movimientos.usuario", "usuario")
       .leftJoinAndSelect("movimientos.movimiento_lineas", "pl")
       .leftJoinAndSelect("movimientos.pagos", "pagos")
-      .where(`movimientos.clienteId = :clientId`, { clientId })
+      .where(`movimientos.usuarioId = :usuarioId`, { usuarioId })
       .orderBy("movimientos.fecha", "ASC")
       .skip(skipRecords)
       .take(pageSize)
@@ -111,7 +111,7 @@ export class Movimientos extends BaseEntity {
       .getRawOne();
 
     const data = await this.createQueryBuilder("movimientos")
-      .leftJoinAndSelect("movimientos.cliente", "mc")
+      .leftJoinAndSelect("movimientos.usuario", "usuario")
       .leftJoinAndSelect("movimientos.movimiento_lineas", "pl")
       .leftJoinAndSelect("movimientos.pagos", "pagos")
       .where(`movimientos.fecha LIKE :date`, { date })
@@ -135,7 +135,7 @@ export class Movimientos extends BaseEntity {
       .getRawOne();
 
     const data = await this.createQueryBuilder("movimientos")
-      .leftJoinAndSelect("movimientos.cliente", "mc")
+      .leftJoinAndSelect("movimientos.usuario", "usuario")
       .leftJoinAndSelect("movimientos.movimiento_lineas", "pl")
       .leftJoinAndSelect("movimientos.pagos", "pagos")
       .where(`movimientos.fecha BETWEEN :from AND :to`, { from, to })
@@ -165,7 +165,7 @@ export class Movimientos extends BaseEntity {
       .getRawOne();
 
     const data = await this.createQueryBuilder("movimientos")
-      .leftJoinAndSelect("movimientos.cliente", "mc")
+      .leftJoinAndSelect("movimientos.usuario", "usuario")
       .leftJoinAndSelect("movimientos.movimiento_lineas", "pl")
       .leftJoinAndSelect("movimientos.pagos", "pagos")
       .where(`LOWER(movimientos.${attr}) LIKE LOWER(:val)`, { val: `%${txt}%` })

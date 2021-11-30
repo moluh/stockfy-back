@@ -6,8 +6,7 @@ import * as bcrypt from "bcrypt";
 import * as jwt from "jsonwebtoken";
 
 export class UsuariosAuthController {
-
-  constructor() { }
+  constructor() {}
 
   public async loginUsuario(req: Request, res: Response) {
     let email = req.body.email;
