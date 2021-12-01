@@ -1,4 +1,4 @@
-import { Imagenes } from '../Entities/Imagenes';
+import { Imagenes } from '../entities/Imagenes';
 import { Request, Response, NextFunction } from 'express';
 import { ApiResponse } from '../api/response';
 

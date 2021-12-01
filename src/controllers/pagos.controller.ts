@@ -1,7 +1,7 @@
-import { Pagos } from "../Entities/Pagos";
+import { Pagos } from "../entities/Pagos";
 import e, { Request, Response } from "express";
 import { ApiResponse } from "../api/response";
-import { Movimientos } from "../Entities/Movimientos";
+import { Movimientos } from "../entities/Movimientos";
 import { MovimientosController } from "./movimientos.controller";
 
 export class PagosController {

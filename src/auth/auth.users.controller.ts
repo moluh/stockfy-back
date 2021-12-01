@@ -1,4 +1,4 @@
-import { Usuarios } from "../Entities/Usuarios";
+import { Usuarios } from "../entities/Usuarios";
 import { Request, Response } from "express";
 import { Config } from "../config/config";
 const config: Config = new Config();

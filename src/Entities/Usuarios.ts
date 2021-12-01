@@ -8,7 +8,7 @@ import {
   JoinTable,
   ManyToMany
 } from "typeorm";
-import * as iqa from "./../helpers/isQueryAllowed";
+import * as iqa from "../helpers/isQueryAllowed";
 import { Roles } from "./Roles";
 
 @Entity("usuarios")

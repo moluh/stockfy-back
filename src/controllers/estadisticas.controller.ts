@@ -1,4 +1,4 @@
-import { Movimientos } from "../Entities/Movimientos";
+import { Movimientos } from "../entities/Movimientos";
 import { getDiffDates } from "../helpers/getDiffDates";
 import { Request, Response } from "express";
 import { ApiResponse } from "../api/response";

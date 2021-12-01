@@ -1,7 +1,7 @@
-import { Productos } from "../Entities/Productos";
+import { Productos } from "../entities/Productos";
 import { Request, Response } from "express";
 import { ImagenesController } from "./imagenes.controller";
-import { Imagenes } from "../Entities/Imagenes";
+import { Imagenes } from "../entities/Imagenes";
 import * as fs from "fs";
 import * as fastcsv from "fast-csv";
 import { ApiResponse } from "../api/response";

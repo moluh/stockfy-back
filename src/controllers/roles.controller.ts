@@ -1,4 +1,4 @@
-import { Roles } from '../Entities/Roles';
+import { Roles } from '../entities/Roles';
 import { Request, Response } from 'express';
 import { ApiResponse } from '../api/response';
 

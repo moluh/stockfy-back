@@ -1,4 +1,4 @@
-import { Gastos } from "../Entities/Gastos";
+import { Gastos } from "../entities/Gastos";
 import { Request, Response } from "express";
 import { ApiResponse } from "../api/response";
 

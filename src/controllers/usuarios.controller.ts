@@ -1,4 +1,4 @@
-import { Usuarios } from '../Entities/Usuarios';
+import { Usuarios } from '../entities/Usuarios';
 import { Request, Response, NextFunction } from 'express';
 import * as bcrypt from 'bcrypt';
 import { ApiResponse } from '../api/response';

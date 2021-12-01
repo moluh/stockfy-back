@@ -1,9 +1,9 @@
-import { Movimientos } from "../Entities/Movimientos";
+import { Movimientos } from "../entities/Movimientos";
 import { Request, Response } from "express";
 import { ProductosController } from "./productos.controller";
 import { ApiResponse } from "../api/response";
 import { PagosController } from "./pagos.controller";
-import { Pagos } from "../Entities/Pagos";
+import { Pagos } from "../entities/Pagos";
 
 export class MovimientosController {
   constructor() { }

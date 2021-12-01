@@ -11,7 +11,7 @@ import {
 } from "typeorm";
 import { MovimientosLineas } from "./MovimientosLineas";
 import { Pagos } from "./Pagos";
-import * as iqa from "./../helpers/isQueryAllowed";
+import * as iqa from "../helpers/isQueryAllowed";
 import { Usuarios } from "./Usuarios";
 
 @Entity("movimientos")

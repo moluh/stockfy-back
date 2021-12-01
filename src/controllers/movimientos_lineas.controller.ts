@@ -1,4 +1,4 @@
-import { MovimientosLineas } from '../Entities/MovimientosLineas';
+import { MovimientosLineas } from '../entities/MovimientosLineas';
 import { Request, Response } from 'express';
 import { ApiResponse } from '../api/response';
 

@@ -1,4 +1,4 @@
-import { Categorias } from '../Entities/Categorias';
+import { Categorias } from '../entities/Categorias';
 import { Request, Response } from 'express';
 import { ApiResponse } from '../api/response';
 

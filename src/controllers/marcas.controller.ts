@@ -1,4 +1,4 @@
-import { Marcas } from "../Entities/Marcas";
+import { Marcas } from "../entities/Marcas";
 import { Request, Response } from "express";
 import { ApiResponse } from "../api/response";
 

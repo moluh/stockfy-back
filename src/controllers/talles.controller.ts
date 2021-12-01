@@ -1,4 +1,4 @@
-import { Talles } from '../Entities/Talles';
+import { Talles } from '../entities/Talles';
 import { Request, Response } from 'express';
 import { ApiResponse } from '../api/response';
 

@@ -1,4 +1,4 @@
-import { Permisos } from "../Entities/Permisos";
+import { Permisos } from "../entities/Permisos";
 import { Request, Response } from "express";
 import { ApiResponse } from "../api/response";
 

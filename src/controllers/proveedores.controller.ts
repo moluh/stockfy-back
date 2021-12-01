@@ -1,4 +1,4 @@
-import { Proveedores } from "../Entities/Proveedores";
+import { Proveedores } from "../entities/Proveedores";
 import { Request, Response } from "express";
 import { ApiResponse } from "../api/response";
 

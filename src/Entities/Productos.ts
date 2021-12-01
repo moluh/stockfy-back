@@ -14,7 +14,7 @@ import { Marcas } from "./Marcas";
 import { Imagenes } from "./Imagenes";
 import { Proveedores } from "./Proveedores";
 import { Talles } from "./Talles";
-import * as iqa from "./../helpers/isQueryAllowed";
+import * as iqa from "../helpers/isQueryAllowed";
 
 @Entity("productos")
 export class Productos extends BaseEntity {
