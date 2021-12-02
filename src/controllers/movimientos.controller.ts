@@ -11,7 +11,7 @@ export class MovimientosController {
   public getAll(req: Request, res: Response) {
     Movimientos.find({
       order: { fecha: "ASC" },
-      relations: ["cliente", "movimiento_lineas", "pagos"],
+      relations: ["movimiento_lineas", "pagos"],
     })
       .then((data) => ApiResponse(res, true, 200, data, []))
       .catch((err) => ApiResponse(res, false, 400, [], err));
@@ -21,7 +21,7 @@ export class MovimientosController {
     let id = parseInt(req.params.id);
     Movimientos.findOne(
       { id },
-      { relations: ["cliente", "movimiento_lineas", "pagos"] }
+      { relations: ["movimiento_lineas", "pagos"] }
     )
       .then((data) => ApiResponse(res, true, 200, data, []))
       .catch((err) => ApiResponse(res, false, 400, [], err));

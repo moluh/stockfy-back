@@ -20,15 +20,7 @@ export class MovimientosRouter {
     app
       .route("/api/v1/movimiento/:id/state/:state")
       .post(mw.jwtEmpleadoMiddleware, this.controlador.changeState);
-
-    // TODO
-    // app
-    //   .route("/api/v1/movimientos/paginado/cliente/:id/estado/:est")
-    //   .get(
-    //     mw.jwtEmpleadoMiddleware,
-    //     this.controlador.getPaginatedByEstadoAndClient
-    //   );
-
+      
     app
       .route("/api/v1/movimientos/paginado/filter")
       .get(mw.jwtEmpleadoMiddleware, this.controlador.getPaginatedAndFilter);
