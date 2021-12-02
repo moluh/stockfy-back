@@ -124,7 +124,7 @@ export class UsuariosController {
         const pageSize: any = req.query.pageSize;
         const attribute: any = req.query.attribute || 'nombre';
         const text: any = req.query.text || '';
-        const role: any = req.query.role;
+        const role: any = req.query.roles;
         const isActive: any = req.query.isActive;
 
         Usuarios.getPaginatedAndFilter(pageNro, pageSize, attribute, text, isActive, role)

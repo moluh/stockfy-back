@@ -6,7 +6,7 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   JoinTable,
-  ManyToMany
+  ManyToMany,
 } from "typeorm";
 import * as iqa from "../helpers/isQueryAllowed";
 import { Roles } from "./Roles";
@@ -58,8 +58,7 @@ export class Usuarios extends BaseEntity {
   @Column({ type: "boolean", default: true })
   activo: boolean;
 
-  @ManyToMany((type) => Roles, (role) => role.usuario,
-    { cascade: true })
+  @ManyToMany((type) => Roles, (role) => role.usuario, { cascade: true })
   @JoinTable()
   roles: Roles[];
 
@@ -130,7 +129,6 @@ export class Usuarios extends BaseEntity {
     isActive: string,
     role: string
   ) {
-
     try {
       await iqa.isQueryAllowed([attribute]);
     } catch (error) {
@@ -144,6 +142,9 @@ export class Usuarios extends BaseEntity {
     if (attribute === undefined || attribute === "") attribute = "nombre";
     if (text === undefined || text === "") text = "";
 
+    console.log('role',role);
+    
+
     switch (filterBy) {
       case "boolean": {
         const count = await this.createQueryBuilder("usuario")
@@ -155,9 +156,9 @@ export class Usuarios extends BaseEntity {
           .where(`LOWER(usuario.activo) LIKE :active`, {
             active: "%" + active + "%",
           })
-          .andWhere(`LOWER(usuario.role) LIKE :role`, {
-            role: "%" + role + "%",
-          })
+          // .andWhere(`LOWER(usuario.role) LIKE :role`, {
+          //   role: "%" + role + "%",
+          // })
           .orderBy("usuario.id", "DESC")
           .skip(skipRecords)
           .take(pageSize)
@@ -175,9 +176,10 @@ export class Usuarios extends BaseEntity {
           .where(`LOWER(usuario.${attribute}) LIKE LOWER(:text)`, {
             text: "%" + text + "%",
           })
-          .andWhere(`LOWER(usuario.role) LIKE :role`, {
-            role: "%" + role + "%",
-          })
+          .andWhere(`roles.role LIKE :role`, { role: `%${role}%` })
+          // .andWhere(`LOWER(usuario.role) LIKE :role`, {
+          //   role: "%" + role + "%",
+          // })
           .orderBy("usuario.id", "DESC")
           .skip(skipRecords)
           .take(pageSize)
