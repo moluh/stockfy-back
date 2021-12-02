@@ -29,7 +29,7 @@ export class Movimientos extends BaseEntity {
   comentario: string;
 
   /** PENDIENTE COMPLETADO ANULADO */
-  @Column({ type: "char", length: 1, nullable: true })
+  @Column({ type: "varchar", length: 15, nullable: true })
   estado: string;
 
   @Column({ type: "double", nullable: false })

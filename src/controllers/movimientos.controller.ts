@@ -6,7 +6,7 @@ import { PagosController } from "./pagos.controller";
 import { Pagos } from "../entities/Pagos";
 
 export class MovimientosController {
-  constructor() { }
+  constructor() {}
 
   public getAll(req: Request, res: Response) {
     Movimientos.find({
@@ -90,12 +90,21 @@ export class MovimientosController {
       .then(async (movement) => {
         // Checkeamos si se mando con un array de pago para
         // crear el pago relacionado al nuevo movimiento
+        console.log("movement", movement);
+
         if (movimiento.pagos.length > 0) {
           const resp = await pagosCtrl.createAfterMovement(movement);
-          if (resp)
-            ApiResponse(res, true, 200, resp, []);
+          console.log("resp", resp);
+
+          if (resp) ApiResponse(res, true, 200, movement, []);
           else
-            ApiResponse(res, false, 400, [], "Ocurrió un error al cargar el pago al movimiento.");
+            ApiResponse(
+              res,
+              false,
+              400,
+              [],
+              "Ocurrió un error al cargar el pago al movimiento."
+            );
         } else ApiResponse(res, true, 200, movement, []);
       })
       .catch((err) => ApiResponse(res, false, 400, [], err));
@@ -111,7 +120,6 @@ export class MovimientosController {
           if (movement.saldo === null || movement.saldo === 0)
             movement.saldo = movement.total - pago.monto;
           else movement.saldo = movement.saldo - pago.monto;
-
         } else if (action === "delete") {
           movement.saldo = movement.saldo + pago.monto;
         }
