@@ -34,7 +34,6 @@ export class RolesController {
                 data.role = req.body.role;
                 data.descripcion = req.body.descripcion;
                 data.nivel = req.body.nivel;
-                data.modulo = req.body.modulo;
                 data.save()
                     .then(data => ApiResponse(res, true, 200, data, []))
                     .catch(err => ApiResponse(res, false, 400, [], err));

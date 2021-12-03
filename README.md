@@ -16,10 +16,10 @@ En la raíz del proyecto:
 ###  Generar Script SQL:
 
 Windows:
->  ts-node node_modules\typeorm\cli.js migration:generate -n NombreMigracion
+>  ts-node node_modules\typeorm\cli.js migration:generate -n init
 
 Linux:
->  ts-node node_modules/typeorm/cli.js migration:generate -n NombreMigracion
+>  ts-node node_modules/typeorm/cli.js migration:generate -n init
 
 ###  Ejecutar Script:
 

@@ -43,8 +43,6 @@ export class ModulosController {
       .then((modulo) => {
         modulo.modulo = req.body.modulo;
         modulo.activo = req.body.activo;
-        modulo.role = req.body.role;
-        modulo.permiso = req.body.permiso;
         modulo
           .save()
           .then(data => ApiResponse(res, true, 200, data, []))

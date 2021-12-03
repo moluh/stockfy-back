@@ -85,11 +85,31 @@ export class Productos extends BaseEntity {
   imagenes: Imagenes[];
 
   @ManyToMany((type) => Talles, (talle) => talle.producto, { cascade: true })
-  @JoinTable()
+  @JoinTable({
+    name: 'productos_talles',
+    joinColumn: {
+      name: 'productos',
+      referencedColumnName: 'id'
+    },
+    inverseJoinColumn: {
+      name: 'talles',
+      referencedColumnName: 'id'
+    }
+  })
   talles: Talles[];
 
   @ManyToMany((type) => Talles, (talle) => talle.producto, { cascade: true })
-  @JoinTable()
+  @JoinTable({
+    name: 'productos_categorias',
+    joinColumn: {
+      name: 'productos',
+      referencedColumnName: 'id'
+    },
+    inverseJoinColumn: {
+      name: 'categorias',
+      referencedColumnName: 'id'
+    }
+  })
   categorias: Talles[];
 
   /**

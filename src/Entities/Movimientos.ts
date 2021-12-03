@@ -8,6 +8,7 @@ import {
   ManyToMany,
   JoinTable,
   getConnection,
+  JoinColumn,
 } from "typeorm";
 import { MovimientosLineas } from "./MovimientosLineas";
 import { Pagos } from "./Pagos";
@@ -56,7 +57,17 @@ export class Movimientos extends BaseEntity {
     (movimiento_lineas) => movimiento_lineas.movimiento,
     { cascade: true }
   )
-  @JoinTable()
+  @JoinTable({
+    name: 'movimiento_lineas',
+    joinColumn: {
+      name: 'movimientos',
+      referencedColumnName: 'id'
+    },
+    inverseJoinColumn: {
+      name: 'movimiento_lineas',
+      referencedColumnName: 'id'
+    }
+  })
   movimiento_lineas: MovimientosLineas[];
 
   static async getPaginated(pageNro: number, pageSize: number) {
@@ -180,16 +191,18 @@ export class Movimientos extends BaseEntity {
   static async getStatisticsBetweenDates(from, to) {
     const query = `
       SELECT 
-      SUM(mov.total) as "TotalVendido",
-      SUM(p.monto) as "TotalDePagos",
-      SUM(p.ganancia) as "Ganancias",
-      COUNT(p.id) as "CountPagos",
-      COUNT(mov.id) as "CountMovimientos"
-      FROM movimientos mov
-      LEFT JOIN movimientos_movimiento_lineas_movimientoslineas mov_ml ON mov_ml.movimientosId=mov.id
-      LEFT JOIN movimientoslineas ml ON ml.id=mov_ml.movimientoslineasId
-      LEFT JOIN pagos p ON p.movimientoId=mov.id 
-      WHERE mov.fecha BETWEEN ? AND ?
+        SUM(mov.total) as "TotalVendido",
+        SUM(p.monto) as "TotalDePagos",
+        SUM(p.ganancia) as "Ganancias",
+        COUNT(p.id) as "CountPagos",
+        COUNT(mov.id) as "CountMovimientos"
+      FROM 
+        movimientos mov
+        LEFT JOIN movimientos_movimiento_lineas_movimientoslineas mov_ml ON mov_ml.movimientosId=mov.id
+        LEFT JOIN movimientoslineas ml ON ml.id=mov_ml.movimientoslineasId
+        LEFT JOIN pagos p ON p.movimientoId=mov.id 
+      WHERE 
+        mov.fecha BETWEEN ? AND ?
     `;
     const data = await getConnection().query(query, [from, to]);
 
@@ -199,22 +212,24 @@ export class Movimientos extends BaseEntity {
   static async getStatisticsBetweenDatesGraphic(from, to) {
     const query = `
       SELECT 
-      mov.fecha as "Fecha",
-      SUM(mov.total) as "TotalVendido",
-      SUM(p.monto) as "TotalDePagos",
-      SUM(p.ganancia) as "Ganancias",
-      COUNT(p.id) as "CountPagos",
-      COUNT(mov.id) as "CountMovimientos"
-      FROM movimientos mov
-      LEFT JOIN movimientos_movimiento_lineas_movimientoslineas mov_ml ON mov_ml.movimientosId=mov.id
-      LEFT JOIN movimientoslineas ml ON ml.id=mov_ml.movimientoslineasId
-      LEFT JOIN pagos p ON p.movimientoId=mov.id 
-      WHERE mov.fecha BETWEEN ? AND ?
-      GROUP BY mov.fecha 
+        mov.fecha as "Fecha",
+        SUM(mov.total) as "TotalVendido",
+        SUM(p.monto) as "TotalDePagos",
+        SUM(p.ganancia) as "Ganancias",
+        COUNT(p.id) as "CountPagos",
+        COUNT(mov.id) as "CountMovimientos"
+      FROM 
+        movimientos mov
+        LEFT JOIN movimientos_movimiento_lineas_movimientoslineas mov_ml ON mov_ml.movimientosId=mov.id
+        LEFT JOIN movimientoslineas ml ON ml.id=mov_ml.movimientoslineasId
+        LEFT JOIN pagos p ON p.movimientoId=mov.id 
+      WHERE 
+        mov.fecha BETWEEN ? AND ?
+      GROUP BY 
+        mov.fecha 
     `;
     const data = await getConnection().query(query, [from, to]);
 
     return [...data];
   }
-
 }

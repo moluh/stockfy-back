@@ -9,6 +9,7 @@ import {
   ManyToMany,
 } from "typeorm";
 import * as iqa from "../helpers/isQueryAllowed";
+import { Modulos } from "./Modulos";
 import { Roles } from "./Roles";
 
 @Entity("usuarios")
@@ -59,8 +60,32 @@ export class Usuarios extends BaseEntity {
   activo: boolean;
 
   @ManyToMany((type) => Roles, (role) => role.usuario, { cascade: true })
-  @JoinTable()
+  @JoinTable({
+    name: "usuarios_roles",
+    joinColumn: {
+      name: "usuarios",
+      referencedColumnName: "id",
+    },
+    inverseJoinColumn: {
+      name: "roles",
+      referencedColumnName: "id",
+    },
+  })
   roles: Roles[];
+
+  @ManyToMany((type) => Modulos, (modulo) => modulo.usuario, { cascade: true })
+  @JoinTable({
+    name: "usuarios_modulos",
+    joinColumn: {
+      name: "usuarios",
+      referencedColumnName: "id",
+    },
+    inverseJoinColumn: {
+      name: "modulos",
+      referencedColumnName: "id",
+    },
+  })
+  modulos: Modulos[];
 
   static findById(id: number) {
     return this.createQueryBuilder("usuario")
@@ -141,9 +166,6 @@ export class Usuarios extends BaseEntity {
 
     if (attribute === undefined || attribute === "") attribute = "nombre";
     if (text === undefined || text === "") text = "";
-
-    console.log('role',role);
-    
 
     switch (filterBy) {
       case "boolean": {
