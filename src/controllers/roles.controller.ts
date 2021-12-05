@@ -7,7 +7,7 @@ export class RolesController {
     constructor() { }
 
     public getAll(req: Request, res: Response) {
-        Roles.find({ order: { role: "ASC" }, relations: ["modulo", "modulo.permiso"] })
+        Roles.find({ order: { role: "ASC" }})
             .then(data => ApiResponse(res, true, 200, data, []))
             .catch(err => ApiResponse(res, false, 400, [], err));
     }
