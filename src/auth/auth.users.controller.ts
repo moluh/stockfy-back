@@ -4,6 +4,7 @@ import { Config } from "../config/config";
 const config: Config = new Config();
 import * as bcrypt from "bcrypt";
 import * as jwt from "jsonwebtoken";
+import { ApiResponse } from "../api/response";
 
 export class UsuariosAuthController {
   constructor() {}
@@ -18,39 +19,55 @@ export class UsuariosAuthController {
     if (email) usuario = await Usuarios.findByEmail(email);
     if (telefono) usuario = await Usuarios.findByTelefono(telefono);
     if (username) usuario = await Usuarios.findByUsername(username);
+
     if (!usuario)
-      // Si no encuentra el usuario
-      return res.status(404).send({
+      return ApiResponse(res, false, 404, [], {
         isLogged: false,
         token: null,
         error: "Datos incorrectos.",
       });
 
-    let validatePassword = bcrypt.compareSync(password, usuario.password);
+    const validatePassword = bcrypt.compareSync(password, usuario.password);
 
     if (!validatePassword) {
-      // return res.status(401).send({ Error: "La contraseña no coincide."});
-      return res.status(401).send({
+      return ApiResponse(res, false, 401, [], {
         isLogged: false,
         token: null,
         error: "Datos incorrectos.",
       });
     }
 
-    const useWithOutPass = { ...usuario };
-    delete useWithOutPass.password;
+    const userForToken: Usuarios = <Usuarios>{
+      id: usuario.id,
+      username: usuario.username,
+      email: usuario.email,
+      nombre: usuario.nombre,
+      apellido: usuario.apellido,
+      telefono: usuario.telefono,
+      activo: usuario.activo,
+      roles: usuario.roles,
+      modulos: usuario.modulos,
+    };
 
-    let token = jwt.sign(useWithOutPass, config.pkey, {
+    const token: string = jwt.sign(userForToken, config.pkey, {
       expiresIn: config.jwtExp,
     });
 
-    res.status(200).send({
-      isLogged: true,
-      token,
-      expiresIn: config.jwtExp,
-      roles: useWithOutPass.roles,
-      activo: useWithOutPass.activo,
-      // user: useWithOutPass
-    });
+    ApiResponse(
+      res,
+      true,
+      200,
+      {
+        isLogged: true,
+        token,
+        expiresIn: config.jwtExp,
+      },
+      null
+    );
+    // res.status(200).send({
+    //   isLogged: true,
+    //   token,
+    //   expiresIn: config.jwtExp,
+    // });
   }
 }

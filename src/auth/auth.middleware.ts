@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import * as jwt from "jsonwebtoken";
+import { ApiResponse } from "../api/response";
 
 export function jwtAdminMiddleware(req: Request, res: Response, next) {
   next();
@@ -21,18 +22,18 @@ export function QUITAR_ESTO_jwtAdminMiddleware(
     const token = authArray[1];
     jwt.verify(token, process.env.PKEY, async (err, decoded: any) => {
       if (err)
-        res.status(403).send({
-          ok: false,
-          msg: "Token no válido: No tiene autorización para este recurso",
-          error: err,
-        });
-      else if (decoded.role === "ADMIN") next();
+        return ApiResponse(
+          res,
+          false,
+          403,
+          [],
+          "Token no válido: No tiene autorización para este recurso"
+        );
+      // res.status(403).send();
+      else if (decoded.roles.some((r) => r.role === 'ADMIN')) next();
     });
   } else {
-    res.status(403).send({
-      ok: false,
-      msg: "Token no válido.",
-    });
+    return ApiResponse(res, false, 401, [], "Token no válido.");
   }
 }
 
@@ -53,7 +54,7 @@ export function QUITAR_ESTO_jwtEmpleadoMiddleware(
           msg: "Token no válido: No tiene autorización para este recurso",
           error: err,
         });
-      else if (decoded.role === "EMPLEADO" || decoded.role === "ADMIN") next();
+      else if (decoded.roles.some((r) => r.role === 'ADMIN' ||  r.role === 'EMPLEADO')) next();
     });
   } else {
     res.status(403).send({

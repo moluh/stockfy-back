@@ -10,8 +10,8 @@ import * as bodyParser from "body-parser";
 import * as http from "http";
 
 // Mock data
-import { MockData } from "./mock/mock";
-const mock: MockData = new MockData();
+// import { MockData } from "./mock/mock";
+// const mock: MockData = new MockData();
 
 // Routes
 import { UsuariosRouter } from "./routes/usuarios.routes";
@@ -65,7 +65,7 @@ class App {
   async init() {
     console.log("---------\nLoading Server...");
     await config.connectDatabases();
-    mock.mock();
+    // mock.mock();
     this.app = express();
     this.configApp();
 

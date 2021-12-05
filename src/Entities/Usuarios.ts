@@ -23,7 +23,7 @@ export class Usuarios extends BaseEntity {
   @Column({ type: "varchar", length: 100, nullable: false })
   email: string;
 
-  @Column({ type: "varchar", nullable: false })
+  @Column({ select: false, type: "varchar", nullable: false })
   password: string;
 
   @Column({ type: "varchar", length: 150, nullable: true })
@@ -95,27 +95,35 @@ export class Usuarios extends BaseEntity {
 
   static findByEmail(email: string) {
     return this.createQueryBuilder("usuario")
+      .addSelect("usuario.password")
       .leftJoinAndSelect("usuario.roles", "roles")
+      .leftJoinAndSelect("usuario.modulos", "modulos")
       .where("usuario.email = :email", { email })
       .getOne();
   }
 
   static findByTelefono(telefono: string) {
     return this.createQueryBuilder("usuario")
+      .addSelect("usuario.password")
       .leftJoinAndSelect("usuario.roles", "roles")
+      .leftJoinAndSelect("usuario.modulos", "modulos")
       .where("usuario.telefono = :telefono", { telefono })
       .getOne();
   }
 
   static findByUsername(username: string) {
     return this.createQueryBuilder("usuario")
+      .addSelect("usuario.password")
       .leftJoinAndSelect("usuario.roles", "roles")
+      .leftJoinAndSelect("usuario.modulos", "modulos")
       .where("usuario.username = :username", { username })
       .getOne();
   }
 
   static findByRecpass(recpass: string) {
     return this.createQueryBuilder("usuario")
+      .addSelect("usuario.password")
+      .leftJoinAndSelect("usuario.modulos", "modulos")
       .leftJoinAndSelect("usuario.roles", "roles")
       .where("usuario.recpass = :recpass", { recpass })
       .getOne();
@@ -124,6 +132,7 @@ export class Usuarios extends BaseEntity {
   static saveCodeRecPass(usuario: Usuarios) {
     return this.createQueryBuilder("usuario")
       .leftJoinAndSelect("usuario.roles", "roles")
+      .leftJoinAndSelect("usuario.modulos", "modulos")
       .update(usuario)
       .set({ recpass: usuario.recpass })
       .where("id = :id", { id: usuario.id })
@@ -138,6 +147,7 @@ export class Usuarios extends BaseEntity {
 
     const data = await this.createQueryBuilder("usuario")
       .leftJoinAndSelect("usuario.roles", "roles")
+      .leftJoinAndSelect("usuario.modulos", "modulos")
       .orderBy("usuario.id", "DESC")
       .skip(skipRecords)
       .take(pageSize)
@@ -175,6 +185,7 @@ export class Usuarios extends BaseEntity {
 
         const data = await this.createQueryBuilder("usuario")
           .leftJoinAndSelect("usuario.roles", "roles")
+          .leftJoinAndSelect("usuario.modulos", "modulos")
           .where(`LOWER(usuario.activo) LIKE :active`, {
             active: "%" + active + "%",
           })
@@ -195,6 +206,7 @@ export class Usuarios extends BaseEntity {
 
         const data = await this.createQueryBuilder("usuario")
           .leftJoinAndSelect("usuario.roles", "roles")
+          .leftJoinAndSelect("usuario.modulos", "modulos")
           .where(`LOWER(usuario.${attribute}) LIKE LOWER(:text)`, {
             text: "%" + text + "%",
           })
