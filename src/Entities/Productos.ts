@@ -15,6 +15,7 @@ import { Imagenes } from "./Imagenes";
 import { Proveedores } from "./Proveedores";
 import { Talles } from "./Talles";
 import * as iqa from "../helpers/isQueryAllowed";
+import { Categorias } from "./Categorias";
 
 @Entity("productos")
 export class Productos extends BaseEntity {
@@ -24,25 +25,25 @@ export class Productos extends BaseEntity {
   @Column({ type: "varchar", length: 255, nullable: false })
   nombre: string;
 
-  @Column({ type: "text", nullable: false })
+  @Column({ type: "text", nullable: true })
   descripcion: string;
 
-  @Column({ type: "int", nullable: false })
-  unidad: number;
+  @Column({ type: "text", nullable: true })
+  descripcion_html: string;
 
-  @Column({ type: "boolean", default: false })
-  archivado: boolean;
+  @Column({ type: "varchar", length: 20, nullable: true })
+  unidad: string;
 
-  @Column({ type: "int", nullable: true })
+  @Column({ type: "double", nullable: true })
   alto: number;
 
-  @Column({ type: "int", nullable: true })
+  @Column({ type: "double", nullable: true })
   ancho: number;
 
-  @Column({ type: "int", nullable: true })
+  @Column({ type: "double", nullable: true })
   profundidad: number;
 
-  @Column({ type: "int", nullable: true })
+  @Column({ type: "double", nullable: true })
   peso: number;
 
   @Column({ type: "double", nullable: true })
@@ -54,7 +55,10 @@ export class Productos extends BaseEntity {
   @Column({ type: "boolean", default: true })
   disponible: boolean;
 
-  @Column({ type: "int", nullable: true })
+  @Column({ type: "boolean", default: false })
+  archivado: boolean;
+
+  @Column({ type: "double", nullable: true })
   rebaja: number;
 
   @Column({ type: "varchar", length: 255, nullable: true })
@@ -98,7 +102,7 @@ export class Productos extends BaseEntity {
   })
   talles: Talles[];
 
-  @ManyToMany((type) => Talles, (talle) => talle.producto, { cascade: true })
+  @ManyToMany((type) => Categorias, (categoria) => categoria.producto, { cascade: true })
   @JoinTable({
     name: 'productos_categorias',
     joinColumn: {
@@ -110,7 +114,7 @@ export class Productos extends BaseEntity {
       referencedColumnName: 'id'
     }
   })
-  categorias: Talles[];
+  categorias: Categorias[];
 
   /**
    * 

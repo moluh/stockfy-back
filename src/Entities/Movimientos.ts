@@ -198,8 +198,8 @@ export class Movimientos extends BaseEntity {
         COUNT(mov.id) as "CountMovimientos"
       FROM 
         movimientos mov
-        LEFT JOIN movimientos_movimiento_lineas_movimientoslineas mov_ml ON mov_ml.movimientosId=mov.id
-        LEFT JOIN movimientoslineas ml ON ml.id=mov_ml.movimientoslineasId
+        LEFT JOIN movimiento_lineas mov_ml ON mov_ml.movimientos = mov.id
+        LEFT JOIN movimientoslineas ml ON ml.id = mov_ml.movimiento_lineas
         LEFT JOIN pagos p ON p.movimientoId=mov.id 
       WHERE 
         mov.fecha BETWEEN ? AND ?
@@ -220,9 +220,9 @@ export class Movimientos extends BaseEntity {
         COUNT(mov.id) as "CountMovimientos"
       FROM 
         movimientos mov
-        LEFT JOIN movimientos_movimiento_lineas_movimientoslineas mov_ml ON mov_ml.movimientosId=mov.id
-        LEFT JOIN movimientoslineas ml ON ml.id=mov_ml.movimientoslineasId
-        LEFT JOIN pagos p ON p.movimientoId=mov.id 
+        LEFT JOIN movimiento_lineas mov_ml ON mov_ml.movimientos = mov.id
+        LEFT JOIN movimientoslineas ml ON ml.id = mov_ml.movimiento_lineas
+        LEFT JOIN pagos p ON p.movimientoId = mov.id 
       WHERE 
         mov.fecha BETWEEN ? AND ?
       GROUP BY 

@@ -89,7 +89,7 @@ export class ProductosController {
                 precio_venta: parseFloat(csvData[i][header.precio_venta]) || 0,
                 sku: csvData[i][header.sku],
                 codigo_fabricante: csvData[i][header.codigo_fabricante],
-                unidad: parseInt(csvData[i][header.unidad]) || 0,
+                unidad: csvData[i][header.unidad],
                 archivado: csvData[i][header.archivado],
                 alto: parseInt(csvData[i][header.alto]) || 0,
                 ancho: parseInt(csvData[i][header.ancho]) || 0,
