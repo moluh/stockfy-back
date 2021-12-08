@@ -4,7 +4,6 @@ import { Movimientos } from "./Movimientos";
 
 @Entity('pagos')
 export class Pagos extends BaseEntity {
-
     @PrimaryGeneratedColumn('increment', { type: 'integer' })
     id: number;
 
