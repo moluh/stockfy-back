@@ -1,5 +1,5 @@
 {
-  "name": "control-stock",
+  "name": "stockfy-back",
   "version": "1.0.0",
   "description": "Sistema de control de stock para empresas",
   "main": "index.js",
