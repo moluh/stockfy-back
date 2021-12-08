@@ -1,27 +1,27 @@
 PKEY="PRIVATE-KEY"
 PORT=3000
-NODE_ENV="PROD"
+NODE_ENV="DEV"
 BACKUPS_DIR="/home/backups"
 CONNECT_NO_SQL=false
 
 JWT_SECRET="secret"
-JWT_EXP=3600
+JWT_EXP=14400 # 3600s = 1h
 JWT_INNACTIVITY_EXP=30
 
 SQL_TYPE="mysql"
 SQL_HOST="localhost"
 SQL_PORT=3306
-SQL_USERNAME="lucas"
+SQL_USERNAME="root"
 SQL_PASSWORD="root"
-SQL_DATABASE="controlstock"
+SQL_DATABASE="stockfy"
 SQL_LOGGING=true
 SQL_ENTITIES="dist/entities/**/*{.ts,.js}"
 SQL_MIGRATIONS="dist/database/migrations/**{.ts,.js}"
 SQL_MIGRATIONS_CLI="dist/database/migrations"
 
 RUNNING_SQL_ENTITIES="src/entities/**/*{.ts,.js}"
-RUNNING_SQL_MIGRATIONS="src/database/migrations/**{.ts,.js}"
-RUNNING_SQL_MIGRATIONS_CLI="src/database/migrations"
+RUNNING_SQL_MIGRATIONS="database/migrations/**{.ts,.js}"
+RUNNING_SQL_MIGRATIONS_CLI="database/migrations"
 
 NO_SQL_TYPE="mongodb"
 NO_SQL_HOST="localhost"
