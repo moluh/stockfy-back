@@ -7,7 +7,7 @@ export class ModulosController {
   constructor() { }
 
   public getAll(req: Request, res: Response) {
-    Modulos.find({ order: { modulo: "ASC" }, relations: ["permiso"] })
+    Modulos.find({ order: { modulo: "ASC" }})
       .then(data => ApiResponse(res, true, 200, data, []))
       .catch(err => ApiResponse(res, false, 400, [], err));
   }
