@@ -13,7 +13,7 @@ const checkRole = (
     next();
 };
 
-export function isAllowed(role: string[]) {
+export function isAllowed(requiredRoles: string[]) {
   return function (req: Request, res: Response, next: NextFunction) {
     const authString = req.headers["authorization"];
 
@@ -30,7 +30,7 @@ export function isAllowed(role: string[]) {
             "Token no válido: No tiene autorización para este recurso"
           );
 
-        checkRole(decoded, role, next);
+        checkRole(decoded, requiredRoles, next);
       });
     } else {
       return ApiResponse(res, false, 401, [], "Token no válido.");

@@ -1,5 +1,6 @@
 export const users = [
   {
+    id: 1,
     username: "superadmin",
     email: "superadmin@superadmin.com",
     password: "$2a$10$VOgrC0a88s8yW1BHjnnpFeSeLN.bwqHYDO7wl5n1IHv.YNNHILq9i",
@@ -22,6 +23,7 @@ export const users = [
     ],
   },
   {
+    id: 2,
     username: "admin",
     email: "admin@admin.com",
     password: "$2a$10$AaceRZKE9LaIDAvBofHVMuVOk05YnQI26zu4fH3Pu0RBx3MR6x1Rm",
@@ -44,6 +46,7 @@ export const users = [
     ],
   },
   {
+    id: 3,
     username: "tester",
     email: "tester@tester.com",
     password: "$2a$10$sNXyjLyZl0nxUbP9CCH9oeleJrrszAE0lvbIhFhevku598F02uJMC",
@@ -56,7 +59,28 @@ export const users = [
     domicilio: null,
     recpass: null,
     activo: true,
-    roles: [{ id: 4, role: "EMPLEADO" }],
+    roles: [{ id: 8, role: "TESTER" }],
+    modulos: [
+      { id: 2, modulo: "PRODUCTOS_R" },
+      { id: 6, modulo: "ESTADISTICAS_R" },
+      { id: 26, modulo: "MOVIMIENTOS_R" },
+    ],
+  },
+  {
+    id: 4,
+    username: "empleado",
+    email: "empleado@empleado.com",
+    password: "$2a$10$MD5JKXU5J1k9JGYSjK0EGO53QXUFoAplPyUWQhQbiFxZIT3/QpngK",
+    telefono: "3452344",
+    nombre: "empleado",
+    apellido: "empleado",
+    provincia: null,
+    localidad: null,
+    avatar: null,
+    domicilio: null,
+    recpass: null,
+    activo: true,
+    roles: [{ id: 5, role: "EMPLEADO" }],
     modulos: [
       { id: 2, modulo: "PRODUCTOS_R" },
       { id: 6, modulo: "ESTADISTICAS_R" },

@@ -2,6 +2,7 @@ const dotenv = require('dotenv');
 dotenv.config()
 
 const {
+  SQL_NAME_CONNECTION,
   SQL_TYPE,
   SQL_HOST,
   SQL_PORT,
@@ -14,6 +15,7 @@ const {
 } = process.env;
 
 module.exports = {
+  name: SQL_NAME_CONNECTION,
   type: SQL_TYPE,
   host: SQL_HOST,
   port: SQL_PORT,

@@ -1,33 +1,52 @@
+import { Request, Response } from "express";
+import { getConnection } from "typeorm";
 import { Modulos } from "../entities/Modulos";
 import { Roles } from "../entities/Roles";
 import { Usuarios } from "../entities/Usuarios";
-import { modules } from "./constants/modules";
-import { roles } from "./constants/roles";
-import { sizes } from "./constants/sizes";
-import { users } from "./constants/users";
+import { modules } from "../mock/constants/modules";
+import { roles } from "../mock/constants/roles";
+import { users } from "../mock/constants/users";
 
-export class MockData {
+// -> onConflict = only for postgresql
+// .onConflict(`("id") DO NOTHING`)
+// .onConflict(`("id") DO UPDATE SET "title" = :title`)
+// .setParameter("title", post2.title)
+
+export class MockController {
   constructor() {}
 
-  public async mock() {
+  public async mock(req: Request, res: Response) {
     try {
-
+      // console.log("options", req.query.options);
+      // TODO: add conditionals 
       for (let i = 0; i < modules.length; i++) {
-        const res = await Modulos.create({...modules[i]} as Object).save();
+        const res = await getConnection()
+          .createQueryBuilder()
+          .insert()
+          .into(Modulos)
+          .values(modules[i])
+          .orUpdate({
+            conflict_target: ["id"],
+            overwrite: ["modulo", "activo"],
+          })
+          .execute();
+
+        // const res = await Modulos.create({ ...modules[i] } as Object).save();
         console.log("modu", res);
       }
       console.log("======================================");
+      return; // res.json({ok: "ok"})
       for (let i = 0; i < roles.length; i++) {
-        const res = await Roles.create({...roles[i]} as Object).save();
-        console.log("rol", res); 
+        const res = await Roles.create({ ...roles[i] } as Object).save();
+        console.log("rol", res);
       }
-      console.log("======================================");  
+      console.log("======================================");
       for (let i = 0; i < users.length; i++) {
-        const res = await Usuarios.create({...users[i]} as Object).save();
+        const res = await Usuarios.create({ ...users[i] } as Object).save();
         console.log("user", res);
       }
-      console.log("======================================");  
-      
+      console.log("======================================");
+
       /**
        * 
       modules.forEach(async (mod) => {
@@ -56,10 +75,9 @@ export class MockData {
       //   console.log("modu", modu);
       // });
     } catch (error) {
-      console.log('error', error);
-
+      console.log("error", error);
     }
-      
+
     // const users = Usuarios.create({ ...req.body } as Object);
     // await users.save();
   }

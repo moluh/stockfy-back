@@ -9,10 +9,6 @@ import cors from "cors";
 import * as bodyParser from "body-parser";
 import * as http from "http";
 
-// Mock data
-// import { MockData } from "./mock/mock";
-// const mock: MockData = new MockData();
-
 // Routes
 import { UsuariosRouter } from "./routes/usuarios.routes";
 import { LoginRoutes } from "./routes/login.routes";
@@ -31,7 +27,13 @@ import { FilesUploadProductosRouter } from "./routes/file.upload.images.routes";
 import { FilesUploadCsvRouter } from "./routes/file.upload.csv.routes";
 import { MailTransactionRoute } from "./routes/transactional.mail.routes";
 import { ModulosRouter } from "./routes/modulos.routes";
+
+// Mock data
+import { MockRouter } from "./routes/mock.routes";
+
+// Crons
 import "./crons/backupDB";
+import { MockController } from "./controllers/mock.controller";
 
 class App {
   private logger = require("morgan");
@@ -57,15 +59,15 @@ class App {
   public routeFUProductos: FilesUploadProductosRouter =
     new FilesUploadProductosRouter();
   public routeFUCsv: FilesUploadCsvRouter = new FilesUploadCsvRouter();
+  public routeMock: MockRouter = new MockRouter();
 
   constructor() {
     this.init();
   }
 
   async init() {
-    console.log("---------\nLoading Server...");
+    console.log("---------------------------\nLoading Server...");
     await config.connectDatabases();
-    // mock.mock();
     this.app = express();
     this.configApp();
 
@@ -86,6 +88,7 @@ class App {
     this.routeFUCsv.routes(this.app);
     this.routeFUProductos.routes(this.app);
     this.routeMailTransaction.routes(this.app);
+    this.routeMock.routes(this.app);
   }
 
   private configApp(): void {
@@ -111,8 +114,12 @@ class App {
     });
 
     this.app.listen(config.port, () =>
-      console.log(`---------\nApp listening on port: ${config.port}`)
+      console.log(
+        `---------------------------\nApp listening on port: ${config.port}`
+      )
     );
+    // const mock: MockController = new MockController();
+    // mock.mock(null, null);
   }
 }
 export default new App().app;

@@ -8,6 +8,7 @@ JWT_SECRET="secret"
 JWT_EXP=14400 # 3600s = 1h
 JWT_INNACTIVITY_EXP=30
 
+SQL_NAME_CONNECTION="sql_stockfy"
 SQL_TYPE="mysql"
 SQL_HOST="localhost"
 SQL_PORT=3306
@@ -23,12 +24,12 @@ RUNNING_SQL_ENTITIES="src/entities/**/*{.ts,.js}"
 RUNNING_SQL_MIGRATIONS="database/migrations/**{.ts,.js}"
 RUNNING_SQL_MIGRATIONS_CLI="database/migrations"
 
-NO_SQL_TYPE="mongodb"
-NO_SQL_HOST="localhost"
-NO_SQL_PORT=27017
-NO_SQL_DATABASE="test"
-NO_SQL_USERNAME="admin"
-NO_SQL_PASSWORD="mypass"
+MONGO_TYPE="mongodb"
+MONGO_HOST="localhost"
+MONGO_PORT=27017
+MONGO_DATABASE="test"
+MONGO_USERNAME="admin"
+MONGO_PASSWORD="mypass"
 
 AWS_BUCKET="dev-assets"
 AWS_ACCESS_KEY_ID="SECRET"

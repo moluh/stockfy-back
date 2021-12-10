@@ -135,6 +135,7 @@ new Config().ensureValues([
   'JWT_EXP',
   'JWT_INNACTIVITY_EXP',
 
+  'SQL_NAME_CONNECTION',
   'SQL_TYPE',
   'SQL_HOST',
   'SQL_PORT',
@@ -146,12 +147,12 @@ new Config().ensureValues([
   'SQL_MIGRATIONS',
   'SQL_MIGRATIONS_CLI',
 
-  'NO_SQL_TYPE',
-  'NO_SQL_HOST',
-  'NO_SQL_PORT',
-  'NO_SQL_DATABASE',
-  // 'NO_SQL_USERNAME',
-  // 'NO_SQL_PASSWORD',
+  'MONGO_TYPE',
+  'MONGO_HOST',
+  'MONGO_PORT',
+  'MONGO_DATABASE',
+  'MONGO_USERNAME',
+  'MONGO_PASSWORD',
 
   'AWS_BUCKET',
   'AWS_ACCESS_KEY_ID',
