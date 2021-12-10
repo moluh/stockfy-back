@@ -1,6 +1,6 @@
-import { Request, Response, NextFunction } from "express";
 import { MovimientosController } from "../controllers/movimientos.controller";
 import * as mw from "../auth/auth.middleware";
+import { EMPLEADO, SUPERADMIN } from "../helpers/roles";
 
 export class MovimientosRouter {
   public controlador: MovimientosController = new MovimientosController();
@@ -8,37 +8,37 @@ export class MovimientosRouter {
   public routes(app): void {
     app
       .route("/api/v1/movimientos")
-      .get(mw.jwtAdminMiddleware, this.controlador.getAll)
-      .post(mw.jwtEmpleadoMiddleware, this.controlador.create);
+      .get(mw.isAllowed([SUPERADMIN]), this.controlador.getAll)
+      .post(mw.isAllowed([EMPLEADO,SUPERADMIN]), this.controlador.create);
 
     app
       .route("/api/v1/movimiento/:id")
-      .get(mw.jwtEmpleadoMiddleware, this.controlador.get)
-      .put(mw.jwtEmpleadoMiddleware, this.controlador.update)
-      .delete(mw.jwtEmpleadoMiddleware, this.controlador.delete);
+      .get(mw.isAllowed([EMPLEADO,SUPERADMIN]), this.controlador.get)
+      .put(mw.isAllowed([EMPLEADO,SUPERADMIN]), this.controlador.update)
+      .delete(mw.isAllowed([EMPLEADO,SUPERADMIN]), this.controlador.delete);
 
     app
       .route("/api/v1/movimiento/:id/state/:state")
-      .post(mw.jwtEmpleadoMiddleware, this.controlador.changeState);
+      .post(mw.isAllowed([EMPLEADO,SUPERADMIN]), this.controlador.changeState);
       
     app
       .route("/api/v1/movimientos/paginado/filter")
-      .get(mw.jwtEmpleadoMiddleware, this.controlador.getPaginatedAndFilter);
+      .get(mw.isAllowed([EMPLEADO,SUPERADMIN]), this.controlador.getPaginatedAndFilter);
 
     app
       .route("/api/v1/movimientos/paginado/clienteId/:clientId")
-      .get(mw.jwtEmpleadoMiddleware, this.controlador.getPaginatedByClientId);
+      .get(mw.isAllowed([EMPLEADO,SUPERADMIN]), this.controlador.getPaginatedByClientId);
 
     app
       .route("/api/v1/movimientos/paginado")
-      .get(mw.jwtEmpleadoMiddleware, this.controlador.getPaginated);
+      .get(mw.isAllowed([EMPLEADO,SUPERADMIN]), this.controlador.getPaginated);
 
     app
       .route("/api/v1/movimientos/paginado/desde/:from/hasta/:to")
-      .get(mw.jwtEmpleadoMiddleware, this.controlador.getPaginatedBetweenDates);
+      .get(mw.isAllowed([EMPLEADO,SUPERADMIN]), this.controlador.getPaginatedBetweenDates);
 
     app
       .route("/api/v1/movimientos/paginado/fecha/:date")
-      .get(mw.jwtEmpleadoMiddleware, this.controlador.getPaginatedByDate);
+      .get(mw.isAllowed([EMPLEADO,SUPERADMIN]), this.controlador.getPaginatedByDate);
   }
 }

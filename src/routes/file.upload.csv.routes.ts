@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import * as mw from "../auth/auth.middleware";
 import multer from "multer";
 import { ProductosController } from "../controllers/productos.controller";
+import { SUPERADMIN } from "../helpers/roles";
 
 interface MulterRequest extends Request {
   file: any;
@@ -27,7 +28,7 @@ export class FilesUploadCsvRouter {
     app
       .route("/api/v1/productos/csv/upload")
       .post(
-        mw.jwtAdminMiddleware,
+        mw.isAllowed([SUPERADMIN]),
         upload.single("file"),
         this.ctlProductos.uploadCSV
       );

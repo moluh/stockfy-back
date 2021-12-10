@@ -1,5 +1,27 @@
 export const users = [
   {
+    username: "superadmin",
+    email: "superadmin@superadmin.com",
+    password: "$2a$10$VOgrC0a88s8yW1BHjnnpFeSeLN.bwqHYDO7wl5n1IHv.YNNHILq9i",
+    telefono: "23423442",
+    nombre: "Lucas",
+    apellido: "Moretti",
+    provincia: null,
+    localidad: null,
+    avatar: null,
+    domicilio: null,
+    recpass: null,
+    activo: true,
+    roles: [{ id: 1, role: "SUPERADMIN" }], // "ADMIN","USUARIO","EMPLEADO","INVITADO"
+    modulos: [
+      { id: 1, modulo: "PRODUCTOS_A" },
+      { id: 5, modulo: "ESTADISTICAS_A" },
+      { id: 10, modulo: "MARCAS_A" },
+      { id: 15, modulo: "CATEGORIAS_A" },
+      { id: 20, modulo: "TALLES_A" },
+    ],
+  },
+  {
     username: "admin",
     email: "admin@admin.com",
     password: "$2a$10$AaceRZKE9LaIDAvBofHVMuVOk05YnQI26zu4fH3Pu0RBx3MR6x1Rm",

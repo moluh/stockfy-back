@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import { MovimientosLineasController } from "../controllers/movimientos_lineas.controller";
 import * as mw from '../auth/auth.middleware';
+import { SUPERADMIN } from "../helpers/roles";
 
 export class MovimientosLineaRouter {
 
@@ -10,13 +11,13 @@ export class MovimientosLineaRouter {
         app.route('/api/v1/movimientoslineas')
             .get((req: Request, res: Response, next: NextFunction) => {
                 next();
-            }, mw.jwtAdminMiddleware, this.controlador.getAll)
+            }, mw.isAllowed([SUPERADMIN]), this.controlador.getAll)
             .post(this.controlador.create);
 
         app.route('/api/v1/movimientolinea/:id')
-            .get(mw.jwtAdminMiddleware, this.controlador.get)
-            .put(mw.jwtAdminMiddleware, this.controlador.update)
-            .delete(mw.jwtAdminMiddleware, this.controlador.delete);
+            .get(mw.isAllowed([SUPERADMIN]), this.controlador.get)
+            .put(mw.isAllowed([SUPERADMIN]), this.controlador.update)
+            .delete(mw.isAllowed([SUPERADMIN]), this.controlador.delete);
 
     }
 

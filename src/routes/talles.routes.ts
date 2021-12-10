@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import { TallesController } from "../controllers/talles.controller";
 import * as mw from "../auth/auth.middleware";
+import { SUPERADMIN } from "../helpers/roles";
 
 export class TallesRouter {
   public controlador: TallesController = new TallesController();
@@ -8,13 +9,13 @@ export class TallesRouter {
   public routes(app): void {
     app
       .route("/api/v1/talles")
-      .get(mw.jwtAdminMiddleware, this.controlador.getAll)
-      .post(mw.jwtAdminMiddleware, this.controlador.create);
+      .get(mw.isAllowed([SUPERADMIN]), this.controlador.getAll)
+      .post(mw.isAllowed([SUPERADMIN]), this.controlador.create);
 
     app
       .route("/api/v1/talle/:id")
-      .get(mw.jwtAdminMiddleware, this.controlador.get)
-      .put(mw.jwtAdminMiddleware, this.controlador.update)
-      .delete(mw.jwtAdminMiddleware, this.controlador.delete);
+      .get(mw.isAllowed([SUPERADMIN]), this.controlador.get)
+      .put(mw.isAllowed([SUPERADMIN]), this.controlador.update)
+      .delete(mw.isAllowed([SUPERADMIN]), this.controlador.delete);
   }
 }

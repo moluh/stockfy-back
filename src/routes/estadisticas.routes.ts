@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import { EstadisticasController } from "../controllers/estadisticas.controller";
 import * as mw from "../auth/auth.middleware";
+import { SUPERADMIN, USUARIO } from "../helpers/roles";
 
 export class EstadisticasRouter {
   public controlador: EstadisticasController = new EstadisticasController();
@@ -8,13 +9,14 @@ export class EstadisticasRouter {
   public routes(app): void {
     app
       .route("/api/v1/estadisticas")
-      .post(mw.jwtAdminMiddleware, this.controlador.getBetweenDates);
+      .post(mw.isAllowed([SUPERADMIN]), this.controlador.getBetweenDates);
     app
       .route("/api/v1/estadisticas/grafico")
-      .post(mw.jwtAdminMiddleware, this.controlador.getBetweenDatesGraphic);
+      .post(mw.isAllowed([SUPERADMIN]), this.controlador.getBetweenDatesGraphic);
 
     app
       .route("/api/v1/dashboard")
-      .get(mw.jwtEmpleadoMiddleware, this.controlador.dashboard);
+      .get(mw.isAllowed([USUARIO]), this.controlador.dashboard);
   }
+
 }

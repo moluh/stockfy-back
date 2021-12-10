@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import { PagosController } from "../controllers/pagos.controller";
 import * as mw from "../auth/auth.middleware";
+import { EMPLEADO, SUPERADMIN } from "../helpers/roles";
 
 export class PagosRouter {
   public controlador: PagosController = new PagosController();
@@ -10,21 +11,21 @@ export class PagosRouter {
       .route("/api/v1/pagos")
       .get(
         (req: Request, res: Response, next: NextFunction) => next(),
-        mw.jwtEmpleadoMiddleware,
+        mw.isAllowed([EMPLEADO,SUPERADMIN]),
         this.controlador.getAll
       )
-      .post(mw.jwtEmpleadoMiddleware, this.controlador.create);
+      .post(mw.isAllowed([EMPLEADO,SUPERADMIN]), this.controlador.create);
 
     app.route('/api/v1/pagos/paginado')
-      .get(mw.jwtEmpleadoMiddleware, this.controlador.getPaginated)
+      .get(mw.isAllowed([EMPLEADO,SUPERADMIN]), this.controlador.getPaginated)
 
     app.route("/api/v1/pago/:id/movimiento/:movimientoId")
-      .delete(mw.jwtEmpleadoMiddleware, this.controlador.delete)
+      .delete(mw.isAllowed([EMPLEADO,SUPERADMIN]), this.controlador.delete)
 
     app
       .route("/api/v1/pago/:id")
       .get(this.controlador.get)
-      .put(mw.jwtEmpleadoMiddleware, this.controlador.update)
-      .delete(mw.jwtEmpleadoMiddleware, this.controlador.delete);
+      .put(mw.isAllowed([EMPLEADO,SUPERADMIN]), this.controlador.update)
+      .delete(mw.isAllowed([EMPLEADO,SUPERADMIN]), this.controlador.delete);
   }
 }

@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import { CategoriasController } from "../controllers/categorias.controller";
 import * as mw from "../auth/auth.middleware";
 import multer from "multer";
+import { ADMIN, SUPERADMIN } from "../helpers/roles";
 
 interface MulterRequest extends Request {
   file: any;
@@ -24,27 +25,27 @@ export class CategoriasRouter {
   public routes(app): void {
     app
       .route("/api/v1/categorias")
-      .get(mw.jwtAdminMiddleware, this.controlador.getAll)
-      .post(mw.jwtAdminMiddleware, this.controlador.create);
+      .get(mw.isAllowed([ADMIN]), this.controlador.getAll)
+      .post(mw.isAllowed([SUPERADMIN]), this.controlador.create);
 
     app
       .route("/api/v1/categorias/activas")
-      .get(mw.jwtAdminMiddleware, this.controlador.getActives);
+      .get(mw.isAllowed([SUPERADMIN]), this.controlador.getActives);
 
     app
       .route("/api/v1/categorias/paginado")
-      .get(mw.jwtAdminMiddleware, this.controlador.getPaginated);
+      .get(mw.isAllowed([SUPERADMIN]), this.controlador.getPaginated);
 
     app
       .route("/api/v1/categoria/:id")
-      .get(mw.jwtAdminMiddleware, this.controlador.get)
-      .put(mw.jwtAdminMiddleware, this.controlador.update)
-      .delete(mw.jwtAdminMiddleware, this.controlador.delete);
+      .get(mw.isAllowed([SUPERADMIN]), this.controlador.get)
+      .put(mw.isAllowed([SUPERADMIN]), this.controlador.update)
+      .delete(mw.isAllowed([SUPERADMIN]), this.controlador.delete);
 
     app
       .route("/api/v1/files/categoria")
       .post(
-        mw.jwtAdminMiddleware,
+        mw.isAllowed([SUPERADMIN]),
         upload.single("file"),
         this.controlador.create
       );

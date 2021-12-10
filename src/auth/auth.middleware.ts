@@ -1,65 +1,39 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import * as jwt from "jsonwebtoken";
 import { ApiResponse } from "../api/response";
+import { Roles } from "../entities/Roles";
+import { Usuarios } from "../entities/Usuarios";
 
-export function jwtAdminMiddleware(req: Request, res: Response, next) {
-  next();
-}
+const checkRole = (
+  decoded: Usuarios,
+  requiredRoles: string[],
+  next: NextFunction
+) => {
+  if (decoded.roles.some((r:Roles) => requiredRoles.some((rr) => r.role === rr)))
+    next();
+};
 
-export function jwtEmpleadoMiddleware(req: Request, res: Response, next) {
-  next();
-}
+export function isAllowed(role: string[]) {
+  return function (req: Request, res: Response, next: NextFunction) {
+    const authString = req.headers["authorization"];
 
-export function QUITAR_ESTO_jwtAdminMiddleware(
-  req: Request,
-  res: Response,
-  next
-) {
-  const authString = req.headers["authorization"];
+    if (typeof authString === "string" && authString.indexOf(" ") > -1) {
+      const authArray = authString.split(" ");
+      const token = authArray[1];
+      jwt.verify(token, process.env.PKEY, async (err, decoded: any) => {
+        if (err)
+          return ApiResponse(
+            res,
+            false,
+            403,
+            [],
+            "Token no válido: No tiene autorización para este recurso"
+          );
 
-  if (typeof authString === "string" && authString.indexOf(" ") > -1) {
-    const authArray = authString.split(" ");
-    const token = authArray[1];
-    jwt.verify(token, process.env.PKEY, async (err, decoded: any) => {
-      if (err)
-        return ApiResponse(
-          res,
-          false,
-          403,
-          [],
-          "Token no válido: No tiene autorización para este recurso"
-        );
-      // res.status(403).send();
-      else if (decoded.roles.some((r) => r.role === 'ADMIN')) next();
-    });
-  } else {
-    return ApiResponse(res, false, 401, [], "Token no válido.");
-  }
-}
-
-export function QUITAR_ESTO_jwtEmpleadoMiddleware(
-  req: Request,
-  res: Response,
-  next
-) {
-  const authString = req.headers["authorization"];
-
-  if (typeof authString === "string" && authString.indexOf(" ") > -1) {
-    const authArray = authString.split(" ");
-    const token = authArray[1];
-    jwt.verify(token, process.env.PKEY, async (err, decoded: any) => {
-      if (err)
-        res.status(403).send({
-          ok: false,
-          msg: "Token no válido: No tiene autorización para este recurso",
-          error: err,
-        });
-      else if (decoded.roles.some((r) => r.role === 'ADMIN' ||  r.role === 'EMPLEADO')) next();
-    });
-  } else {
-    res.status(403).send({
-      ok: false,
-      msg: "Token no válido.",
-    });
-  }
+        checkRole(decoded, role, next);
+      });
+    } else {
+      return ApiResponse(res, false, 401, [], "Token no válido.");
+    }
+  };
 }

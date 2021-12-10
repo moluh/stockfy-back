@@ -18,7 +18,7 @@ export class UsuariosController {
   public async create(req: Request, res: Response) {
     const usuario: Usuarios = Usuarios.create({ ...req.body } as Object);
     // todo: find rol "USUARIO" by id and set it automatically
-    usuario.roles = req.body.roles || [{ id: 2, role: "USUARIO" }];
+    usuario.roles = req.body.roles || [{ id: 5, role: "USUARIO" }];
     usuario.password = bcrypt.hashSync(req.body.password, 10);
 
     try {
@@ -99,6 +99,8 @@ export class UsuariosController {
         else usuario.telefono = newUser.telefono;
 
       usuario = Usuarios.create({ ...req.body } as Object);
+      usuario.roles = req.body.roles;
+      usuario.modulos = req.body.modulos;
       await usuario.save();
       ApiResponse(res, true, 200, usuario, null);
     } catch (error) {
