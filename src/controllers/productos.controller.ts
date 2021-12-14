@@ -126,8 +126,10 @@ export class ProductosController {
           errors.push(error);
         }
 
-        if (errors.length !== 0) res.json(errors);
-        else res.json(responses);
+        if (errors.length !== 0) 
+          ApiResponse(res, false, 400, [], "Error al importar");
+        else 
+          ApiResponse(res, true, 200, [], [])
       });
 
     csvData = [];
