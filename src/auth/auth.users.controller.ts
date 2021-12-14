@@ -5,9 +5,10 @@ const config: Config = new Config();
 import * as bcrypt from "bcrypt";
 import * as jwt from "jsonwebtoken";
 import { ApiResponse } from "../api/response";
+import { USUARIO } from "../helpers/roles";
 
 export class UsuariosAuthController {
-  constructor() {}
+  constructor() { }
 
   public async loginUsuario(req: Request, res: Response) {
     let email = req.body.email;
@@ -25,6 +26,13 @@ export class UsuariosAuthController {
         isLogged: false,
         token: null,
         error: "Datos incorrectos.",
+      });
+
+    if (usuario.roles.some(r => r.role === USUARIO))
+      return ApiResponse(res, false, 401, [], {
+        isLogged: false,
+        token: null,
+        error: "Permiso denegado.",
       });
 
     const validatePassword = bcrypt.compareSync(password, usuario.password);

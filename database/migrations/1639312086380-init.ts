@@ -1,14 +1,14 @@
 import {MigrationInterface, QueryRunner} from "typeorm";
 
-export class init1638640567723 implements MigrationInterface {
-    name = 'init1638640567723'
+export class init1639312086380 implements MigrationInterface {
+    name = 'init1639312086380'
 
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.query("CREATE TABLE `marcas` (`id` int NOT NULL AUTO_INCREMENT, `marca` varchar(150) NOT NULL, `activo` tinyint NOT NULL DEFAULT 1, PRIMARY KEY (`id`)) ENGINE=InnoDB");
         await queryRunner.query("CREATE TABLE `imagenes` (`id` int NOT NULL AUTO_INCREMENT, `img_thumb` text NULL, `url` text NULL, `productoId` int NULL, PRIMARY KEY (`id`)) ENGINE=InnoDB");
         await queryRunner.query("CREATE TABLE `proveedores` (`id` int NOT NULL AUTO_INCREMENT, `proveedor` varchar(150) NOT NULL, `activo` tinyint NOT NULL DEFAULT 1, PRIMARY KEY (`id`)) ENGINE=InnoDB");
         await queryRunner.query("CREATE TABLE `talles` (`id` int NOT NULL AUTO_INCREMENT, `talle` varchar(255) NOT NULL, PRIMARY KEY (`id`)) ENGINE=InnoDB");
-        await queryRunner.query("CREATE TABLE `productos` (`id` int NOT NULL AUTO_INCREMENT, `nombre` varchar(255) NOT NULL, `descripcion` text NOT NULL, `unidad` int NOT NULL, `archivado` tinyint NOT NULL DEFAULT 0, `alto` int NULL, `ancho` int NULL, `profundidad` int NULL, `peso` int NULL, `precio_costo` double NULL, `precio_venta` double NULL, `disponible` tinyint NOT NULL DEFAULT 1, `rebaja` int NULL, `sku` varchar(255) NULL, `ean` varchar(255) NULL, `stock_actual` int NULL, `codigo_fabricante` varchar(150) NULL, `created_at` timestamp(6) NULL DEFAULT CURRENT_TIMESTAMP(6), `updated_at` timestamp(6) NULL DEFAULT CURRENT_TIMESTAMP(6), `proveedorId` int NULL, `marcaId` int NULL, PRIMARY KEY (`id`)) ENGINE=InnoDB");
+        await queryRunner.query("CREATE TABLE `productos` (`id` int NOT NULL AUTO_INCREMENT, `nombre` varchar(255) NOT NULL, `descripcion` text NULL, `descripcion_html` text NULL, `unidad` varchar(20) NULL, `alto` double NULL, `ancho` double NULL, `profundidad` double NULL, `peso` double NULL, `precio_costo` double NULL, `precio_venta` double NULL, `disponible` tinyint NOT NULL DEFAULT 1, `archivado` tinyint NOT NULL DEFAULT 0, `rebaja` double NULL, `sku` varchar(255) NULL, `ean` varchar(255) NULL, `stock_actual` int NULL, `codigo_fabricante` varchar(150) NULL, `created_at` timestamp(6) NULL DEFAULT CURRENT_TIMESTAMP(6), `updated_at` timestamp(6) NULL DEFAULT CURRENT_TIMESTAMP(6), `proveedorId` int NULL, `marcaId` int NULL, PRIMARY KEY (`id`)) ENGINE=InnoDB");
         await queryRunner.query("CREATE TABLE `categorias` (`id` int NOT NULL AUTO_INCREMENT, `categoria` varchar(255) NOT NULL, `activo` tinyint NOT NULL DEFAULT 1, PRIMARY KEY (`id`)) ENGINE=InnoDB");
         await queryRunner.query("CREATE TABLE `gastos` (`id` int NOT NULL AUTO_INCREMENT, `fecha` date NOT NULL, `hora` time NULL, `descripcion` varchar(255) NULL, `monto` double NOT NULL, PRIMARY KEY (`id`)) ENGINE=InnoDB");
         await queryRunner.query("CREATE TABLE `roles` (`id` int NOT NULL AUTO_INCREMENT, `role` varchar(255) NOT NULL, `descripcion` varchar(255) NOT NULL DEFAULT '', `nivel` int NOT NULL DEFAULT '1', PRIMARY KEY (`id`)) ENGINE=InnoDB");
@@ -30,7 +30,7 @@ export class init1638640567723 implements MigrationInterface {
         await queryRunner.query("ALTER TABLE `productos_talles` ADD CONSTRAINT `FK_ad9b4cb9a428b6a9aed32b70d43` FOREIGN KEY (`productos`) REFERENCES `productos`(`id`) ON DELETE CASCADE ON UPDATE NO ACTION");
         await queryRunner.query("ALTER TABLE `productos_talles` ADD CONSTRAINT `FK_4bef170594c9ca7c0a48e607294` FOREIGN KEY (`talles`) REFERENCES `talles`(`id`) ON DELETE CASCADE ON UPDATE NO ACTION");
         await queryRunner.query("ALTER TABLE `productos_categorias` ADD CONSTRAINT `FK_2cff377c4e91f7f1db515510a96` FOREIGN KEY (`productos`) REFERENCES `productos`(`id`) ON DELETE CASCADE ON UPDATE NO ACTION");
-        await queryRunner.query("ALTER TABLE `productos_categorias` ADD CONSTRAINT `FK_d324f2eb5d15064af3022ad489e` FOREIGN KEY (`categorias`) REFERENCES `talles`(`id`) ON DELETE CASCADE ON UPDATE NO ACTION");
+        await queryRunner.query("ALTER TABLE `productos_categorias` ADD CONSTRAINT `FK_d324f2eb5d15064af3022ad489e` FOREIGN KEY (`categorias`) REFERENCES `categorias`(`id`) ON DELETE CASCADE ON UPDATE NO ACTION");
         await queryRunner.query("ALTER TABLE `usuarios_roles` ADD CONSTRAINT `FK_536f1b37079700f1169ce0f5e30` FOREIGN KEY (`usuarios`) REFERENCES `usuarios`(`id`) ON DELETE CASCADE ON UPDATE NO ACTION");
         await queryRunner.query("ALTER TABLE `usuarios_roles` ADD CONSTRAINT `FK_85a49331d45a9c67483200e0a62` FOREIGN KEY (`roles`) REFERENCES `roles`(`id`) ON DELETE CASCADE ON UPDATE NO ACTION");
         await queryRunner.query("ALTER TABLE `usuarios_modulos` ADD CONSTRAINT `FK_058b2b3c23acdea2d20db2fed15` FOREIGN KEY (`usuarios`) REFERENCES `usuarios`(`id`) ON DELETE CASCADE ON UPDATE NO ACTION");

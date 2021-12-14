@@ -1,6 +1,8 @@
-export const sizes = {
-  "username": "admin",
-  "email": "admin@admin",
-  "password": "admin",
-  "roles": [{ "id": 1, "role": "ADMIN" }]
-}
+export const sizes = [
+  { id: 1, talle: "Por defecto" },
+  { id: 2, talle: "S" }, 
+  { id: 3, talle: "M" }, 
+  { id: 4, talle: "L" }, 
+  { id: 5, talle: "XL" },
+  { id: 6, talle: "XXL" },
+  { id: 7, talle: "XXXL" },]

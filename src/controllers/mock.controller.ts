@@ -1,10 +1,16 @@
 import { Request, Response } from "express";
 import { getConnection } from "typeorm";
+import { Categorias } from "../entities/Categorias";
+import { Marcas } from "../entities/Marcas";
 import { Modulos } from "../entities/Modulos";
 import { Roles } from "../entities/Roles";
+import { Talles } from "../entities/Talles";
 import { Usuarios } from "../entities/Usuarios";
+import { brands } from "../mock/constants/brands";
+import { categories } from "../mock/constants/categories";
 import { modules } from "../mock/constants/modules";
 import { roles } from "../mock/constants/roles";
+import { sizes } from "../mock/constants/sizes";
 import { users } from "../mock/constants/users";
 
 // -> onConflict = only for postgresql
@@ -13,14 +19,15 @@ import { users } from "../mock/constants/users";
 // .setParameter("title", post2.title)
 
 export class MockController {
-  constructor() {}
+  constructor() { }
 
   public async mock(req: Request, res: Response) {
     try {
-      // console.log("options", req.query.options);
+
+      console.log("EJECUTANDO MOCK \n ================ ");
       // TODO: add conditionals 
       for (let i = 0; i < modules.length; i++) {
-        const res = await getConnection()
+        await getConnection()
           .createQueryBuilder()
           .insert()
           .into(Modulos)
@@ -30,55 +37,65 @@ export class MockController {
             overwrite: ["modulo", "activo"],
           })
           .execute();
-
-        // const res = await Modulos.create({ ...modules[i] } as Object).save();
-        console.log("modu", res);
       }
-      console.log("======================================");
-      return; // res.json({ok: "ok"})
+      
       for (let i = 0; i < roles.length; i++) {
-        const res = await Roles.create({ ...roles[i] } as Object).save();
-        console.log("rol", res);
+        await getConnection()
+          .createQueryBuilder()
+          .insert()
+          .into(Roles)
+          .values(roles[i])
+          .orUpdate({
+            conflict_target: ["id"],
+            overwrite: ["role", "descripcion", "nivel"],
+          })
+          .execute();
       }
-      console.log("======================================");
+      
       for (let i = 0; i < users.length; i++) {
-        const res = await Usuarios.create({ ...users[i] } as Object).save();
-        console.log("user", res);
+        await Usuarios.create(users[i] as Object).save();
       }
-      console.log("======================================");
 
-      /**
-       * 
-      modules.forEach(async (mod) => {
-        const res = Modulos.create(mod as Object);
-        const modu = await res.save();
-        console.log("modu", modu);
-      });
-      setTimeout(() => {
-        roles.forEach(async (role) => {
-          const res = Roles.create(role as Object); //.save();
-          const rol = await res.save();
-          console.log("rol", rol);
-        });
-        setTimeout(() => {
-          users.forEach(async (user) => {
-            const res = Usuarios.create(user as Object); //.save();
-            const usuario = await res.save();
-            console.log("usuario", usuario);
-          });
-        }, 5000);
-      }, 5000);
-       */
-      // sizes.forEach(async (siz) => {
-      //   const res = Modulos.create(mod as Object)//.save();
-      //   const modu = await res.save();
-      //   console.log("modu", modu);
-      // });
+      for (let i = 0; i < sizes.length; i++) {
+        await getConnection()
+          .createQueryBuilder()
+          .insert()
+          .into(Talles)
+          .values(sizes[i])
+          .orUpdate({
+            conflict_target: ["id"],
+            overwrite: ["talle"],
+          })
+          .execute();
+      }
+
+      for (let i = 0; i < categories.length; i++) {
+        await getConnection()
+          .createQueryBuilder()
+          .insert()
+          .into(Categorias)
+          .values(categories[i])
+          .orUpdate({
+            conflict_target: ["id"],
+            overwrite: ["categoria"],
+          })
+          .execute();
+      }
+
+      for (let i = 0; i < brands.length; i++) {
+        await getConnection()
+          .createQueryBuilder()
+          .insert()
+          .into(Marcas)
+          .values(brands[i])
+          .orUpdate({
+            conflict_target: ["id"],
+            overwrite: ["marca"],
+          })
+          .execute();
+      }
     } catch (error) {
       console.log("error", error);
     }
-
-    // const users = Usuarios.create({ ...req.body } as Object);
-    // await users.save();
   }
 }
