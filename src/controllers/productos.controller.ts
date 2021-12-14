@@ -17,7 +17,7 @@ export class ProductosController {
   public ctl_Imagenes: ImagenesController = new ImagenesController();
 
   public async uploadCSV(req: MulterRequest, res: Response) {
-    const pathOfCvs: string = `/var/www/controlstock/archivos/${req.file.filename}`;
+    const pathOfCvs: string = `${process.env.FILES_DIR}/csv/${req.file.filename}`;
     const stream = fs.createReadStream(pathOfCvs);
     let csvData: any | any[] = [];
     const csvStream = fastcsv

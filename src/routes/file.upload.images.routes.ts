@@ -11,7 +11,7 @@ interface MulterRequest extends Request {
 // Post imagenes
 let storage = multer.diskStorage({
   destination: (req: Request, file, cb) => {
-    cb(null, "/var/www/controlstock/archivos");
+    cb(null, `${process.env.FILES_DIR}/images`);
   },
   filename: (req: Request, file, cb) => {
     console.log("FILE", file);
