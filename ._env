@@ -1,7 +1,7 @@
 PKEY="PRIVATE-KEY"
 PORT=3000
 NODE_ENV="DEV"
-BACKUPS_DIR="/home/backups"
+BACKUPS_DIR="/home/lucas/backups"
 FILES_DIR="/home/lucas/Escritorio/stockfy-files"
 CONNECT_NO_SQL=false
 

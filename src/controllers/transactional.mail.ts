@@ -20,7 +20,7 @@ export class TransactionalMailsController {
       port: 465,
       secure: true, // true for 465, false for other ports
       auth: {
-        user: "no-reply@controlstock.com.ar", // generated ethereal user
+        user: "no-reply@stockfy.com.ar", // generated ethereal user
         pass: "1eCdsAWI6H", // generated ethereal password
       },
     });
@@ -30,7 +30,7 @@ export class TransactionalMailsController {
       case "RU":
         transporter
           .sendMail({
-            from: '"Control Stock" <no-reply@controlstock.com.ar>',
+            from: '"Control Stock" <no-reply@stockfy.com.ar>',
             to: `${body.correo}`,
             subject: "Confirmación de registro",
 
@@ -45,7 +45,7 @@ export class TransactionalMailsController {
                 </head>
                 <body>
                     <div class="contenedor" style="" align="center">
-                    <img style="max-height: 110px; width: auto;" src="https://controlstock.com.ar/imagenes/logo.jpeg" alt="" srcset="">
+                    <img style="max-height: 110px; width: auto;" src="https://stockfy.com.ar/imagenes/logo.jpeg" alt="" srcset="">
                         <h4 class="txt-title" style="color: #e7600f;">¡Bienvenido a Control Stock!</h4>
                         <br>
                         <p>Tu registro se ha realizado con exito.</p>
