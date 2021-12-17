@@ -31,13 +31,13 @@ export class ProductosController {
          * Buscamos los indexs de cada atributo, para asi asignarlo despues a su correcto
          * orden. Esto posibilita que el cliente pueda tener organizado de diferente manera
          * su libro de productos. Solamente debe respetar los nombres de la base de datos.
-         * 
-         * 
-         * // TODO: permitir que el cliente cargue su propia estructura de datos y de nombre 
-         * de los productos(ej: en vez de "nombre" quizás el cliente tenga su propio excel 
-         * con el atributo "titulo") entonces desde front seleccionar los headers del excel 
+         *
+         *
+         * // TODO: permitir que el cliente cargue su propia estructura de datos y de nombre
+         * de los productos(ej: en vez de "nombre" quizás el cliente tenga su propio excel
+         * con el atributo "titulo") entonces desde front seleccionar los headers del excel
          * que se carga y que pueda matchear con los atributos de producto de nuestra base de datos.
-         * 
+         *
          */
         let responses = [];
         let errors = [];
@@ -70,66 +70,102 @@ export class ProductosController {
 
         try {
           for (let i = 0; i < csvData.length; i++) {
-            await getConnection()
-              .createQueryBuilder()
-              .insert()
-              .into(Productos)
-              .values({
-                id: csvData[i][header.id],
-                ean: csvData[i][header.ean],
-                nombre: csvData[i][header.nombre],
-                stock_actual: csvData[i][header.stock_actual],
-                // marca: csvData[i][header.marca],
-                // proveedor: csvData[i][header.proveedor],
-                descripcion: csvData[i][header.descripcion],
-                disponible: csvData[i][header.disponible],
-                rebaja: parseFloat(csvData[i][header.rebaja]) || 0,
-                precio_costo: parseFloat(csvData[i][header.precio_costo]) || 0,
-                precio_venta: parseFloat(csvData[i][header.precio_venta]) || 0,
-                sku: csvData[i][header.sku],
-                codigo_fabricante: csvData[i][header.codigo_fabricante],
-                unidad: csvData[i][header.unidad],
-                archivado: csvData[i][header.archivado],
-                alto: parseInt(csvData[i][header.alto]) || 0,
-                ancho: parseInt(csvData[i][header.ancho]) || 0,
-                profundidad: parseInt(csvData[i][header.profundidad]) || 0,
-                peso: parseInt(csvData[i][header.peso]) || 0,
-              })
-              .orUpdate({
-                conflict_target: ["id"],
-                overwrite: [
-                  "ean",
-                  "nombre",
-                  "stock_actual",
-                  // "marcaId",
-                  // "proveedorId",
-                  "descripcion",
-                  "disponible",
-                  "rebaja",
-                  "precio_costo",
-                  "precio_venta",
-                  "sku",
-                  "codigo_fabricante",
-                  "unidad",
-                  "archivado",
-                  "alto",
-                  "ancho",
-                  "profundidad",
-                  "peso",
-                ],
-              })
-              .execute()
-              .then((res) => responses.push(res))
-              .catch((error) => errors.push(error));
+            if (csvData[i][header.id] !== "") {
+              await getConnection()
+                .createQueryBuilder()
+                .insert()
+                .into(Productos)
+                .values({
+                  id: csvData[i][header.id],
+                  ean: csvData[i][header.ean],
+                  nombre: csvData[i][header.nombre],
+                  stock_actual: csvData[i][header.stock_actual],
+                  // marca: csvData[i][header.marca],
+                  // proveedor: csvData[i][header.proveedor],
+                  descripcion: csvData[i][header.descripcion],
+                  disponible: csvData[i][header.disponible],
+                  rebaja: parseFloat(csvData[i][header.rebaja]) || 0,
+                  precio_costo:
+                    parseFloat(csvData[i][header.precio_costo]) || 0,
+                  precio_venta:
+                    parseFloat(csvData[i][header.precio_venta]) || 0,
+                  sku: csvData[i][header.sku],
+                  codigo_fabricante: csvData[i][header.codigo_fabricante],
+                  unidad: csvData[i][header.unidad],
+                  archivado: csvData[i][header.archivado],
+                  alto: parseInt(csvData[i][header.alto]) || 0,
+                  ancho: parseInt(csvData[i][header.ancho]) || 0,
+                  profundidad: parseInt(csvData[i][header.profundidad]) || 0,
+                  peso: parseInt(csvData[i][header.peso]) || 0,
+                })
+                .orUpdate({
+                  conflict_target: ["id"],
+                  overwrite: [
+                    "ean",
+                    "nombre",
+                    "stock_actual",
+                    // "marcaId",
+                    // "proveedorId",
+                    "descripcion",
+                    "disponible",
+                    "rebaja",
+                    "precio_costo",
+                    "precio_venta",
+                    "sku",
+                    "codigo_fabricante",
+                    "unidad",
+                    "archivado",
+                    "alto",
+                    "ancho",
+                    "profundidad",
+                    "peso",
+                  ],
+                })
+                .execute()
+                .then((res) => responses.push(res))
+                .catch((error) => {
+                  errors.push(error);
+                  console.log(" ||| error -> ", error);
+                });
+            } else {
+              await getConnection()
+                .createQueryBuilder()
+                .insert()
+                .into(Productos)
+                .values({
+                  ean: csvData[i][header.ean],
+                  nombre: csvData[i][header.nombre],
+                  stock_actual: csvData[i][header.stock_actual],
+                  // marca: csvData[i][header.marca],
+                  // proveedor: csvData[i][header.proveedor],
+                  descripcion: csvData[i][header.descripcion],
+                  disponible: csvData[i][header.disponible],
+                  rebaja: parseFloat(csvData[i][header.rebaja]) || 0,
+                  precio_costo:
+                    parseFloat(csvData[i][header.precio_costo]) || 0,
+                  precio_venta:
+                    parseFloat(csvData[i][header.precio_venta]) || 0,
+                  sku: csvData[i][header.sku],
+                  codigo_fabricante: csvData[i][header.codigo_fabricante],
+                  unidad: csvData[i][header.unidad],
+                  archivado: csvData[i][header.archivado],
+                  alto: parseInt(csvData[i][header.alto]) || 0,
+                  ancho: parseInt(csvData[i][header.ancho]) || 0,
+                  profundidad: parseInt(csvData[i][header.profundidad]) || 0,
+                  peso: parseInt(csvData[i][header.peso]) || 0,
+                })
+                .execute()
+                .then((res) => responses.push(res))
+                .catch((error) => errors.push(error));
+            }
           }
         } catch (error) {
           errors.push(error);
         }
 
-        if (errors.length !== 0) 
+        if (errors.length !== 0)
           ApiResponse(res, false, 400, [], "Error al importar");
-        else 
-          ApiResponse(res, true, 200, [], [])
+        else ApiResponse(res, true, 200, [], []);
       });
 
     csvData = [];
@@ -138,10 +174,7 @@ export class ProductosController {
 
   public getByEanCode(req: Request, res: Response) {
     const ean = req.params.ean;
-    Productos.findOne(
-      { ean }
-      //  { relations: ["marcaId", "categoriaUnoId", "categoriaDosId", "proveedorId"]     }
-    )
+    Productos.findOne({ ean })
       .then((data) => ApiResponse(res, true, 200, data, []))
       .catch((err) => ApiResponse(res, false, 400, [], err));
   }

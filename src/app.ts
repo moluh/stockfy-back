@@ -118,8 +118,8 @@ class App {
         `---------------------------\nApp listening on port: ${config.port}`
       )
     );
-    // const mock: MockController = new MockController();
-    // mock.mock(null, null);
+
+    // new MockController().mock(null, null);
   }
 }
 export default new App().app;
