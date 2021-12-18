@@ -46,6 +46,7 @@ export class ProductosController {
           ean: csvData[0].findIndex((h) => h === "ean"),
           nombre: csvData[0].findIndex((h) => h === "nombre"),
           stock_actual: csvData[0].findIndex((h) => h === "stock_actual"),
+          // stock_infinito: csvData[0].findIndex((h) => h === "stock_infinito"),
           // marca: csvData[0].findIndex((h) => h === "marcaId"),
           // categorias: csvData[0].findIndex((h) => h === "categoriaId"),
           // proveedor: csvData[0].findIndex((h) => h === "proveedorId"),
@@ -384,6 +385,7 @@ export class ProductosController {
         producto.precio_costo = req.body.precio_costo;
         producto.precio_venta = req.body.precio_venta;
         producto.stock_actual = req.body.stock_actual;
+        producto.stock_infito = req.body.stock_infito;        
         producto.sku = req.body.sku;
         producto.rebaja = req.body.rebaja;
         producto.archivado = req.body.archivado;
