@@ -14,7 +14,7 @@ export class ProductosRouter {
 
     app
       .route("/api/v1/producto/:id")
-      .get(mw.isAllowed([EMPLEADO,SUPERADMIN]), this.controlador.get)
+      .get(mw.isAllowed([EMPLEADO, SUPERADMIN]), this.controlador.get)
       .put(mw.isAllowed([SUPERADMIN]), this.controlador.update)
       .delete(mw.isAllowed([SUPERADMIN]), this.controlador.delete);
 
@@ -23,23 +23,36 @@ export class ProductosRouter {
       .post(mw.isAllowed([SUPERADMIN]), this.controlador.changeState);
 
     app
+      .route("/api/v1/producto/barcodes/:id/sku/:sku/ean/:ean")
+      .post(mw.isAllowed([SUPERADMIN]), this.controlador.createBarCodes);
+
+    app
       .route("/api/v1/productos/paginado/state")
-      .get(mw.isAllowed([EMPLEADO,SUPERADMIN]), this.controlador.getPaginatedByState);
+      .get(
+        mw.isAllowed([EMPLEADO, SUPERADMIN]),
+        this.controlador.getPaginatedByState
+      );
 
     app
       .route("/api/v1/productos/paginado/list")
-      .get(mw.isAllowed([EMPLEADO,SUPERADMIN]), this.controlador.getPaginatedByIdOfAList);
+      .get(
+        mw.isAllowed([EMPLEADO, SUPERADMIN]),
+        this.controlador.getPaginatedByIdOfAList
+      );
 
     app
       .route("/api/v1/productos/paginado/filter")
-      .get(mw.isAllowed([EMPLEADO,SUPERADMIN]), this.controlador.getPaginatedAndFilter);
+      .get(
+        mw.isAllowed([EMPLEADO, SUPERADMIN]),
+        this.controlador.getPaginatedAndFilter
+      );
 
     app
       .route("/api/v1/productos/paginado")
-      .get(mw.isAllowed([EMPLEADO,SUPERADMIN]), this.controlador.getPaginated);
+      .get(mw.isAllowed([EMPLEADO, SUPERADMIN]), this.controlador.getPaginated);
 
     app
       .route("/api/v1/producto/ean/:ean")
-      .get(mw.isAllowed([EMPLEADO,SUPERADMIN]), this.controlador.getByEanCode);
+      .get(mw.isAllowed([EMPLEADO, SUPERADMIN]), this.controlador.getByEanCode);
   }
 }

@@ -179,6 +179,16 @@ export class ProductosController {
       .catch((err) => ApiResponse(res, false, 400, [], err));
   }
 
+  public createBarCodes(req: Request, res: Response) {
+    const id = req.params.id;
+    let codes: any = {};
+    if (req.params.sku) codes.sku = req.params.sku;
+    if (req.params.ean) codes.ean = req.params.ean;
+    Productos.update(id, { ...codes })
+      .then((data) => ApiResponse(res, true, 200, data, []))
+      .catch((err) => ApiResponse(res, false, 400, [], err));
+  }
+
   getPaginatedByState(req: Request, res: Response) {
     let pageNro: any = req.query.pageNro || 0;
     let pageSize: any = req.query.pageSize;
