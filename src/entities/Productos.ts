@@ -71,7 +71,7 @@ export class Productos extends BaseEntity {
   stock_actual: number;
 
   @Column({ type: "boolean", default: false, nullable: true })
-  stock_infito: boolean;
+  stock_infinito: boolean;
 
   @Column({ type: "varchar", length: 150, nullable: true })
   codigo_fabricante: string;

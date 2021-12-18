@@ -385,7 +385,7 @@ export class ProductosController {
         producto.precio_costo = req.body.precio_costo;
         producto.precio_venta = req.body.precio_venta;
         producto.stock_actual = req.body.stock_actual;
-        producto.stock_infito = req.body.stock_infito;        
+        producto.stock_infinito = req.body.stock_infinito;        
         producto.sku = req.body.sku;
         producto.rebaja = req.body.rebaja;
         producto.archivado = req.body.archivado;
