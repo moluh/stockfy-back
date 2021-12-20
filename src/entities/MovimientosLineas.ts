@@ -31,6 +31,9 @@ export class MovimientosLineas extends BaseEntity {
     @Column({ type: 'real', nullable: true })
     precio_oferta: number;
 
+    @Column({ type: 'int', default: 0, nullable: true })
+    porcentaje: number;
+
     @Column({ type: 'boolean', nullable: true, default: false })
     oferta: boolean;
 
