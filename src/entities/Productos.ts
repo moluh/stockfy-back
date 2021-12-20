@@ -61,10 +61,10 @@ export class Productos extends BaseEntity {
   @Column({ type: "double", nullable: true })
   rebaja: number;
 
-  @Column({ type: "varchar", length: 255, nullable: true })
+  @Column({ type: "varchar", length: 25, nullable: true })
   sku: string;
 
-  @Column({ type: "varchar", length: 255, nullable: true })
+  @Column({ type: "varchar", length: 25, nullable: true })
   ean: string;
 
   @Column({ type: "int", nullable: true })

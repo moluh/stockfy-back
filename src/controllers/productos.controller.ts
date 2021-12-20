@@ -173,11 +173,15 @@ export class ProductosController {
     stream.pipe(csvStream);
   }
 
-  public getByEanCode(req: Request, res: Response) {
-    const ean = req.params.ean;
-    Productos.findOne({ ean })
-      .then((data) => ApiResponse(res, true, 200, data, []))
-      .catch((err) => ApiResponse(res, false, 400, [], err));
+  public async getByCodes(req: Request, res: Response) {
+    let barcode = req.params.barcode;
+    try {
+      let resp = await Productos.findOne({ sku: barcode });
+      if (!resp) resp = await Productos.findOne({ ean: barcode });
+      ApiResponse(res, true, 200, resp, []);
+    } catch (error) {
+      ApiResponse(res, false, 400, [], error);
+    }
   }
 
   public createBarCodes(req: Request, res: Response) {
@@ -185,6 +189,8 @@ export class ProductosController {
     let codes: any = {};
     if (req.params.sku) codes.sku = req.params.sku;
     if (req.params.ean) codes.ean = req.params.ean;
+    console.log('{ ...codes }',{ ...codes });
+    
     Productos.update(id, { ...codes })
       .then((data) => ApiResponse(res, true, 200, data, []))
       .catch((err) => ApiResponse(res, false, 400, [], err));
@@ -385,8 +391,9 @@ export class ProductosController {
         producto.precio_costo = req.body.precio_costo;
         producto.precio_venta = req.body.precio_venta;
         producto.stock_actual = req.body.stock_actual;
-        producto.stock_infinito = req.body.stock_infinito;        
+        producto.stock_infinito = req.body.stock_infinito;
         producto.sku = req.body.sku;
+        producto.ean = req.body.ean;
         producto.rebaja = req.body.rebaja;
         producto.archivado = req.body.archivado;
         producto.disponible = req.body.disponible;

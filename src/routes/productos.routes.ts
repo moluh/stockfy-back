@@ -52,7 +52,7 @@ export class ProductosRouter {
       .get(mw.isAllowed([EMPLEADO, SUPERADMIN]), this.controlador.getPaginated);
 
     app
-      .route("/api/v1/producto/ean/:ean")
-      .get(mw.isAllowed([EMPLEADO, SUPERADMIN]), this.controlador.getByEanCode);
+      .route("/api/v1/producto/barcode/:barcode")
+      .get(mw.isAllowed([EMPLEADO, SUPERADMIN]), this.controlador.getByCodes);
   }
 }
