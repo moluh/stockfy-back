@@ -421,7 +421,6 @@ export class ProductosController {
           producto
             .save()
             .then((_resp) => {
-              console.log("Se actualizó el stock");
               resolve(true);
             })
             .catch((err) => console.log("Error al actualizar stock", err));
