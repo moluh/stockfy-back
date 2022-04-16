@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import * as mw from "../auth/auth.middleware";
+import * as mw from "../middlewares/auth.middleware";
 import multer from "multer";
 import { ProductosController } from "../controllers/productos.controller";
 import { SUPERADMIN } from "../helpers/roles";

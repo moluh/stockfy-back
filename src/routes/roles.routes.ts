@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { RolesController } from "../controllers/roles.controller";
-import * as mw from "../auth/auth.middleware";
+import * as mw from "../middlewares/auth.middleware";
 import { SUPERADMIN } from "../helpers/roles";
 
 export class RolesRouter {

@@ -1,5 +1,5 @@
 import { MovimientosController } from "../controllers/movimientos.controller";
-import * as mw from "../auth/auth.middleware";
+import * as mw from "../middlewares/auth.middleware";
 import { EMPLEADO, SUPERADMIN } from "../helpers/roles";
 
 export class MovimientosRouter {

@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { ImagenesController } from "../controllers/imagenes.controller";
-import * as mw from "../auth/auth.middleware";
+import * as mw from "../middlewares/auth.middleware";
 import { SUPERADMIN } from "../helpers/roles";
 
 export class ImagenesRouter {

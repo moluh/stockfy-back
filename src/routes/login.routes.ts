@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
-import { UsuariosAuthController } from "../auth/auth.users.controller";
-import * as mw from "../auth/auth.middleware";
+import { UsuariosAuthController } from "../controllers/auth.users.controller";
+import * as mw from "../middlewares/auth.middleware";
 
 export class LoginRoutes {
   public controlador: UsuariosAuthController = new UsuariosAuthController();

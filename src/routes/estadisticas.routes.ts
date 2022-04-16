@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { EstadisticasController } from "../controllers/estadisticas.controller";
-import * as mw from "../auth/auth.middleware";
+import * as mw from "../middlewares/auth.middleware";
 import { SUPERADMIN, USUARIO } from "../helpers/roles";
 
 export class EstadisticasRouter {
