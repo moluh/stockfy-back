@@ -1,40 +1,44 @@
-import nodemailer from "nodemailer";
-import { Request, Response } from "express";
+import nodemailer from 'nodemailer'
+import { Request, Response } from 'express'
 
 export class TransactionalMailsController {
-  constructor() {}
+    constructor() {}
 
-  public async createTransport(req: Request, res: Response) {
-    let body = req.body;
+    public async createTransport(req: Request, res: Response) {
+        let body = req.body
 
-    if (body.correo == "" || body.correo == null || body.correo == undefined) {
-      res.json({
-        ok: false,
-        msg: "No ingresó ningún correo",
-      });
-      return null;
-    }
+        if (
+            body.correo == '' ||
+            body.correo == null ||
+            body.correo == undefined
+        ) {
+            res.json({
+                ok: false,
+                msg: 'No ingresó ningún correo',
+            })
+            return null
+        }
 
-    let transporter = nodemailer.createTransport({
-      host: "vps-123123123-x.dattaweb.com",
-      port: 465,
-      secure: true, // true for 465, false for other ports
-      auth: {
-        user: "no-reply@stockfy.com.ar", // generated ethereal user
-        pass: "1eCdsAWI6H", // generated ethereal password
-      },
-    });
+        let transporter = nodemailer.createTransport({
+            host: 'vps-123123123-x.dattaweb.com',
+            port: 465,
+            secure: true, // true for 465, false for other ports
+            auth: {
+                user: 'no-reply@stockfy.com.ar', // generated ethereal user
+                pass: '1eCdsAWI6H', // generated ethereal password
+            },
+        })
 
-    switch (body.role) {
-      //Correo para el registro de usuarios
-      case "RU":
-        transporter
-          .sendMail({
-            from: '"Control Stock" <no-reply@stockfy.com.ar>',
-            to: `${body.correo}`,
-            subject: "Confirmación de registro",
+        switch (body.role) {
+            //Correo para el registro de usuarios
+            case 'RU':
+                transporter
+                    .sendMail({
+                        from: '"Control Stock" <no-reply@stockfy.com.ar>',
+                        to: `${body.correo}`,
+                        subject: 'Confirmación de registro',
 
-            html: `
+                        html: `
                     <!DOCTYPE html>
                 <html lang="en">
                 <head>
@@ -54,17 +58,17 @@ export class TransactionalMailsController {
                 </body>
                 </html>
                     `,
-          })
-          .then((resp) => {
-            res.json({
-              ok: true,
-              msg: "¡Mensaje enviado con exito!",
-            });
-          });
-        break;
+                    })
+                    .then((resp) => {
+                        res.json({
+                            ok: true,
+                            msg: '¡Mensaje enviado con exito!',
+                        })
+                    })
+                break
 
-      default:
-        break;
+            default:
+                break
+        }
     }
-  }
 }

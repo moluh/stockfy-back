@@ -1,21 +1,21 @@
-import { Response } from "express";
-import { Config } from "../config/config";
+import { Response } from 'express'
+import { Config } from '../config/config'
 
-export const STATUS_OK = "ok";
-export const STATUS_FAILED = "failed";
+export const STATUS_OK = 'ok'
+export const STATUS_FAILED = 'failed'
 
-const conf: Config = new Config();
-const isDevEnv: boolean = conf.nodeEnv === "DEV" ? true : false;
+const conf: Config = new Config()
+const isDevEnv: boolean = conf.nodeEnv === 'DEV' ? true : false
 
 interface CustomResponse {
-  ok: boolean;
-  data: any[];
-  status: number;
-  count?: number;
-  error?: any;
-  code?: string;
-  userMessage?: string;
-  internalMessage?: string;
+    ok: boolean
+    data: any[]
+    status: number
+    count?: number
+    error?: any
+    code?: string
+    userMessage?: string
+    internalMessage?: string
 }
 
 /**
@@ -30,35 +30,35 @@ interface CustomResponse {
  * @returns {CustomResponse} a CustomResponse object.
  */
 export function ApiResponse(
-  res: Response,
-  ok: boolean,
-  status: number,
-  data: any | any[] = [],
-  error?: any,
-  count?: string
+    res: Response,
+    ok: boolean,
+    status: number,
+    data: any | any[] = [],
+    error?: any,
+    count?: string
 ): Response<CustomResponse> {
-  // chequeamos que sea un array, sino, lo convertimos en uno
-  if (!Array.isArray(data)) data = [data];
+    // chequeamos que sea un array, sino, lo convertimos en uno
+    if (!Array.isArray(data)) data = [data]
 
-  return ok
-    ? res.status(status).json({
-        ok,
-        data,
-        status,
-        count: parseInt(count) || 0,
-      })
-    : res.status(status).json({
-        ok: false,
-        error: error
-          ? isDevEnv
-            ? error
-            : "Error inesperado, intente nuevamente."
-          : "",
-        status,
-        code: parseInt(error?.code),
-        userMessage: error?.sqlMessage,
-        internalMessage: error?.message,
-      });
+    return ok
+        ? res.status(status).json({
+              ok,
+              data,
+              status,
+              count: parseInt(count) || 0,
+          })
+        : res.status(status).json({
+              ok: false,
+              error: error
+                  ? isDevEnv
+                      ? error
+                      : 'Error inesperado, intente nuevamente.'
+                  : '',
+              status,
+              code: parseInt(error?.code),
+              userMessage: error?.sqlMessage,
+              internalMessage: error?.message,
+          })
 }
 
 /**

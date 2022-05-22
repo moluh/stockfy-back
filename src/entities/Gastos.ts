@@ -1,31 +1,28 @@
-import { Entity, PrimaryGeneratedColumn, Column, BaseEntity } from "typeorm";
-
+import { Entity, PrimaryGeneratedColumn, Column, BaseEntity } from 'typeorm'
 
 @Entity('gastos')
 export class Gastos extends BaseEntity {
-
     @PrimaryGeneratedColumn('increment', { type: 'integer' })
-    id: number;
+    id: number
 
-    @Column({ type: "date", nullable: false })
-    fecha: Date;
-    
-    @Column({ type: "time", nullable: true })
-    hora: Date;
+    @Column({ type: 'date', nullable: false })
+    fecha: Date
+
+    @Column({ type: 'time', nullable: true })
+    hora: Date
 
     @Column({ type: 'varchar', length: 255, nullable: true })
-    descripcion: string;
+    descripcion: string
 
     @Column({ type: 'double', nullable: false })
-    monto: number;
-    
+    monto: number
+
     static getPaginated(pageNro: number, pageSize: number) {
-        const skipRecords = pageNro * pageSize;
-        return this.createQueryBuilder("gastos")
-            .orderBy("gastos.id", "DESC")
+        const skipRecords = pageNro * pageSize
+        return this.createQueryBuilder('gastos')
+            .orderBy('gastos.id', 'DESC')
             .skip(skipRecords)
             .take(pageSize)
-            .getMany();
+            .getMany()
     }
-    
 }

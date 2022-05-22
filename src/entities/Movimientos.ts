@@ -1,195 +1,197 @@
 import {
-  Entity,
-  PrimaryGeneratedColumn,
-  Column,
-  BaseEntity,
-  ManyToOne,
-  OneToMany,
-  ManyToMany,
-  JoinTable,
-  getConnection,
-  JoinColumn,
-} from "typeorm";
-import { MovimientosLineas } from "./MovimientosLineas";
-import { Pagos } from "./Pagos";
-import * as iqa from "../helpers/isQueryAllowed";
-import { Usuarios } from "./Usuarios";
+    Entity,
+    PrimaryGeneratedColumn,
+    Column,
+    BaseEntity,
+    ManyToOne,
+    OneToMany,
+    ManyToMany,
+    JoinTable,
+    getConnection,
+    JoinColumn,
+} from 'typeorm'
+import { MovimientosLineas } from './MovimientosLineas'
+import { Pagos } from './Pagos'
+import * as iqa from '../helpers/isQueryAllowed'
+import { Usuarios } from './Usuarios'
 
-@Entity("movimientos")
+@Entity('movimientos')
 export class Movimientos extends BaseEntity {
-  @PrimaryGeneratedColumn("increment", { type: "integer" })
-  id: number;
+    @PrimaryGeneratedColumn('increment', { type: 'integer' })
+    id: number
 
-  @Column({ type: "date", nullable: true })
-  fecha: Date;
+    @Column({ type: 'date', nullable: true })
+    fecha: Date
 
-  @Column({ type: "time", nullable: true })
-  hora: Date;
+    @Column({ type: 'time', nullable: true })
+    hora: Date
 
-  @Column({ type: "varchar", length: 255, nullable: true })
-  comentario: string;
+    @Column({ type: 'varchar', length: 255, nullable: true })
+    comentario: string
 
-  /** PENDIENTE COMPLETADO ANULADO */
-  @Column({ type: "varchar", length: 15, nullable: true })
-  estado: string;
+    /** PENDIENTE COMPLETADO ANULADO */
+    @Column({ type: 'varchar', length: 15, nullable: true })
+    estado: string
 
-  @Column({ type: "double", nullable: false })
-  total: number;
+    @Column({ type: 'double', nullable: false })
+    total: number
 
-  /** EFECTIVO CTACTE TARJETA */
-  @Column({ type: "varchar", nullable: true })
-  modo_pago: string;
+    /** EFECTIVO CTACTE TARJETA */
+    @Column({ type: 'varchar', nullable: true })
+    modo_pago: string
 
-  @Column({ type: "double", nullable: true })
-  saldo: number;
+    @Column({ type: 'double', nullable: true })
+    saldo: number
 
-  @ManyToOne((type) => Usuarios, (usuario) => usuario.id)
-  usuario: Usuarios;
+    @ManyToOne((type) => Usuarios, (usuario) => usuario.id)
+    usuario: Usuarios
 
-  @OneToMany((type) => Pagos, (pago) => pago.movimiento, {
-    onDelete: "CASCADE",
-    onUpdate: "CASCADE",
-  })
-  pagos: Pagos[];
+    @OneToMany((type) => Pagos, (pago) => pago.movimiento, {
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE',
+    })
+    pagos: Pagos[]
 
-  @ManyToMany(
-    (type) => MovimientosLineas,
-    (movimiento_lineas) => movimiento_lineas.movimiento,
-    { cascade: true }
-  )
-  @JoinTable({
-    name: 'movimiento_lineas',
-    joinColumn: {
-      name: 'movimientos',
-      referencedColumnName: 'id'
-    },
-    inverseJoinColumn: {
-      name: 'movimiento_lineas',
-      referencedColumnName: 'id'
-    }
-  })
-  movimiento_lineas: MovimientosLineas[];
+    @ManyToMany(
+        (type) => MovimientosLineas,
+        (movimiento_lineas) => movimiento_lineas.movimiento,
+        { cascade: true }
+    )
+    @JoinTable({
+        name: 'movimiento_lineas',
+        joinColumn: {
+            name: 'movimientos',
+            referencedColumnName: 'id',
+        },
+        inverseJoinColumn: {
+            name: 'movimiento_lineas',
+            referencedColumnName: 'id',
+        },
+    })
+    movimiento_lineas: MovimientosLineas[]
 
-  static async getPaginated(pageNro: number, pageSize: number) {
-    const skipRecords = pageNro * pageSize;
-    const count = await this.createQueryBuilder("movimientos")
-      .select("COUNT(*)", "count")
-      .getRawOne();
+    static async getPaginated(pageNro: number, pageSize: number) {
+        const skipRecords = pageNro * pageSize
+        const count = await this.createQueryBuilder('movimientos')
+            .select('COUNT(*)', 'count')
+            .getRawOne()
 
-    const data = await this.createQueryBuilder("movimientos")
-      .innerJoinAndSelect("movimientos.movimiento_lineas", "pl")
-      .innerJoinAndSelect("movimientos.usuario", "usuario")
-      .leftJoinAndSelect("movimientos.pagos", "pagos")
-      .orderBy("movimientos.fecha", "ASC")
-      .skip(skipRecords)
-      .take(pageSize)
-      .getMany();
+        const data = await this.createQueryBuilder('movimientos')
+            .innerJoinAndSelect('movimientos.movimiento_lineas', 'pl')
+            .innerJoinAndSelect('movimientos.usuario', 'usuario')
+            .leftJoinAndSelect('movimientos.pagos', 'pagos')
+            .orderBy('movimientos.fecha', 'ASC')
+            .skip(skipRecords)
+            .take(pageSize)
+            .getMany()
 
-    return { data, ...count };
-  }
-
-  static async getPaginatedByClientId(
-    pageNro: number,
-    pageSize: number,
-    usuarioId: string
-  ) {
-    const skipRecords = pageNro * pageSize;
-    const count = await this.createQueryBuilder("movimientos")
-      .select("COUNT(*)", "count")
-      .getRawOne();
-
-    const data = await this.createQueryBuilder("movimientos")
-      .leftJoinAndSelect("movimientos.usuario", "usuario")
-      .leftJoinAndSelect("movimientos.movimiento_lineas", "pl")
-      .leftJoinAndSelect("movimientos.pagos", "pagos")
-      .where(`movimientos.usuarioId = :usuarioId`, { usuarioId })
-      .orderBy("movimientos.fecha", "ASC")
-      .skip(skipRecords)
-      .take(pageSize)
-      .getMany();
-
-    return { data, ...count };
-  }
-
-  static async getPaginatedByDate(
-    pageNro: number,
-    pageSize: number,
-    date: string
-  ) {
-    const skipRecords = pageNro * pageSize;
-    const count = await this.createQueryBuilder("movimientos")
-      .select("COUNT(*)", "count")
-      .getRawOne();
-
-    const data = await this.createQueryBuilder("movimientos")
-      .leftJoinAndSelect("movimientos.usuario", "usuario")
-      .leftJoinAndSelect("movimientos.movimiento_lineas", "pl")
-      .leftJoinAndSelect("movimientos.pagos", "pagos")
-      .where(`movimientos.fecha LIKE :date`, { date })
-      .orderBy("movimientos.fecha", "ASC")
-      .skip(skipRecords)
-      .take(pageSize)
-      .getMany();
-
-    return { data, ...count };
-  }
-
-  static async getPaginatedBetweenDates(
-    pageNro: number,
-    pageSize: number,
-    from: string,
-    to: string
-  ) {
-    const skipRecords = pageNro * pageSize;
-    const count = await this.createQueryBuilder("movimientos")
-      .select("COUNT(*)", "count")
-      .getRawOne();
-
-    const data = await this.createQueryBuilder("movimientos")
-      .leftJoinAndSelect("movimientos.usuario", "usuario")
-      .leftJoinAndSelect("movimientos.movimiento_lineas", "pl")
-      .leftJoinAndSelect("movimientos.pagos", "pagos")
-      .where(`movimientos.fecha BETWEEN :from AND :to`, { from, to })
-      .orderBy("movimientos.fecha", "ASC")
-      .skip(skipRecords)
-      .take(pageSize)
-      .getMany();
-
-    return { data, ...count };
-  }
-
-  static async getPaginatedAndFilter(
-    pageNro: number,
-    pageSize: number,
-    attr: string,
-    txt: string
-  ) {
-    try {
-      if (attr !== "modo_pago") await iqa.isQueryAllowed([attr, txt]);
-    } catch (error) {
-      return error;
+        return { data, ...count }
     }
 
-    const skipRecords = pageNro * pageSize;
-    const count = await this.createQueryBuilder("movimientos")
-      .select("COUNT(*)", "count")
-      .getRawOne();
+    static async getPaginatedByClientId(
+        pageNro: number,
+        pageSize: number,
+        usuarioId: string
+    ) {
+        const skipRecords = pageNro * pageSize
+        const count = await this.createQueryBuilder('movimientos')
+            .select('COUNT(*)', 'count')
+            .getRawOne()
 
-    const data = await this.createQueryBuilder("movimientos")
-      .leftJoinAndSelect("movimientos.usuario", "usuario")
-      .leftJoinAndSelect("movimientos.movimiento_lineas", "pl")
-      .leftJoinAndSelect("movimientos.pagos", "pagos")
-      .where(`LOWER(movimientos.${attr}) LIKE LOWER(:val)`, { val: `%${txt}%` })
-      .orderBy("movimientos.fecha", "ASC")
-      .skip(skipRecords)
-      .take(pageSize)
-      .getMany();
+        const data = await this.createQueryBuilder('movimientos')
+            .leftJoinAndSelect('movimientos.usuario', 'usuario')
+            .leftJoinAndSelect('movimientos.movimiento_lineas', 'pl')
+            .leftJoinAndSelect('movimientos.pagos', 'pagos')
+            .where(`movimientos.usuarioId = :usuarioId`, { usuarioId })
+            .orderBy('movimientos.fecha', 'ASC')
+            .skip(skipRecords)
+            .take(pageSize)
+            .getMany()
 
-    return { data, ...count };
-  }
+        return { data, ...count }
+    }
 
-  static async getStatisticsBetweenDates(from, to) {
-    const query = `
+    static async getPaginatedByDate(
+        pageNro: number,
+        pageSize: number,
+        date: string
+    ) {
+        const skipRecords = pageNro * pageSize
+        const count = await this.createQueryBuilder('movimientos')
+            .select('COUNT(*)', 'count')
+            .getRawOne()
+
+        const data = await this.createQueryBuilder('movimientos')
+            .leftJoinAndSelect('movimientos.usuario', 'usuario')
+            .leftJoinAndSelect('movimientos.movimiento_lineas', 'pl')
+            .leftJoinAndSelect('movimientos.pagos', 'pagos')
+            .where(`movimientos.fecha LIKE :date`, { date })
+            .orderBy('movimientos.fecha', 'ASC')
+            .skip(skipRecords)
+            .take(pageSize)
+            .getMany()
+
+        return { data, ...count }
+    }
+
+    static async getPaginatedBetweenDates(
+        pageNro: number,
+        pageSize: number,
+        from: string,
+        to: string
+    ) {
+        const skipRecords = pageNro * pageSize
+        const count = await this.createQueryBuilder('movimientos')
+            .select('COUNT(*)', 'count')
+            .getRawOne()
+
+        const data = await this.createQueryBuilder('movimientos')
+            .leftJoinAndSelect('movimientos.usuario', 'usuario')
+            .leftJoinAndSelect('movimientos.movimiento_lineas', 'pl')
+            .leftJoinAndSelect('movimientos.pagos', 'pagos')
+            .where(`movimientos.fecha BETWEEN :from AND :to`, { from, to })
+            .orderBy('movimientos.fecha', 'ASC')
+            .skip(skipRecords)
+            .take(pageSize)
+            .getMany()
+
+        return { data, ...count }
+    }
+
+    static async getPaginatedAndFilter(
+        pageNro: number,
+        pageSize: number,
+        attr: string,
+        txt: string
+    ) {
+        try {
+            if (attr !== 'modo_pago') await iqa.isQueryAllowed([attr, txt])
+        } catch (error) {
+            return error
+        }
+
+        const skipRecords = pageNro * pageSize
+        const count = await this.createQueryBuilder('movimientos')
+            .select('COUNT(*)', 'count')
+            .getRawOne()
+
+        const data = await this.createQueryBuilder('movimientos')
+            .leftJoinAndSelect('movimientos.usuario', 'usuario')
+            .leftJoinAndSelect('movimientos.movimiento_lineas', 'pl')
+            .leftJoinAndSelect('movimientos.pagos', 'pagos')
+            .where(`LOWER(movimientos.${attr}) LIKE LOWER(:val)`, {
+                val: `%${txt}%`,
+            })
+            .orderBy('movimientos.fecha', 'ASC')
+            .skip(skipRecords)
+            .take(pageSize)
+            .getMany()
+
+        return { data, ...count }
+    }
+
+    static async getStatisticsBetweenDates(from, to) {
+        const query = `
       SELECT 
         SUM(mov.total) as "TotalVendido",
         SUM(p.monto) as "TotalDePagos",
@@ -203,14 +205,14 @@ export class Movimientos extends BaseEntity {
         LEFT JOIN pagos p ON p.movimientoId=mov.id 
       WHERE 
         mov.fecha BETWEEN ? AND ?
-    `;
-    const data = await getConnection().query(query, [from, to]);
+    `
+        const data = await getConnection().query(query, [from, to])
 
-    return [...data];
-  }
+        return [...data]
+    }
 
-  static async getStatisticsBetweenDatesGraphic(from, to) {
-    const query = `
+    static async getStatisticsBetweenDatesGraphic(from, to) {
+        const query = `
       SELECT 
         mov.fecha as "Fecha",
         SUM(mov.total) as "TotalVendido",
@@ -227,9 +229,9 @@ export class Movimientos extends BaseEntity {
         mov.fecha BETWEEN ? AND ?
       GROUP BY 
         mov.fecha 
-    `;
-    const data = await getConnection().query(query, [from, to]);
+    `
+        const data = await getConnection().query(query, [from, to])
 
-    return [...data];
-  }
+        return [...data]
+    }
 }
